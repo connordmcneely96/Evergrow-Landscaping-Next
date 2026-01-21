@@ -1,0 +1,27 @@
+name = "evergrow-landscaping"
+pages_build_output_dir = "out"
+compatibility_date = "2024-01-01"
+
+# D1 Database Binding
+[[d1_databases]]
+binding = "DB"
+database_name = "evergrow-landscaping-db"
+database_id = "7777252d-9fc2-4828-b5eb-16b2ea93ecfe"
+
+# R2 Bucket Binding
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "evergrow-landscaping-assets"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+
+# KV Namespace Bindings
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "2c81924851c24379b97a970d820336ba"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "9f958c24ca8c4c7ba8b3096a6e9c582b"
