@@ -49,7 +49,7 @@ export default function Header() {
     return (
         <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerBg}`}>
             <div className="container mx-auto px-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-start">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2 group">
                         <span className={`font-heading font-bold text-2xl tracking-tight ${textColor}`}>
@@ -58,7 +58,7 @@ export default function Header() {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden lg:flex items-center space-x-6">
+                    <nav className="hidden lg:flex items-center space-x-10 ml-12">
                         {navigation.map((item) => (
                             <Link
                                 key={item.name}
@@ -89,7 +89,7 @@ export default function Header() {
                     </nav>
 
                     {/* CTA Buttons */}
-                    <div className="hidden lg:flex items-center space-x-4">
+                    <div className="hidden lg:flex items-center space-x-6 ml-auto">
                         <a
                             href="tel:+14054795794"
                             className={`flex items-center space-x-2 font-semibold hover:text-vibrant-gold transition-colors ${textColor}`}

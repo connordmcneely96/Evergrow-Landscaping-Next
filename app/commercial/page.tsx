@@ -121,14 +121,15 @@ export default function CommercialPage() {
             {/* Custom Hero for Commercial */}
             <section className="relative min-h-[70vh] flex items-center pt-20">
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-ocean-blue" />
+                    <div className="absolute inset-0 bg-forest-green-900" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-forest-green-900/95 to-forest-green-800/80 z-10" />
                     {/* Fallback pattern if image fails */}
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
                 </div>
 
                 <div className="container relative z-10 pt-32">
                     <div className="max-w-4xl">
-                        <span className="inline-block py-1 px-3 rounded-full bg-hopeful-teal/20 text-hopeful-teal border border-hopeful-teal/30 mb-6 font-medium tracking-wide">
+                        <span className="inline-block py-1 px-3 rounded-full bg-white/10 text-vibrant-gold border border-white/20 mb-6 font-medium tracking-wide">
                             Mullti-State Commercial Landscaping
                         </span>
                         <h1 className="text-white font-heading font-bold text-4xl md:text-5xl lg:text-7xl mb-6 leading-tight">
@@ -140,7 +141,7 @@ export default function CommercialPage() {
 
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link href="/quote-request">
-                                <Button className="w-full sm:w-auto bg-hopeful-teal text-brand-charcoal hover:bg-hopeful-teal/90 border-0" size="lg">
+                                <Button className="w-full sm:w-auto bg-vibrant-gold text-brand-charcoal hover:bg-yellow-400 border-0" size="lg">
                                     Request Commercial Proposal
                                 </Button>
                             </Link>
@@ -148,7 +149,7 @@ export default function CommercialPage() {
                                 <Button
                                     variant="outline"
                                     size="lg"
-                                    className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-ocean-blue"
+                                    className="w-full sm:w-auto border-white text-white hover:bg-white hover:text-forest-green"
                                 >
                                     Call (405) 479-5794
                                 </Button>
@@ -157,15 +158,15 @@ export default function CommercialPage() {
 
                         <div className="mt-12 flex flex-wrap gap-6 text-white/80 items-center">
                             <div className="flex items-center gap-2">
-                                <svg className="w-5 h-5 text-hopeful-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                <svg className="w-5 h-5 text-vibrant-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                                 <span>Licensed in AR, OK, TX</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <svg className="w-5 h-5 text-hopeful-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                <svg className="w-5 h-5 text-vibrant-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                                 <span>$2M+ Liability Insurance</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <svg className="w-5 h-5 text-hopeful-teal" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                <svg className="w-5 h-5 text-vibrant-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                                 <span>Single Point of Contact</span>
                             </div>
                         </div>

@@ -9,14 +9,14 @@ export default function HomePage() {
     <main className="flex-col">
       {/* Hero Section */}
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[700px] flex flex-col justify-start pt-0 md:pt-0 overflow-hidden">
+      <section className="relative min-h-screen flex flex-col justify-start pt-0 md:pt-0 overflow-hidden">
         {/* Background Image Placeholder */}
         <div className="absolute inset-0 bg-forest-green-900">
           <div className="absolute inset-0 bg-gradient-to-r from-forest-green-900/95 to-forest-green-800/80 z-10" />
           <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
         </div>
 
-        <div className="container relative z-20 px-4 h-full flex flex-col justify-center pt-24 md:pt-32">
+        <div className="container relative z-20 px-4 h-full flex flex-col justify-center pt-32 pb-20">
           <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
