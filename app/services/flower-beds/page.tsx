@@ -1,16 +1,16 @@
 import { ServiceLayout, ServicePageContent } from '@/components/services/ServiceLayout'
 
 export const metadata = {
-  title: 'Flower Bed Design in El Dorado & OKC | Evergreen Landscaping',
+  title: 'Flower Bed Installation El Dorado & OKC | Custom Landscaping',
   description:
-    'Custom flower bed design in El Dorado and OKC. We handle soil prep, plant selection, installation, and mulching with clear pricing.',
+    'Custom flower bed design and installation in El Dorado & Oklahoma City. Professional landscaping with plants that thrive. Free consultations.',
 }
 
 const service: ServicePageContent = {
   slug: 'flower-beds',
-  title: 'Custom Flower Bed Design & Installation in El Dorado & OKC',
+  title: 'Custom Flower Bed Design & Installation',
   subtitle:
-    "We design vibrant flower beds that thrive in Oklahoma's climate and make your entryway stand out.",
+    'Transform your landscape with vibrant, expertly designed flower beds',
   metaDescription: metadata.description,
   breadcrumbLabel: 'Flower Beds',
   heroImage: {
@@ -18,107 +18,117 @@ const service: ServicePageContent = {
     alt: 'Flower bed installation in El Dorado & OKC',
   },
   problem:
-    'Want a vibrant, colorful landscape but do not know where to start? Maybe you buy plants that look great at the store, then fade in Oklahoma heat, and the bed turns into a patchy mess. It is hard to know the right soil, sun exposure, and spacing, and the wrong choice means wasted money and time. When installers rush the job, you are left with uneven edges, weeds, and mulch everywhere. You want a beautiful entryway without the guesswork, hidden costs, or cleanup headaches, and a clear plan for success.',
+    "You drive past homes with gorgeous flower beds and wonder how they do it. You've tried planting flowers yourself, but they either died within weeks or never looked quite right. The choices at the garden center are overwhelming—which plants actually survive Oklahoma summers? Which ones need full sun versus shade? How do you even design a bed that looks intentional instead of random? Your yard has so much potential, but right now it's just...bland. No color, no personality, nothing that makes people slow down and admire it. You want beautiful flower beds, but you don't want to waste money on another DIY disaster.",
   solution:
-    "Evergreen designs and installs flower beds that bloom beautifully in Oklahoma's climate. We start with a free consultation, learn your style, and map a plan that balances color, texture, and seasonal interest. Our team preps the soil, selects hardy plants, installs clean edging, and applies fresh mulch so everything looks polished. You get clear pricing upfront, a tidy worksite, and simple maintenance tips to keep plants healthy. We handle the hard work so you can enjoy your weekends and show off your home.",
+    "That's where we come in. We design custom flower beds that fit your home's style and your property's unique conditions. We select plants that thrive in Oklahoma's climate—not just survive, but actually flourish. Our team handles everything from soil preparation to professional installation, and we place every plant exactly where it'll grow best. You'll get a detailed care guide so you know how to keep things looking great, and we can even handle seasonal refreshes if you want year-round color. The result? A stunning landscape that looks professionally designed because it is.",
   included: [
-    'Design consultation and on-site walkthrough',
-    'Soil preparation and bed shaping',
-    'Plant selection for sun, shade, and seasonality',
-    'Precise installation and spacing for healthy growth',
-    'Fresh mulch and clean edging lines',
-    'Cleanup and care guidance after installation',
+    'Free design consultation to understand your vision and preferences',
+    'Complete site assessment including soil analysis and sun exposure mapping',
+    'Custom design plan with detailed plant selection and placement',
+    'Professional soil preparation and amendment for optimal plant health',
+    'Expert installation by experienced landscapers',
+    'Premium mulching to retain moisture and prevent weeds',
+    'Strategic plant placement for color, height, and seasonal interest',
+    'Drainage considerations to prevent water pooling and root rot',
+    'Initial watering schedule to establish healthy root systems',
+    'Detailed care and maintenance guide for long-term success',
+    'Seasonal refresh options to keep your beds looking fresh year-round',
   ],
   processHeading: 'From Vision to Blooming Results',
   processLead:
     'We guide you through a simple, collaborative process that makes design decisions easy.',
   processSteps: [
     {
-      title: 'Free consultation',
+      title: 'Free Design Consultation',
       description:
-        'We listen to your goals, measure the space, and discuss your style and budget.',
+        "We meet at your property to discuss your style preferences, budget, and vision. We'll look at sun exposure, existing landscape features, and your home's architecture to create a cohesive design.",
     },
     {
-      title: 'Custom design plan',
+      title: 'Custom Design Plan',
       description:
-        'You receive a tailored layout with plant recommendations and transparent pricing.',
+        "Within a few days, we'll present a detailed plan showing exactly what we'll plant and where. You'll see plant photos, mature sizes, and seasonal color expectations. We'll adjust anything until you love it.",
     },
     {
-      title: 'Installation day',
+      title: 'Plant Selection & Approval',
       description:
-        'We prep the soil, install plants, edge the beds, and leave everything tidy.',
+        "We source high-quality plants from trusted nurseries and confirm everything with you before installation. You'll know exactly what's going in your beds.",
     },
     {
-      title: 'Walkthrough and care tips',
+      title: 'Professional Installation',
       description:
-        'We review the final look and share watering and maintenance guidance.',
+        'Our crew prepares the soil, installs your plants with proper spacing and depth, adds premium mulch, and cleans up completely. Most installations are finished in one day.',
     },
     {
-      title: 'Ongoing support',
+      title: 'Care Instructions & Follow-up',
       description:
-        'Reach out anytime for refreshes, seasonal color, or maintenance help.',
+        "We provide a detailed care guide and check in after a few weeks to make sure everything's thriving. Have questions? We're always available.",
     },
   ],
   benefitsHeading: 'Make Your Home Stand Out',
   benefitsLead:
-    'Enjoy a landscape you love without the stress of planning and upkeep.',
+    "Your home's curb appeal transforms overnight. Neighbors will stop to compliment your landscape.",
   benefits: [
     {
-      title: 'A stunning entrance that makes your home stand out',
+      title: 'Instant curb appeal transformation',
       description:
-        'Thoughtful color and texture create a welcoming, polished first impression.',
+        "Your home's curb appeal transforms overnight. Neighbors will stop to compliment your landscape.",
     },
     {
-      title: 'Plants that thrive in Oklahoma',
+      title: 'Vibrant color that changes with seasons',
       description:
-        'We select hardy varieties that handle heat, sun, and seasonal shifts.',
+        "You'll have vibrant color that changes with the seasons, and because we choose low-maintenance plants suited to Oklahoma, you won't spend hours every week trying to keep things alive.",
     },
     {
-      title: 'Less guesswork, more confidence',
+      title: 'Increased property value',
       description:
-        'You get a clear plan, a professional install, and maintenance tips that work.',
+        "Your property value increases, and you'll actually enjoy spending time in your yard.",
     },
     {
-      title: 'No surprises or hidden costs',
+      title: 'Low-maintenance beauty',
       description:
-        'Transparent pricing means you know exactly what is included from day one.',
+        'We select plants that thrive with minimal care, so you can enjoy the beauty without constant upkeep.',
     },
   ],
   faqs: [
     {
       question: 'How much does flower bed installation cost?',
       answer:
-        'Pricing depends on bed size, plant selection, and scope. We provide a free, detailed quote after your consultation.',
+        "It varies based on bed size, plant selection, and site preparation needs. Most residential projects range from $800-$3,500. We'll give you a detailed quote after the consultation so you know exactly what to expect.",
+    },
+    {
+      question: 'Can you work with my existing landscape?',
+      answer:
+        "Absolutely! We can enhance existing beds, add new ones, or completely redesign your landscape. We'll work around mature trees, hardscaping, and anything else you want to keep.",
+    },
+    {
+      question: 'What plants grow best in Oklahoma?',
+      answer:
+        "We love native and adapted plants that handle our hot summers and unpredictable weather. Think Black-Eyed Susans, Purple Coneflowers, Knockout Roses, Daylilies, and ornamental grasses. We'll recommend specific varieties based on your property's conditions.",
+    },
+    {
+      question: 'Do I need to pay a deposit?',
+      answer:
+        'Yes, we require a 50% deposit to secure your installation date and order your plants. The remaining balance is due upon completion.',
     },
     {
       question: 'How long does installation take?',
       answer:
-        'Most flower bed installations are completed in one day, with larger projects scheduled over multiple visits.',
+        "Most residential flower bed installations are completed in one day. Larger or more complex projects might take two days. We'll give you a timeline upfront.",
     },
     {
-      question: 'Do you use native or low-maintenance plants?',
+      question: 'Do you offer maintenance after installation?',
       answer:
-        'Yes. We recommend hardy, climate-friendly plants that perform well in Oklahoma.',
+        'Yes! We offer seasonal refresh services where we replace annuals, add new mulch, and keep your beds looking fresh. Many customers have us come out twice a year—spring and fall.',
     },
     {
-      question: 'Can you refresh existing beds?',
+      question: "What's your design process like?",
       answer:
-        'Absolutely. We can clean up, re-edge, replant, and add fresh mulch to update older beds.',
-    },
-    {
-      question: 'Do you offer ongoing maintenance?',
-      answer:
-        'Yes. We can set up seasonal refreshes, weed control, and mulch touch-ups.',
-    },
-    {
-      question: 'Are you licensed and insured?',
-      answer:
-        'Yes. Our team is fully licensed and insured for your peace of mind.',
+        "We start by listening to what you want, then we create a plan that balances aesthetics, budget, and practicality. You'll see everything before we plant a single thing. We don't move forward until you're excited about the design.",
     },
   ],
-  ctaHeading: 'Ready for a Flower Bed That Pops?',
+  ctaHeading: "Let's Create Your Dream Flower Beds",
   ctaDescription:
-    'Schedule a free design consultation and get a clear plan with pricing you can trust.',
+    'Schedule your free design consultation today and see how beautiful your landscape can be.',
   relatedServices: [
     {
       title: 'Lawn Care & Maintenance',

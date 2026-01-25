@@ -1,16 +1,16 @@
 import { ServiceLayout, ServicePageContent } from '@/components/services/ServiceLayout'
 
 export const metadata = {
-  title: 'Lawn Care in El Dorado & OKC | Evergreen Landscaping',
+  title: 'Lawn Care El Dorado & OKC | Weekly Mowing Service',
   description:
-    'Reliable lawn care in El Dorado and OKC. Weekly mowing, edging, weed control, and seasonal treatments with transparent pricing.',
+    'Professional lawn care in El Dorado & Oklahoma City. Weekly mowing, edging, and maintenance. Free quotes. Reliable service you can trust.',
 }
 
 const service: ServicePageContent = {
   slug: 'lawn-care',
-  title: 'Professional Lawn Care in El Dorado & OKC',
+  title: 'Professional Lawn Care in El Dorado & Oklahoma City',
   subtitle:
-    'Weekly mowing, edging, and seasonal treatments so you come home to a perfectly manicured lawn.',
+    'Enjoy a perfectly manicured lawn every week — without lifting a finger',
   metaDescription: metadata.description,
   breadcrumbLabel: 'Lawn Care',
   heroImage: {
@@ -18,107 +18,111 @@ const service: ServicePageContent = {
     alt: 'Lawn care in El Dorado & OKC',
   },
   problem:
-    "Weekends disappear behind a mower, and the lawn still looks patchy. You never know if the crew will show up, and when they do, they leave grass clippings on the driveway and surprise add-ons on the invoice. It is frustrating to spend money and still feel embarrassed about the yard. The weeds creep in, the edges look ragged, and you are stuck juggling calls to get answers. Our neighbors in El Dorado and OKC want reliable weekly care without chasing updates or hidden fees.",
+    "You know the feeling. It's Saturday morning, and while your neighbors are heading to the lake, you're stuck pushing a mower around your yard. Again. You try to keep up with it, but between work, family, and everything else, your lawn always seems to be the thing that gets neglected. Brown patches start appearing. Weeds creep in faster than you can pull them. Your mower breaks down at the worst possible time. And every time you drive up to your house, you can't help but notice how much better the neighbor's yard looks. It's exhausting, frustrating, and honestly, it's stealing your weekends.",
   solution:
-    "Evergreen's weekly maintenance program keeps your lawn healthy and beautiful year-round. We start with a free walkthrough, build a customized schedule, and show up on time with a professional, background-checked crew. You receive clear pricing up front and a simple service plan so there are no surprises. We mow, edge, trim, and clean up each visit, plus we handle seasonal aeration, seeding, and weed control to keep grass thick and green. Expect consistent communication and a yard you are proud to come home to.",
+    "That's exactly why we created our weekly lawn care service. Our experienced crew handles everything—mowing, edging, trimming, and cleanup—so you never have to think about it again. We show up on the same day every week, rain or shine, and take care of your lawn like it's our own. We know Oklahoma's climate inside and out, so we adjust our care throughout the year to keep your grass healthy and green. You get consistent, professional results every single week, and you get your weekends back to actually enjoy. No equipment to store, no schedules to juggle, no worrying about whether it'll get done.",
   included: [
-    'Weekly mowing and precise edging',
-    'String trimming around trees, fences, and beds',
-    'Blowing and debris cleanup after every visit',
-    'Seasonal aeration and overseeding options',
-    'Weed control treatments and spot care',
-    'Fertilization support to keep turf healthy',
+    'Weekly mowing with professional-grade equipment for a clean, even cut',
+    'Precision edging along all sidewalks, driveways, and flower beds',
+    'String trimming around trees, fences, mailboxes, and other obstacles',
+    'Complete debris cleanup and removal after every visit',
+    'Seasonal aeration in spring and fall to promote healthy root growth',
+    'Overseeding to fill in thin spots and maintain thick, lush grass',
+    'Weed control treatments to keep your lawn looking its best',
+    'Custom fertilization schedule tailored to Oklahoma soil and climate',
+    'Free lawn health consultations whenever you have questions',
+    'Flexible scheduling that works around your life',
   ],
   processHeading: 'Your Lawn Care Plan, Step by Step',
   processLead:
     'We keep things simple: clear expectations, reliable scheduling, and friendly communication.',
   processSteps: [
     {
-      title: 'Free quote and walkthrough',
+      title: 'Free Quote & Consultation',
       description:
-        'Tell us about your lawn, your goals, and your schedule so we can quote accurately.',
+        "We'll visit your property, measure your lawn, and discuss your goals. You'll get a clear, upfront price with no hidden fees or surprises.",
     },
     {
-      title: 'Customized service plan',
+      title: 'Custom Service Plan',
       description:
-        'We build a weekly or bi-weekly plan with transparent pricing and clear expectations.',
+        "We create a maintenance schedule that fits your lawn's specific needs and your budget. You'll know exactly what to expect and when.",
     },
     {
-      title: 'Scheduled service visits',
+      title: 'Weekly Service',
       description:
-        'Our crew arrives on time, handles mowing and edging, and cleans up before leaving.',
+        "Our crew arrives on your scheduled day, completes the work efficiently, and leaves your property looking pristine. We text you when we're done.",
     },
     {
-      title: 'Quality inspection',
+      title: 'Ongoing Communication',
       description:
-        'We check the details, review the property, and make sure everything looks sharp.',
-    },
-    {
-      title: 'Ongoing communication',
-      description:
-        'You get proactive updates, seasonal recommendations, and quick responses to questions.',
+        "Have a concern? Want to adjust something? Just call or text. We're always available to make sure you're completely happy with your lawn.",
     },
   ],
   benefitsHeading: 'Results You Can Count On',
   benefitsLead:
-    'We focus on the outcomes that matter most to busy homeowners.',
+    "With Evergrow handling your lawn care, you'll enjoy benefits that go beyond just a nice-looking yard.",
   benefits: [
     {
       title: "A yard you're proud of",
       description:
-        'Crisp lines, thick turf, and clean edges make your home stand out every week.',
+        'A consistently beautiful yard that makes you proud to pull into your driveway every single day.',
     },
     {
-      title: 'More time for weekends',
+      title: 'More time for what matters',
       description:
-        'Skip the mower and enjoy your time while we handle the routine work.',
+        "You'll have more time for the things that actually matter—family dinners, weekend trips, or just relaxing on your patio.",
     },
     {
-      title: 'No surprises or hidden costs',
+      title: 'Increased property value',
       description:
-        'Upfront pricing means you always know what to expect before work begins.',
+        'Your curb appeal and property value increase with professional, consistent care.',
     },
     {
-      title: 'Reliable, on-time visits',
+      title: 'Complete peace of mind',
       description:
-        'You can plan confidently knowing our team shows up when promised.',
+        "You'll have complete peace of mind knowing it's handled by professionals who actually care.",
     },
   ],
   faqs: [
     {
-      question: 'How much does lawn care cost?',
+      question: 'How much does weekly lawn care cost?',
       answer:
-        'Pricing is based on your lawn size and service frequency. We provide a free, transparent quote before any work begins.',
+        "Our pricing is straightforward and based on your lawn size and specific needs. Most residential lawns in El Dorado and OKC range from $35-$75 per visit. We'll give you an exact quote after seeing your property—no guessing, no surprises. The price includes everything: mowing, edging, trimming, and cleanup.",
     },
     {
-      question: 'Do you offer one-time services or just contracts?',
+      question: 'Do you offer one-time mowing or just contracts?',
       answer:
-        'We offer both. Many clients choose ongoing maintenance, but we also provide one-time cleanups or seasonal treatments.',
+        "We offer both! While most of our customers love the convenience of weekly service, we're happy to help with one-time cuts if you're going on vacation or just need a quick cleanup. Just give us a call and we'll fit you in.",
     },
     {
-      question: 'What if I am not happy with the service?',
+      question: "What if I'm not happy with a service visit?",
       answer:
-        'Let us know within 24 hours and we will make it right. Your satisfaction is part of our quality checks.',
+        "If something's not right, we want to know immediately. Call or text us, and we'll come back out the same day or next day to make it right—no charge, no questions asked. Your satisfaction is our reputation.",
     },
     {
-      question: 'How often will you communicate with me?',
+      question: 'How do I schedule or reschedule service?',
       answer:
-        'You will receive updates about scheduling, seasonal recommendations, and any issues we notice along the way.',
+        "Super easy. Just call or text us. Need to skip a week because you're out of town? No problem. Want us to come a day earlier? We'll do our best to accommodate. We're flexible because life happens.",
+    },
+    {
+      question: 'Do you work in bad weather?',
+      answer:
+        "We monitor the weather closely and adjust our schedule as needed. If it's pouring rain, we'll reschedule for the next available day. We'll always communicate with you if there's a change so you're never left wondering.",
+    },
+    {
+      question: 'What makes you different from other lawn care companies?',
+      answer:
+        "Honestly? We show up when we say we will, we communicate clearly, and we treat your property with respect. We're not a huge national company—we're local, and your neighbors are our neighbors. We care about doing quality work because our reputation depends on it.",
     },
     {
       question: 'Are you licensed and insured?',
       answer:
-        'Yes. Our team is licensed and insured for your peace of mind.',
-    },
-    {
-      question: 'Can you help with seasonal aeration or overseeding?',
-      answer:
-        'Absolutely. We can add aeration, overseeding, and weed control treatments to keep your lawn healthy.',
+        "Absolutely. We carry full liability insurance and workers' compensation coverage. You're completely protected, and so are we.",
     },
   ],
-  ctaHeading: 'Ready for Weekly Lawn Care You Can Count On?',
+  ctaHeading: 'Ready for a Beautiful Lawn?',
   ctaDescription:
-    'Tell us about your property and we will put together a clear, honest quote within 24 hours.',
+    'Join hundreds of homeowners in El Dorado and Oklahoma City who trust Evergrow for reliable, professional lawn care every week.',
   relatedServices: [
     {
       title: 'Flower Bed Installation',

@@ -1,16 +1,16 @@
 import { ServiceLayout, ServicePageContent } from '@/components/services/ServiceLayout'
 
 export const metadata = {
-  title: 'Pressure Washing in El Dorado & OKC | Evergreen Landscaping',
+  title: 'Pressure Washing El Dorado & OKC | Driveway & Siding Cleaning',
   description:
-    'Professional pressure washing in El Dorado and OKC. Driveways, siding, decks, and patios cleaned safely with transparent pricing.',
+    'Professional pressure washing in El Dorado & Oklahoma City. Driveways, siding, decks, patios. Safe, effective cleaning. Free estimates available.',
 }
 
 const service: ServicePageContent = {
   slug: 'pressure-washing',
-  title: 'Professional Pressure Washing in El Dorado & OKC',
+  title: 'Professional Pressure Washing Services',
   subtitle:
-    "Safely remove years of grime from driveways, siding, decks, and patios in just a few hours.",
+    'Restore your driveway, siding, and outdoor surfaces to like-new condition',
   metaDescription: metadata.description,
   breadcrumbLabel: 'Pressure Washing',
   heroImage: {
@@ -18,107 +18,112 @@ const service: ServicePageContent = {
     alt: 'Pressure washing in El Dorado & OKC',
   },
   problem:
-    'Dirty driveways, grimy siding, and stained decks make your home look tired even when the yard is neat. You may try to scrub it yourself, but the stains do not budge and you worry about damaging the surface. Renting equipment is expensive, time-consuming, and messy. When you hire someone, you wonder if they will show up, protect your landscaping, or add surprise fees. You want a professional wash that restores curb appeal without harming your property or your budget. You need a crew that communicates clearly.',
+    "Your driveway is covered in oil stains, tire marks, and years of built-up grime. Every time someone pulls up to your house, that's the first thing they see. Your siding has green streaks and dirt that makes your whole house look dingy. Your deck or patio is stained and slippery from algae buildup. You've thought about pressure washing it yourself, but you've heard horror stories about people damaging their siding or leaving weird streaks everywhere. Plus, it would take you an entire weekend—if you even had the right equipment. Meanwhile, you're embarrassed every time guests come over. You know a good cleaning would make a huge difference, but you just don't want to risk doing it wrong.",
   solution:
-    'Evergreen provides professional pressure washing that removes years of buildup safely. We inspect surfaces, choose the right pressure and cleaning solutions, and pre-treat stains so concrete, siding, and wood look refreshed without damage. Our team protects nearby plants, keeps the worksite clean, and communicates each step so you always know what is happening. Pricing is transparent and the schedule is reliable. In a few hours, you can have a bright driveway, clean siding, and a patio that feels new again. We handle the hard work so you can enjoy your weekends.',
+    "That's why professional pressure washing exists. We have the experience and equipment to safely remove years of dirt, grime, mold, and stains without damaging your surfaces. We adjust the pressure for each material—gentle on siding, more aggressive on concrete. We use eco-friendly cleaning solutions that actually break down the buildup instead of just pushing it around. In just a few hours, we can transform your driveway from embarrassing to impressive. Your siding looks fresh and clean. Your deck is safe to walk on again. It's one of the most affordable ways to dramatically boost your home's curb appeal, and the results are immediate.",
   included: [
-    'Driveway and sidewalk cleaning',
-    'Patio and pool deck washing',
-    'House siding soft wash treatment',
-    'Fence and gate cleaning',
-    'Deck and porch stain removal',
-    'Surface-safe detergents and post rinse',
+    'Pre-treatment surface assessment to identify the right approach for each area',
+    'Appropriate pressure settings adjusted for vinyl, brick, wood, concrete, and other materials',
+    'Eco-friendly cleaning solutions that are safe for plants, pets, and the environment',
+    'Driveway and sidewalk cleaning to remove oil, tire marks, and stains',
+    'Patio and walkway restoration for safe, clean outdoor living spaces',
+    'Home siding cleaning (vinyl, brick, wood) to restore original appearance',
+    'Deck and fence washing to remove mold, mildew, and weathering',
+    'Concrete surface cleaning including garage floors and retaining walls',
+    'Window exterior cleaning (optional add-on for complete home refresh)',
+    "Post-service inspection to ensure you're thrilled with the results",
+    '50% deposit required to schedule, balance due upon completion',
   ],
   processHeading: 'Pressure Washing Without the Stress',
   processLead:
     'We keep scheduling simple, pricing clear, and results impressive.',
   processSteps: [
     {
-      title: 'Free estimate',
+      title: 'Free Estimate',
       description:
-        'We assess the surfaces, answer questions, and provide a transparent quote.',
+        "We'll visit your property, assess the surfaces you want cleaned, and provide a clear, upfront quote. No hidden fees or surprise charges.",
     },
     {
-      title: 'Secure your spot with a 50% deposit',
+      title: '50% Deposit & Scheduling',
       description:
-        'A small deposit confirms your appointment and locks in your pricing.',
+        'Once you approve the quote, we collect a 50% deposit to secure your service date and purchase any specialized cleaning solutions needed for your project.',
     },
     {
-      title: 'Scheduled service day',
+      title: 'Professional Service',
       description:
-        'Our crew arrives on time, protects landscaping, and prepares the area.',
+        'Our crew arrives with commercial-grade equipment and cleans your surfaces methodically. We protect landscaping, adjust pressure as needed, and ensure even, streak-free results.',
     },
     {
-      title: 'Professional wash',
+      title: 'Final Inspection & Payment',
       description:
-        'We pre-treat stains, wash surfaces safely, and rinse thoroughly.',
-    },
-    {
-      title: 'Final walkthrough and payment',
-      description:
-        'We review the results together and collect the remaining balance.',
+        "We walk the property with you to make sure you're completely satisfied. Once you're happy, the remaining 50% balance is due. Most customers pay by check or card on the spot.",
     },
   ],
   benefitsHeading: 'Restore Curb Appeal Fast',
   benefitsLead:
-    'Enjoy a clean exterior that makes your home feel fresh and welcoming.',
+    'The transformation is dramatic and immediate.',
   benefits: [
     {
-      title: "Restore your home's beauty in just a few hours",
+      title: 'Dramatic, immediate transformation',
       description:
-        'Bright, clean surfaces boost curb appeal without a major renovation.',
+        'Your driveway looks new again. Your siding is bright and clean. Your deck is safe and inviting. Neighbors will notice.',
     },
     {
-      title: 'No surprises or hidden costs',
+      title: 'Increased property value',
       description:
-        'Clear quotes and transparent deposits keep everything predictable.',
+        'Your property value increases with professional cleaning that extends the life of your surfaces.',
     },
     {
-      title: 'Safe for your surfaces',
+      title: 'Pride in your home',
       description:
-        'We match pressure and cleaners to the surface so nothing is damaged.',
+        "You'll feel proud of your home again instead of embarrassed when guests arrive.",
     },
     {
-      title: 'A home you are proud to come home to',
+      title: 'Extended surface life',
       description:
-        'Remove stains and grime so your property looks cared for again.',
+        'Regular pressure washing actually extends the life of your surfaces by removing damaging buildup.',
     },
   ],
   faqs: [
     {
       question: 'How much does pressure washing cost?',
       answer:
-        'Pricing depends on the surfaces and square footage. We provide a free estimate with clear line items.',
+        "Pricing depends on the size of the area and the type of surface. Most driveways run $150-$300. Whole-house siding typically ranges from $250-$600. We'll give you an exact quote after seeing your property.",
     },
     {
-      question: 'Do you require a deposit?',
+      question: 'Why do you require a deposit?',
       answer:
-        'Yes. We collect a 50% deposit to confirm your service date and lock in pricing.',
+        "The deposit secures your spot on our schedule and covers the cost of specialized cleaning solutions for your specific surfaces. It's standard practice for pressure washing services and protects both of us.",
     },
     {
-      question: 'How long does the service take?',
+      question: 'Will pressure washing damage my surfaces?',
       answer:
-        'Most residential jobs are completed in a few hours. Larger projects may take longer.',
+        "Not when done correctly! That's why we adjust pressure settings for each material. Too much pressure can damage soft wood or strip paint. Too little won't clean properly. We've been doing this for years and know exactly what each surface needs.",
     },
     {
-      question: 'Will pressure washing damage my siding or deck?',
+      question: 'How long does it take?',
       answer:
-        'No. We use the appropriate pressure and detergents for each surface to prevent damage.',
+        "Most residential driveways take 1-2 hours. Whole-house siding can take 3-5 hours depending on size. We'll give you a time estimate when we provide your quote.",
+    },
+    {
+      question: 'Do I need to be home?',
+      answer:
+        "It's helpful if you're available at the beginning and end for the walkthrough, but you don't need to be there the whole time. We'll coordinate a schedule that works for you.",
     },
     {
       question: 'What surfaces can you clean?',
       answer:
-        'We clean driveways, sidewalks, patios, siding, decks, and fences.',
+        "We clean driveways, sidewalks, patios, decks, fences, home siding (vinyl, brick, wood, stucco), garage floors, retaining walls, and more. If you're not sure about a specific surface, just ask—we'll let you know if it's safe to pressure wash.",
     },
     {
-      question: 'Are you licensed and insured?',
+      question: 'How often should I have surfaces pressure washed?',
       answer:
-        'Yes. Evergreen is fully licensed and insured for your peace of mind.',
+        "For most homes, once a year is perfect. High-traffic areas like driveways might benefit from twice-yearly cleaning. We'll recommend a schedule based on your specific situation and how quickly buildup returns.",
     },
   ],
-  ctaHeading: "Ready to Refresh Your Home's Exterior?",
+  ctaHeading: 'Ready to Restore Your Surfaces?',
   ctaDescription:
-    'Get a free estimate and see how quickly pressure washing can boost curb appeal.',
+    'See the dramatic difference professional pressure washing makes. Book your free estimate today and get your home looking like new again.',
   relatedServices: [
     {
       title: 'Lawn Care & Maintenance',

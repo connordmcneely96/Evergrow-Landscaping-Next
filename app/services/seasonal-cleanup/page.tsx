@@ -1,16 +1,16 @@
 import { ServiceLayout, ServicePageContent } from '@/components/services/ServiceLayout'
 
 export const metadata = {
-  title: 'Seasonal Cleanup in El Dorado & OKC | Evergreen Landscaping',
+  title: 'Seasonal Cleanup El Dorado & OKC | Leaf Removal Service',
   description:
-    'Spring and fall cleanup in El Dorado and OKC. Leaf removal, debris hauling, bed prep, and optional gutter cleaning with clear pricing.',
+    'Professional spring and fall cleanup in El Dorado & Oklahoma City. Fast debris removal, all hauled away. Book your seasonal cleanup today.',
 }
 
 const service: ServicePageContent = {
   slug: 'seasonal-cleanup',
-  title: 'Spring & Fall Cleanup in El Dorado & OKC',
+  title: 'Spring & Fall Cleanup Services',
   subtitle:
-    'Clear debris, refresh beds, and prep your yard for the next season with dependable service.',
+    'Remove debris, prepare your yard, and start each season fresh',
   metaDescription: metadata.description,
   breadcrumbLabel: 'Seasonal Cleanup',
   heroImage: {
@@ -18,107 +18,106 @@ const service: ServicePageContent = {
     alt: 'Seasonal cleanup in El Dorado & OKC',
   },
   problem:
-    'Leaves pile up fast, storm debris collects in corners, and suddenly the yard looks neglected. You plan to handle it on a weekend, but the bags stack up and the work keeps growing. When you call for help, you worry they will not show up, or they will leave behind piles, dirty gutters, and surprise charges. It is frustrating to pay for cleanup and still feel embarrassed by the mess. You want a professional team that respects your property, cleans thoroughly, and tells you the price before they start, every time.',
+    "The leaves are piling up faster than you can rake them. Or it's spring, and your yard is covered in dead branches, matted leaves, and winter debris that makes the whole property look abandoned. You know you need to tackle it, but the thought of spending an entire weekend raking, bagging, and hauling is exhausting. You don't have the right equipment. Your back hurts just thinking about it. And meanwhile, your neighbors' yards already look pristine and ready for the season. Every time you pull into your driveway, you feel a little embarrassed. You want a clean, fresh-looking yard, but you just don't have the time or energy to make it happen.",
   solution:
-    'Our seasonal cleanup removes every leaf, branch, and winter mess so your yard feels fresh. We arrive on schedule, walk the property with you, and outline exactly what is included. Our crew clears beds, trims back dead growth, cleans hard surfaces, and hauls away debris, leaving no bags behind. Optional gutter cleaning and bed prep are available for a full reset. You get transparent pricing upfront and a final inspection to make sure everything looks tidy. Expect quick communication, respectful crews, and a yard ready for new growth.',
+    "That's exactly what our seasonal cleanup service is for. We bring a full crew with professional equipment and knock out your entire property in just a few hours. We remove every leaf, every stick, every piece of debris—and we haul it all away. Your beds get cleaned out and edged. Your lawn gets dethatched if needed. We even refresh your mulch so everything looks sharp and ready for the new season. You don't lift a finger, and by the time we're done, your yard looks like it's ready for a magazine photoshoot. It's the fastest, easiest way to start spring or fall off right.",
   included: [
-    'Leaf removal from lawns, beds, and corners',
-    'Storm debris cleanup and haul-away',
-    'Bed preparation and light pruning',
-    'Final blow-off of driveways, patios, and walkways',
-    'Optional gutter cleaning and downspout clearing',
-    'Disposal included with no bags left behind',
+    'Complete leaf removal and disposal from all areas',
+    'Dead plant material removal to make room for new growth',
+    'Bed cleanup and edging for crisp, defined borders',
+    'Lawn dethatching to remove dead grass and promote healthy growth',
+    'Early weed removal before they take over',
+    'Mulch refreshing to give beds a clean, finished look',
+    'Storm debris removal from summer weather',
+    'Final mowing and edging before winter dormancy',
+    'Gutter cleaning (optional add-on)',
+    'Full property walkthrough to catch any issues',
   ],
   processHeading: 'A Simple Cleanup You Can Trust',
   processLead:
     'We handle the heavy lifting while keeping you informed at every step.',
   processSteps: [
     {
-      title: 'Schedule your cleanup',
+      title: 'Schedule Your Cleanup',
       description:
-        'Pick a convenient time and tell us what areas need attention.',
+        "Call or text us to schedule your spring or fall cleanup. We'll confirm a date and give you an estimated arrival time.",
     },
     {
-      title: 'On-site walkthrough',
+      title: 'Thorough Property Service',
       description:
-        'We confirm the scope, share pricing, and answer your questions up front.',
+        'Our crew arrives with professional equipment and works through your entire property systematically. We clean beds, remove debris, edge borders, and refresh mulch.',
     },
     {
-      title: 'Thorough cleanup service',
+      title: 'Debris Hauled Away',
       description:
-        'Our crew removes leaves, debris, and buildup with care for your landscape.',
+        "We load everything into our trucks and haul it away. You don't have to worry about disposal or filling your trash cans for weeks.",
     },
     {
-      title: 'Haul away and reset',
+      title: 'Final Walkthrough',
       description:
-        'We load and dispose of debris so your property looks clean and open.',
-    },
-    {
-      title: 'Final inspection',
-      description:
-        'We review the results with you and make sure everything looks right.',
+        "Before we leave, we do a final check to make sure everything looks perfect. If you're home, we'll walk the property with you to confirm you're happy.",
     },
   ],
   benefitsHeading: 'Start the Season with a Fresh Yard',
   benefitsLead:
-    'Enjoy a clean, welcoming outdoor space without the stress or mess.',
+    "Your yard looks clean, fresh, and ready for the new season. You didn't spend your entire weekend doing backbreaking work.",
   benefits: [
     {
-      title: 'A fresh, clean yard ready for the season ahead',
+      title: 'Clean, fresh yard ready for the season',
       description:
-        'Your lawn and beds look tidy, healthy, and ready for new growth.',
+        'Your yard looks clean, fresh, and ready for the new season. Your property has instant curb appeal again.',
     },
     {
-      title: 'More time for weekends',
+      title: 'No backbreaking weekend work',
       description:
-        'Let us handle the bags, hauling, and heavy lifting so you can relax.',
+        "You didn't spend your entire weekend doing backbreaking work. Let us handle the bags, hauling, and heavy lifting.",
     },
     {
-      title: 'No surprises or hidden costs',
+      title: 'Properly prepared landscape',
       description:
-        'Transparent quotes mean the price is clear before we start.',
+        "You have peace of mind knowing everything's been properly prepared—whether that's removing dead material in spring or protecting your landscape for winter.",
     },
     {
-      title: 'Respectful, professional crews',
+      title: 'Professional results',
       description:
-        'We treat your property like our own and leave it cleaner than we found it.',
+        'Your lawn and beds look tidy, healthy, and ready for new growth with professional attention to detail.',
     },
   ],
   faqs: [
     {
-      question: 'How much does seasonal cleanup cost?',
+      question: 'When is the best time for spring/fall cleanup?',
       answer:
-        'Pricing depends on yard size and debris volume. We provide a free, detailed quote before scheduling.',
+        "For spring cleanup, we recommend scheduling as soon as the ground thaws and you can see what needs attention—usually late March or early April in Oklahoma. For fall cleanup, wait until most leaves have fallen, typically late October through November. We'll help you time it right.",
     },
     {
-      question: 'How quickly can you complete the cleanup?',
+      question: 'Do I need to be home during service?',
       answer:
-        'Most cleanups are completed in a single visit. Larger properties may require additional time.',
+        "Nope! As long as we can access your yard, we're good to go. We'll text you when we arrive and when we're finished. Many customers aren't home, and it works out perfectly.",
     },
     {
-      question: 'Do you haul away all the debris?',
+      question: 'What do you do with the debris?',
       answer:
-        'Yes. We remove and dispose of all debris so your property is clear and tidy.',
+        "We haul everything away in our trucks and dispose of it properly. Organic material goes to composting facilities when possible. You don't have to worry about a thing.",
     },
     {
-      question: 'Can you add gutter cleaning?',
+      question: 'Can you clean up storm damage?',
       answer:
-        'Absolutely. We can add gutter and downspout cleaning to your cleanup plan.',
+        "Absolutely. If you've had storm damage with downed branches or scattered debris, give us a call. We can usually get out within a day or two to clean it up and haul it away.",
     },
     {
-      question: 'Is this a one-time service?',
+      question: 'Do you offer one-time cleanup or only to regular customers?',
       answer:
-        'Seasonal cleanup is often one-time, but we can schedule spring and fall visits each year.',
+        "We offer one-time seasonal cleanups to anyone! You don't have to be a regular lawn care customer. Many people just call us twice a year for spring and fall cleanup.",
     },
     {
-      question: 'What if the weather changes?',
+      question: 'How long does a typical cleanup take?',
       answer:
-        'We stay in touch and reschedule promptly if weather impacts the planned visit.',
+        "Most residential properties take 2-4 hours depending on size and debris amount. Larger properties or heavy leaf coverage might take longer. We'll give you an estimate when you call.",
     },
   ],
-  ctaHeading: 'Need a Fresh Start for Your Yard?',
+  ctaHeading: 'Book Your Seasonal Cleanup Today',
   ctaDescription:
-    'Book your spring or fall cleanup today and get a clear quote with no surprises.',
+    'Get your yard ready for the season without spending your weekend doing it. Professional cleanup, fast service, all debris hauled away.',
   relatedServices: [
     {
       title: 'Lawn Care & Maintenance',
