@@ -97,6 +97,12 @@ export default function Header() {
                             <span>(405) 479-5794</span>
                         </a>
                         <Link
+                            href="/login"
+                            className={`text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors mr-4 ${textColor}`}
+                        >
+                            Client Login
+                        </Link>
+                        <Link
                             href="/quote-request"
                             className="bg-vibrant-gold text-deep-charcoal px-6 py-2.5 rounded-md font-bold uppercase text-sm tracking-wide hover:bg-yellow-400 transition-colors shadow-md"
                         >
@@ -173,11 +179,24 @@ export default function Header() {
                                     <Phone className="w-5 h-5" />
                                     <span>(405) 479-5794</span>
                                 </a>
+                                <a
+                                    href="tel:+14054795794"
+                                    className="flex items-center justify-center space-x-2 text-forest-green font-bold text-lg"
+                                >
+                                    <Phone className="w-5 h-5" />
+                                    <span>(405) 479-5794</span>
+                                </a>
                                 <Link
                                     href="/quote-request"
                                     className="bg-vibrant-gold text-deep-charcoal py-3 rounded-lg font-bold uppercase text-center tracking-wide shadow-md"
                                 >
                                     Get a Free Quote
+                                </Link>
+                                <Link
+                                    href="/login"
+                                    className="bg-forest-green-50 text-forest-green py-3 rounded-lg font-bold uppercase text-center tracking-wide border border-forest-green-100"
+                                >
+                                    Customer Portal
                                 </Link>
                             </div>
                         </div>

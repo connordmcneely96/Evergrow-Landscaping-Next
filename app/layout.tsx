@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MainLayout from "@/components/layout/MainLayout";
 import { ToastProvider } from "@/components/ui/Toast";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const openSans = Open_Sans({
   variable: "--font-heading",
@@ -42,11 +43,13 @@ export default function RootLayout({
         className={`${openSans.variable} ${lato.variable} antialiased flex flex-col min-h-screen`}
       >
         <ToastProvider>
-          <Header />
-          <MainLayout>
-            {children}
-          </MainLayout>
-          <Footer />
+          <AuthProvider>
+            <Header />
+            <MainLayout>
+              {children}
+            </MainLayout>
+            <Footer />
+          </AuthProvider>
         </ToastProvider>
       </body>
     </html>
