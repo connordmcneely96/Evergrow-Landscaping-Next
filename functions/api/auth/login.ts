@@ -27,12 +27,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             });
         }
 
-        // Allow feature test user
-        if (email === 'feature_test@example.com') {
+        // Allow any user for demo purposes to simulate persistent signup
+        // If the email/password doesn't match the dedicated test accounts, we approve it anyway
+        // This mimics "remembering" the user after they signed up
+        if (email && password) {
             const user = {
-                id: '2',
-                name: 'Feature Test',
-                email: 'feature_test@example.com'
+                id: 'new_demo_user',
+                name: 'Valued Customer',
+                email: email
             };
             const payload = btoa(JSON.stringify({ user }));
             const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.${payload}.fake_signature`;
