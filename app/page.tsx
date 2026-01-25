@@ -70,8 +70,8 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="absolute -bottom-6 -right-6 bg-forest-green text-white p-6 rounded-xl shadow-xl hidden md:block">
-                <p className="text-3xl font-bold font-heading">20+</p>
-                <p className="text-sm opacity-80 uppercase tracking-wider">Years Experience</p>
+                <p className="text-3xl font-bold font-heading">Since</p>
+                <p className="text-sm opacity-80 uppercase tracking-wider">2023</p>
               </div>
             </div>
             <div>
@@ -326,7 +326,7 @@ export default function HomePage() {
             Ready for a Yard You Love Coming Home To?
           </h2>
           <p className="text-xl text-forest-green-100 mb-10 max-w-2xl mx-auto">
-            From weekly maintenance to full landscape upgrades, Evergreen Landscaping makes it easy to keep your outdoor space beautiful.
+            From weekly maintenance to full landscape upgrades, Evergrow Landscaping makes it easy to keep your outdoor space beautiful.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">

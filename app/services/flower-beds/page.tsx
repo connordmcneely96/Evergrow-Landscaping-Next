@@ -178,6 +178,6 @@ export default function FlowerBedsPage() {
 }
 
 export const metadata = {
-  title: 'Flower Bed Installation & Design | Evergreen Landscaping',
+  title: 'Flower Bed Installation & Design | Evergrow Landscaping',
   description: 'Custom flower bed design and installation in El Dorado and OKC. Native plants, quality soil prep, beautiful results that last.',
 }

@@ -7,23 +7,23 @@ import { Env } from '../types';
  * @returns Resend client
  */
 export function getResendClient(env: Env): Resend {
-    if (!env.RESEND_API_KEY) {
-        throw new Error('RESEND_API_KEY not configured');
-    }
+  if (!env.RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY not configured');
+  }
 
-    return new Resend(env.RESEND_API_KEY);
+  return new Resend(env.RESEND_API_KEY);
 }
 
 interface SendEmailParams {
-    to: string | string[];
-    subject: string;
-    html: string;
-    from?: string;
-    replyTo?: string;
-    attachments?: Array<{
-        filename: string;
-        content: string | Buffer;
-    }>;
+  to: string | string[];
+  subject: string;
+  html: string;
+  from?: string;
+  replyTo?: string;
+  attachments?: Array<{
+    filename: string;
+    content: string | Buffer;
+  }>;
 }
 
 /**
@@ -33,34 +33,34 @@ interface SendEmailParams {
  * @returns Result with success status and email ID
  */
 export async function sendEmail(
-    env: Env,
-    params: SendEmailParams
+  env: Env,
+  params: SendEmailParams
 ): Promise<{ success: boolean; id?: string; error?: string }> {
-    const resend = getResendClient(env);
+  const resend = getResendClient(env);
 
-    try {
-        const { data, error } = await resend.emails.send({
-            from: params.from || 'Evergreen Landscaping <noreply@evergreenlandscaping.com>',
-            to: params.to,
-            subject: params.subject,
-            html: params.html,
-            replyTo: params.replyTo || 'contact@evergreenlandscaping.com',
-            attachments: params.attachments,
-        });
+  try {
+    const { data, error } = await resend.emails.send({
+      from: params.from || 'Evergrow Landscaping <noreply@evergrowlandscaping.com>',
+      to: params.to,
+      subject: params.subject,
+      html: params.html,
+      replyTo: params.replyTo || 'contact@evergrowlandscaping.com',
+      attachments: params.attachments,
+    });
 
-        if (error) {
-            console.error('Resend email error:', error);
-            return { success: false, error: error.message };
-        }
-
-        return { success: true, id: data?.id };
-    } catch (error) {
-        console.error('Email send error:', error);
-        return {
-            success: false,
-            error: error instanceof Error ? error.message : 'Unknown error',
-        };
+    if (error) {
+      console.error('Resend email error:', error);
+      return { success: false, error: error.message };
     }
+
+    return { success: true, id: data?.id };
+  } catch (error) {
+    console.error('Email send error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
 }
 
 // ============================================================================
@@ -68,59 +68,59 @@ export async function sendEmail(
 // ============================================================================
 
 const PAYMENT_INVOICE_TYPE_LABELS: Record<string, string> = {
-    deposit: 'Deposit Payment',
-    balance: 'Balance Payment',
-    full: 'Payment',
-    additional: 'Additional Charge',
+  deposit: 'Deposit Payment',
+  balance: 'Balance Payment',
+  full: 'Payment',
+  additional: 'Additional Charge',
 };
 
 function getInvoiceTypeLabel(value?: string | null): string {
-    if (!value) {
-        return 'Payment';
-    }
-    const normalized = value.trim().toLowerCase();
-    return PAYMENT_INVOICE_TYPE_LABELS[normalized] || toTitleCase(normalized);
+  if (!value) {
+    return 'Payment';
+  }
+  const normalized = value.trim().toLowerCase();
+  return PAYMENT_INVOICE_TYPE_LABELS[normalized] || toTitleCase(normalized);
 }
 
 function formatCurrency(amount: number): string {
-    const safeAmount = Number.isFinite(amount) ? amount : 0;
-    return `$${safeAmount.toFixed(2)}`;
+  const safeAmount = Number.isFinite(amount) ? amount : 0;
+  return `$${safeAmount.toFixed(2)}`;
 }
 
 function formatEmailDate(value?: Date | string): string | null {
-    if (!value) {
-        return null;
-    }
-    const date = value instanceof Date ? value : new Date(value);
-    if (Number.isNaN(date.getTime())) {
-        return null;
-    }
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
+  if (!value) {
+    return null;
+  }
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 }
 
 function toTitleCase(value: string): string {
-    return value
-        .replace(/[_-]+/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim()
-        .replace(/\b\w/g, (char) => char.toUpperCase());
+  return value
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 function formatEmailText(value: string): string {
-    return escapeHtml(value).replace(/\n/g, '<br>');
+  return escapeHtml(value).replace(/\n/g, '<br>');
 }
 
 function escapeHtml(value: string): string {
-    return value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 // ============================================================================
@@ -131,12 +131,12 @@ function escapeHtml(value: string): string {
  * Newsletter welcome email (to subscriber)
  */
 export function getNewsletterWelcomeEmail(data: {
-    name?: string;
-    unsubscribeUrl: string;
+  name?: string;
+  unsubscribeUrl: string;
 }): string {
-    const greetingName = data.name ? data.name : 'there';
+  const greetingName = data.name ? data.name : 'there';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -159,12 +159,12 @@ export function getNewsletterWelcomeEmail(data: {
     <body>
       <div class="container">
         <div class="header">
-          <h1>Welcome to Evergreen Landscaping Updates</h1>
+          <h1>Welcome to Evergrow Landscaping Updates</h1>
           <p style="margin: 8px 0 0 0; font-size: 14px;">Seasonal tips and exclusive offers</p>
         </div>
         <div class="content">
           <p>Hi <strong>${greetingName}</strong>,</p>
-          <p>Thank you for subscribing to Evergreen Landscaping updates! We are excited to share helpful insights and special promotions with you.</p>
+          <p>Thank you for subscribing to Evergrow Landscaping updates! We are excited to share helpful insights and special promotions with you.</p>
 
           <div class="highlight">
             <strong>What you can expect:</strong>
@@ -178,10 +178,10 @@ export function getNewsletterWelcomeEmail(data: {
           <p>We respect your privacy and will never share your email with third parties.</p>
           <p>If you ever want to unsubscribe, you can do so here: <a href="${data.unsubscribeUrl}">Unsubscribe</a>.</p>
 
-          <a href="https://evergreenlandscaping.com" class="cta">Visit Evergreen Landscaping</a>
+          <a href="https://evergrowlandscaping.com" class="cta">Visit Evergrow Landscaping</a>
         </div>
         <div class="footer">
-          <p><strong>Evergreen Landscaping</strong></p>
+          <p><strong>Evergrow Landscaping</strong></p>
           <p>Thank you for being part of our community.</p>
           <p style="margin-top: 12px;">
             <a href="${data.unsubscribeUrl}">Unsubscribe</a> if you no longer wish to receive updates.
@@ -197,18 +197,18 @@ export function getNewsletterWelcomeEmail(data: {
  * Quote request notification email (to business owner)
  */
 export function getQuoteRequestNotificationEmail(data: {
-    name: string;
-    email: string;
-    phone?: string;
-    address?: string;
-    city?: string;
-    zipCode?: string;
-    serviceType: string;
-    propertySize?: string;
-    description?: string;
-    photoUrls?: string[];
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  zipCode?: string;
+  serviceType: string;
+  propertySize?: string;
+  description?: string;
+  photoUrls?: string[];
 }): string {
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -298,7 +298,7 @@ export function getQuoteRequestNotificationEmail(data: {
           ` : ''}
         </div>
         <div class="footer">
-          <p><strong>Evergreen Landscaping</strong></p>
+          <p><strong>Evergrow Landscaping</strong></p>
           <p>Quote request submitted at ${new Date().toLocaleString()}</p>
           <p>Respond within 24 hours for best customer experience</p>
         </div>
@@ -312,7 +312,7 @@ export function getQuoteRequestNotificationEmail(data: {
  * Quote request confirmation email (to customer)
  */
 export function getQuoteRequestConfirmationEmail(name: string, serviceType: string): string {
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -345,7 +345,7 @@ export function getQuoteRequestConfirmationEmail(name: string, serviceType: stri
         <div class="content">
           <p>Hi <strong>${name}</strong>,</p>
 
-          <p>Thank you for reaching out to Evergreen Landscaping! We've received your request for <strong>${serviceType}</strong> services and we're excited to help transform your outdoor space.</p>
+          <p>Thank you for reaching out to Evergrow Landscaping! We've received your request for <strong>${serviceType}</strong> services and we're excited to help transform your outdoor space.</p>
 
           <div class="checklist">
             <h3>📋 What Happens Next:</h3>
@@ -357,9 +357,9 @@ export function getQuoteRequestConfirmationEmail(name: string, serviceType: stri
             </ul>
           </div>
 
-          <p><strong>Why Choose Evergreen Landscaping?</strong></p>
+          <p><strong>Why Choose Evergrow Landscaping?</strong></p>
           <ul>
-            <li>🏆 Family-owned and operated since [YEAR]</li>
+            <li>🏆 Founded in 2023</li>
             <li>✅ Licensed & fully insured</li>
             <li>⭐ Highest-rated landscaping service in the area</li>
             <li>💯 100% satisfaction guarantee</li>
@@ -367,21 +367,21 @@ export function getQuoteRequestConfirmationEmail(name: string, serviceType: stri
 
           <div class="contact-box">
             <p>Have questions? We're here to help!</p>
-            <strong>📱 Call us: (XXX) XXX-XXXX</strong>
-            <p>📧 Email: contact@evergreenlandscaping.com</p>
+            <strong>📱 Call us: (405) 479-5794</strong>
+            <p>📧 Email: contact@evergrowlandscaping.com</p>
           </div>
 
           <p>We look forward to working with you!</p>
 
           <p>Best regards,<br>
-          <strong>The Evergreen Landscaping Team</strong></p>
+          <strong>The Evergrow Landscaping Team</strong></p>
         </div>
         <div class="footer">
-          <p><strong>Evergreen Landscaping</strong></p>
+          <p><strong>Evergrow Landscaping</strong></p>
           <p>Serving El Dorado, AR & Oklahoma City</p>
           <p>Licensed & Insured | Family-Owned</p>
           <p style="margin-top: 15px; font-size: 12px;">
-            This email was sent because you requested a quote at evergreenlandscaping.com
+            This email was sent because you requested a quote at evergrowlandscaping.com
           </p>
         </div>
       </div>
@@ -391,21 +391,21 @@ export function getQuoteRequestConfirmationEmail(name: string, serviceType: stri
 }
 
 export function getPaymentReceiptEmail(data: {
-    name?: string | null;
-    amount: number;
-    invoiceType?: string | null;
-    projectId?: number | string | null;
-    paidAt?: Date | string;
+  name?: string | null;
+  amount: number;
+  invoiceType?: string | null;
+  projectId?: number | string | null;
+  paidAt?: Date | string;
 }): string {
-    const customerName = escapeHtml(data.name || 'there');
-    const amount = formatCurrency(data.amount);
-    const invoiceLabel = getInvoiceTypeLabel(data.invoiceType);
-    const paidAt = formatEmailDate(data.paidAt) || formatEmailDate(new Date());
-    const projectLine = data.projectId
-        ? `<p><strong>Project ID:</strong> ${escapeHtml(String(data.projectId))}</p>`
-        : '';
+  const customerName = escapeHtml(data.name || 'there');
+  const amount = formatCurrency(data.amount);
+  const invoiceLabel = getInvoiceTypeLabel(data.invoiceType);
+  const paidAt = formatEmailDate(data.paidAt) || formatEmailDate(new Date());
+  const projectLine = data.projectId
+    ? `<p><strong>Project ID:</strong> ${escapeHtml(String(data.projectId))}</p>`
+    : '';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -438,7 +438,7 @@ export function getPaymentReceiptEmail(data: {
           <p>If you have any questions, reply to this email and we will help.</p>
         </div>
         <div class="footer">
-          <p><strong>Evergreen Landscaping</strong></p>
+          <p><strong>Evergrow Landscaping</strong></p>
           <p>Thank you for your business.</p>
         </div>
       </div>
@@ -448,21 +448,21 @@ export function getPaymentReceiptEmail(data: {
 }
 
 export function getPaymentFailureEmail(data: {
-    name?: string;
-    amount: number;
-    reason?: string;
-    retryUrl?: string;
+  name?: string;
+  amount: number;
+  reason?: string;
+  retryUrl?: string;
 }): string {
-    const customerName = escapeHtml(data.name || 'there');
-    const amount = formatCurrency(data.amount);
-    const reasonLine = data.reason
-        ? `<p><strong>Reason:</strong> ${escapeHtml(data.reason)}</p>`
-        : '';
-    const retryLink = data.retryUrl
-        ? `<a href="${escapeHtml(data.retryUrl)}" style="background: #4DB8AC; color: white; padding: 12px 22px; text-decoration: none; border-radius: 4px; display: inline-block;">Retry Payment</a>`
-        : '';
+  const customerName = escapeHtml(data.name || 'there');
+  const amount = formatCurrency(data.amount);
+  const reasonLine = data.reason
+    ? `<p><strong>Reason:</strong> ${escapeHtml(data.reason)}</p>`
+    : '';
+  const retryLink = data.retryUrl
+    ? `<a href="${escapeHtml(data.retryUrl)}" style="background: #4DB8AC; color: white; padding: 12px 22px; text-decoration: none; border-radius: 4px; display: inline-block;">Retry Payment</a>`
+    : '';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -495,8 +495,8 @@ export function getPaymentFailureEmail(data: {
           <p>If you need help, reply to this email and we will assist you.</p>
         </div>
         <div class="footer">
-          <p><strong>Evergreen Landscaping</strong></p>
-          <p>contact@evergreenlandscaping.com</p>
+          <p><strong>Evergrow Landscaping</strong></p>
+          <p>contact@evergrowlandscaping.com</p>
         </div>
       </div>
     </body>
@@ -505,19 +505,19 @@ export function getPaymentFailureEmail(data: {
 }
 
 export function getPaymentFailureAlertEmail(data: {
-    customerName: string;
-    customerEmail?: string;
-    amount: number;
-    projectId?: number | string | null;
-    paymentIntentId: string;
-    reason?: string;
+  customerName: string;
+  customerEmail?: string;
+  amount: number;
+  projectId?: number | string | null;
+  paymentIntentId: string;
+  reason?: string;
 }): string {
-    const amount = formatCurrency(data.amount);
-    const projectLine = data.projectId ? `<p><strong>Project ID:</strong> ${escapeHtml(String(data.projectId))}</p>` : '';
-    const reasonLine = data.reason ? `<p><strong>Failure reason:</strong> ${escapeHtml(data.reason)}</p>` : '';
-    const customerEmail = data.customerEmail ? escapeHtml(data.customerEmail) : 'Unavailable';
+  const amount = formatCurrency(data.amount);
+  const projectLine = data.projectId ? `<p><strong>Project ID:</strong> ${escapeHtml(String(data.projectId))}</p>` : '';
+  const reasonLine = data.reason ? `<p><strong>Failure reason:</strong> ${escapeHtml(data.reason)}</p>` : '';
+  const customerEmail = data.customerEmail ? escapeHtml(data.customerEmail) : 'Unavailable';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -559,17 +559,17 @@ export function getPaymentFailureAlertEmail(data: {
 }
 
 export function getRefundConfirmationEmail(data: {
-    name?: string | null;
-    amount: number;
-    reason?: string | null;
+  name?: string | null;
+  amount: number;
+  reason?: string | null;
 }): string {
-    const customerName = escapeHtml(data.name || 'there');
-    const amount = formatCurrency(data.amount);
-    const reasonLine = data.reason
-        ? `<p><strong>Reason:</strong> ${escapeHtml(data.reason)}</p>`
-        : '';
+  const customerName = escapeHtml(data.name || 'there');
+  const amount = formatCurrency(data.amount);
+  const reasonLine = data.reason
+    ? `<p><strong>Reason:</strong> ${escapeHtml(data.reason)}</p>`
+    : '';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -601,7 +601,7 @@ export function getRefundConfirmationEmail(data: {
           <p>If you have questions, reply to this email.</p>
         </div>
         <div class="footer">
-          <p><strong>Evergreen Landscaping</strong></p>
+          <p><strong>Evergrow Landscaping</strong></p>
         </div>
       </div>
     </body>
@@ -610,33 +610,33 @@ export function getRefundConfirmationEmail(data: {
 }
 
 export function getQuoteEmail(data: {
-    customerName: string;
-    serviceType: string;
-    description?: string | null;
-    quotedAmount: number;
-    notes?: string | null;
-    timeline?: string | null;
-    terms?: string | null;
-    acceptanceUrl: string;
-    validUntilDisplay: string;
-    requiresDeposit: boolean;
-    termsUrl: string;
+  customerName: string;
+  serviceType: string;
+  description?: string | null;
+  quotedAmount: number;
+  notes?: string | null;
+  timeline?: string | null;
+  terms?: string | null;
+  acceptanceUrl: string;
+  validUntilDisplay: string;
+  requiresDeposit: boolean;
+  termsUrl: string;
 }): string {
-    const amount = formatCurrency(data.quotedAmount);
-    const descriptionBlock = data.description
-        ? `<div class="section"><div class="label">Project Description</div><div class="value">${formatEmailText(data.description)}</div></div>`
-        : '';
-    const notesBlock = data.notes
-        ? `<div class="section"><div class="label">Notes</div><div class="value">${formatEmailText(data.notes)}</div></div>`
-        : '';
-    const timelineBlock = data.timeline
-        ? `<div class="section"><div class="label">Estimated Timeline</div><div class="value">${formatEmailText(data.timeline)}</div></div>`
-        : '';
-    const depositNote = data.requiresDeposit
-        ? '<div class="alert"><strong>Note:</strong> A 50% deposit will be required to schedule this project upon acceptance.</div>'
-        : '';
+  const amount = formatCurrency(data.quotedAmount);
+  const descriptionBlock = data.description
+    ? `<div class="section"><div class="label">Project Description</div><div class="value">${formatEmailText(data.description)}</div></div>`
+    : '';
+  const notesBlock = data.notes
+    ? `<div class="section"><div class="label">Notes</div><div class="value">${formatEmailText(data.notes)}</div></div>`
+    : '';
+  const timelineBlock = data.timeline
+    ? `<div class="section"><div class="label">Estimated Timeline</div><div class="value">${formatEmailText(data.timeline)}</div></div>`
+    : '';
+  const depositNote = data.requiresDeposit
+    ? '<div class="alert"><strong>Note:</strong> A 50% deposit will be required to schedule this project upon acceptance.</div>'
+    : '';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -691,7 +691,7 @@ export function getQuoteEmail(data: {
           </p>
         </div>
         <div class="footer">
-          <p>&copy; ${new Date().getFullYear()} Evergreen Landscaping</p>
+          <p>&copy; ${new Date().getFullYear()} Evergrow Landscaping</p>
           <p>Questions? Reply to this email or call us at (405) 479-5794</p>
         </div>
       </div>
@@ -701,11 +701,11 @@ export function getQuoteEmail(data: {
 }
 
 export function getProjectCancellationEmail(data: {
-    name: string;
-    serviceType: string;
-    reason?: string;
+  name: string;
+  serviceType: string;
+  reason?: string;
 }): string {
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -728,7 +728,7 @@ export function getProjectCancellationEmail(data: {
           <p>This email is to confirm that your project for <strong>${escapeHtml(data.serviceType)}</strong> has been cancelled.</p>
           ${data.reason ? `<p><strong>Reason:</strong> ${escapeHtml(data.reason)}</p>` : ''}
           <p>If you have any questions or would like to reschedule, please contact us.</p>
-          <p>Best regards,<br>Evergreen Landscaping</p>
+          <p>Best regards,<br>Evergrow Landscaping</p>
         </div>
       </div>
     </body>
@@ -737,35 +737,35 @@ export function getProjectCancellationEmail(data: {
 }
 
 export function getProjectCompletionEmail(data: {
-    name: string;
-    serviceType: string;
-    summary?: string;
-    completionNotes?: string;
-    completionPhotos?: string[];
-    balanceAmount?: number | null;
-    paymentUrl?: string | null;
-    dueDate?: string | null;
-    feedbackUrl: string;
-    reviewUrl: string;
+  name: string;
+  serviceType: string;
+  summary?: string;
+  completionNotes?: string;
+  completionPhotos?: string[];
+  balanceAmount?: number | null;
+  paymentUrl?: string | null;
+  dueDate?: string | null;
+  feedbackUrl: string;
+  reviewUrl: string;
 }): string {
-    const photosBlock = data.completionPhotos && data.completionPhotos.length > 0
-        ? `
+  const photosBlock = data.completionPhotos && data.completionPhotos.length > 0
+    ? `
         <div style="margin: 20px 0;">
           <strong>Project Photos:</strong><br>
           ${data.completionPhotos.map(url => `<img src="${url}" style="max-width: 200px; margin: 5px; border-radius: 4px;" />`).join('')}
         </div>`
-        : '';
+    : '';
 
-    const paymentBlock = data.balanceAmount && data.balanceAmount > 0 && data.paymentUrl
-        ? `
+  const paymentBlock = data.balanceAmount && data.balanceAmount > 0 && data.paymentUrl
+    ? `
         <div style="background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 20px 0; border-left: 4px solid #FBB017;">
             <p style="margin-top: 0;"><strong>Remaining Balance Due:</strong> ${formatCurrency(data.balanceAmount)}</p>
             <p>Due Date: ${data.dueDate || 'Upon Receipt'}</p>
             <a href="${data.paymentUrl}" style="display: inline-block; background: #24663B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">Pay Balance</a>
         </div>`
-        : '';
+    : '';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -798,7 +798,7 @@ export function getProjectCompletionEmail(data: {
             <a href="${data.reviewUrl}">Leave a Google Review</a>
           </p>
 
-          <p>Thank you for choosing Evergreen Landscaping!</p>
+          <p>Thank you for choosing Evergrow Landscaping!</p>
         </div>
       </div>
     </body>
@@ -807,12 +807,12 @@ export function getProjectCompletionEmail(data: {
 }
 
 export function getProjectFeedbackRequestEmail(data: {
-    name: string;
-    serviceType: string;
-    feedbackUrl: string;
-    reviewUrl: string;
+  name: string;
+  serviceType: string;
+  feedbackUrl: string;
+  reviewUrl: string;
 }): string {
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -843,7 +843,7 @@ export function getProjectFeedbackRequestEmail(data: {
           <p>Or if you have specific feedback for us directly: <a href="${data.feedbackUrl}">Complete Feedback Form</a></p>
           
           <p>We appreciate your business!</p>
-          <p>The Evergreen Landscaping Team</p>
+          <p>The Evergrow Landscaping Team</p>
         </div>
       </div>
     </body>
@@ -852,28 +852,28 @@ export function getProjectFeedbackRequestEmail(data: {
 }
 
 export function getProjectScheduledEmail(data: {
-    name: string;
-    serviceType: string;
-    scheduledDate: string;
-    scheduledTime?: string;
-    serviceDetails?: string;
-    depositAmount?: number | null;
-    depositDueDate?: string;
-    paymentLink?: string;
+  name: string;
+  serviceType: string;
+  scheduledDate: string;
+  scheduledTime?: string;
+  serviceDetails?: string;
+  depositAmount?: number | null;
+  depositDueDate?: string;
+  paymentLink?: string;
 }): string {
-    const timeInfo = data.scheduledTime ? ` at ${data.scheduledTime}` : '';
-    const dateFormatted = new Date(data.scheduledDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const timeInfo = data.scheduledTime ? ` at ${data.scheduledTime}` : '';
+  const dateFormatted = new Date(data.scheduledDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
-    const depositBlock = data.depositAmount && data.depositAmount > 0 && data.paymentLink
-        ? `
+  const depositBlock = data.depositAmount && data.depositAmount > 0 && data.paymentLink
+    ? `
         <div style="background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 20px 0; border-left: 4px solid #FBB017;">
             <p style="margin-top: 0;"><strong>Deposit Required:</strong> ${formatCurrency(data.depositAmount)}</p>
             <p>Due By: ${data.depositDueDate ? new Date(data.depositDueDate).toLocaleDateString() : 'Upon Receipt'}</p>
             <a href="${data.paymentLink}" style="display: inline-block; background: #24663B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px;">Pay Deposit</a>
         </div>`
-        : '';
+    : '';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -906,7 +906,7 @@ export function getProjectScheduledEmail(data: {
           ${depositBlock}
 
           <p>We are looking forward to working on your property!</p>
-          <p>Best regards,<br>Evergreen Landscaping</p>
+          <p>Best regards,<br>Evergrow Landscaping</p>
         </div>
       </div>
     </body>
@@ -915,7 +915,7 @@ export function getProjectScheduledEmail(data: {
 }
 
 export function getCustomerFeedbackThankYouEmail(name: string): string {
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -938,7 +938,7 @@ export function getCustomerFeedbackThankYouEmail(name: string): string {
           <p>Thank you so much for taking the time to share your feedback with us.</p>
           <p>We truly value our customers' input as it helps us continue to improve and provide the best possible service.</p>
           <p>If you have any further questions or concerns, please don't hesitate to reach out.</p>
-          <p>Best regards,<br>The Evergreen Landscaping Team</p>
+          <p>Best regards,<br>The Evergrow Landscaping Team</p>
         </div>
       </div>
     </body>
@@ -947,18 +947,18 @@ export function getCustomerFeedbackThankYouEmail(name: string): string {
 }
 
 export function getFeedbackOwnerAlertEmail(data: {
-    customerName: string;
-    customerEmail?: string;
-    customerPhone?: string | null;
-    rating: number;
-    feedback: string;
-    projectId?: number | null;
+  customerName: string;
+  customerEmail?: string;
+  customerPhone?: string | null;
+  rating: number;
+  feedback: string;
+  projectId?: number | null;
 }): string {
-    const projectLine = data.projectId ? `<p><strong>Project ID:</strong> ${data.projectId}</p>` : '';
-    const emailLine = data.customerEmail ? `<p><strong>Email:</strong> ${escapeHtml(data.customerEmail)}</p>` : '';
-    const phoneLine = data.customerPhone ? `<p><strong>Phone:</strong> ${escapeHtml(data.customerPhone)}</p>` : '';
+  const projectLine = data.projectId ? `<p><strong>Project ID:</strong> ${data.projectId}</p>` : '';
+  const emailLine = data.customerEmail ? `<p><strong>Email:</strong> ${escapeHtml(data.customerEmail)}</p>` : '';
+  const phoneLine = data.customerPhone ? `<p><strong>Phone:</strong> ${escapeHtml(data.customerPhone)}</p>` : '';
 
-    return `
+  return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -1001,19 +1001,19 @@ export function getFeedbackOwnerAlertEmail(data: {
 }
 
 export function getFeedbackOwnerReviewEmail(data: {
-    customerName: string;
-    customerEmail?: string;
-    customerPhone?: string | null;
-    rating: number;
-    feedback: string;
-    projectId?: number | null;
+  customerName: string;
+  customerEmail?: string;
+  customerPhone?: string | null;
+  rating: number;
+  feedback: string;
+  projectId?: number | null;
 }): string {
-    return getFeedbackOwnerAlertEmail({
-        customerName: data.customerName,
-        customerEmail: data.customerEmail,
-        customerPhone: data.customerPhone,
-        rating: data.rating,
-        feedback: data.feedback,
-        projectId: data.projectId
-    });
+  return getFeedbackOwnerAlertEmail({
+    customerName: data.customerName,
+    customerEmail: data.customerEmail,
+    customerPhone: data.customerPhone,
+    rating: data.rating,
+    feedback: data.feedback,
+    projectId: data.projectId
+  });
 }

@@ -13,23 +13,23 @@
 **More Than Just Landscaping — It's Personal**
 
 ### Opening Paragraph
-We started Evergreen Landscaping because we were tired of seeing homeowners get burned by unreliable contractors who didn't show up, didn't communicate, and didn't care. For over 20 years, we've built our business on a simple promise: do what we say we'll do, treat your property with respect, and be there when you need us. That's not just good business—it's how we'd want to be treated, and it's what keeps our customers coming back season after season.
+We started Evergrow Landscaping in 2023 because we were tired of seeing homeowners get burned by unreliable contractors who didn't show up, didn't communicate, and didn't care. We've built our business on a simple promise: do what we say we'll do, treat your property with respect, and be there when you need us. That's not just good business—it's how we'd want to be treated, and it's what keeps our customers coming back season after season.
 
 ---
 
 ## 2. THE PROBLEM WE SAW IN THE MARKET
 
 ### Section Heading
-**Why We Started Evergreen**
+**Why We Started Evergrow**
 
 ### Content
 **[NEED: Founder name - using "Karson" as placeholder]**
 
-When Karson started Evergreen over 20 years ago, he kept hearing the same frustrations from homeowners: landscapers who didn't show up when promised, crews who left properties messy, companies that added surprise charges, and worst of all—contractors who simply stopped answering the phone after getting paid.
+When Karson started Evergrow in 2023, he kept hearing the same frustrations from homeowners: landscapers who didn't show up when promised, crews who left properties messy, companies that added surprise charges, and worst of all—contractors who simply stopped answering the phone after getting paid.
 
 Homeowners were spending their weekends trying to keep up with yard work because they couldn't find someone reliable. When they did hire help, they'd get burned by poor communication, inconsistent quality, or flat-out no-shows. It was an industry where "good enough" seemed to be the standard, and customers had learned to expect disappointment.
 
-Karson saw an opportunity to build something different—a landscaping company where reliability wasn't a bonus, it was the foundation. Where clear communication wasn't an afterthought, it was part of the service. Where quality work wasn't luck, it was guaranteed. That vision became Evergreen Landscaping, and it's guided every decision we've made since.
+Karson saw an opportunity to build something different—a landscaping company where reliability wasn't a bonus, it was the foundation. Where clear communication wasn't an afterthought, it was part of the service. Where quality work wasn't luck, it was guaranteed. That vision became Evergrow Landscaping, and it's guided every decision we've made since.
 
 ---
 
@@ -43,7 +43,7 @@ We built Evergreen on four principles that still guide us today: craftsmanship, 
 
 Here's what that actually means in practice: When we say we'll be there Tuesday at 9am, we're there Tuesday at 9am. When we give you a quote, that's the price—no hidden fees, no surprise add-ons. When we finish a job, your property looks better than when we arrived, and we've cleaned up completely. And when you call or text with a question or concern, we respond within 24 hours. Every time.
 
-We're not trying to be the biggest landscaping company in Oklahoma. We're trying to be the one you trust, the one you recommend to your neighbors, the one you call year after year because you know exactly what you're going to get. Quality over volume. Relationships over transactions. That's the Evergreen difference, and it's why we've been doing this for over two decades.
+We're not trying to be the biggest landscaping company in Oklahoma. We're trying to be the one you trust, the one you recommend to your neighbors, the one you call year after year because you know exactly what you're going to get. Quality over volume. Relationships over transactions. That's the Evergrow difference, and it's why we're committed to this mission.
 
 ---
 
@@ -61,7 +61,7 @@ Karson started Evergreen Landscaping over 20 years ago with a simple mission: pr
 What started as a one-person operation with a truck and a mower has grown into a trusted team serving El Dorado and Oklahoma City. But the mission hasn't changed: show up when you say you will, do excellent work, and treat every property like it's your own.
 
 **Placeholder Version 2 (More Business-Focused):**
-With over 20 years of experience in the landscaping industry, Karson founded Evergreen Landscaping to fill a gap in the market—reliable, communicative, quality service that homeowners could actually depend on. His deep knowledge of Oklahoma's unique climate and growing conditions, combined with a commitment to customer satisfaction, has made Evergreen the go-to choice for homeowners who are tired of being let down by unreliable contractors.
+Growing Evergrow Landscaping from a simple mission to provide reliable, communicative, quality service that homeowners could actually depend on. His deep knowledge of Oklahoma's unique climate and growing conditions, combined with a commitment to customer satisfaction, has made Evergrow the go-to choice for homeowners who are tired of being let down by unreliable contractors.
 
 ### Our Team Philosophy
 Every member of our crew is background-checked before they ever step foot on your property. But we don't just hire for landscaping skills—we hire people who take pride in their work, who understand that your home is your biggest investment, and who know how to communicate respectfully with customers.
@@ -100,7 +100,7 @@ Here's what sets us apart from other landscaping companies in El Dorado and Okla
 
 - ✓ **Family-owned and operated** — We're not a franchise or a national chain. You're working with real people who live in your community and care about their reputation.
 
-- ✓ **20+ years serving Oklahoma** — We know this climate. We know what plants thrive here, when to fertilize, how to handle Oklahoma's unpredictable weather. That experience matters.
+- ✓ **Serving Oklahoma Since 2023** — We know this climate. We know what plants thrive here, when to fertilize, how to handle Oklahoma's unpredictable weather. That experience matters.
 
 - ✓ **Licensed and insured** — Your property is protected. If something goes wrong (it rarely does), you're covered. No exceptions.
 
@@ -127,7 +127,7 @@ Ready to experience landscaping done right? We'd love to hear about your project
 **Secondary CTA:** Call Us: *[NEED: Phone number]*
 
 **Trust Signal:**
-Join the 40+ homeowners in El Dorado and Oklahoma City who trust Evergreen for their landscaping needs. We've been keeping our promises for over 20 years—let us prove it to you.
+Join the homeowners in El Dorado and Oklahoma City who trust Evergrow for their landscaping needs. We've been keeping our promises since day one—let us prove it to you.
 
 ---
 
@@ -163,7 +163,7 @@ We've all been there—waiting for a contractor who never shows up, calling a co
 **Headline:** Reliable Landscaping in El Dorado & Oklahoma City
 
 **Opening:**
-Evergreen Landscaping has been serving homeowners in El Dorado and Oklahoma City for over 20 years with one simple promise: we show up when we say we will, we do quality work, and we treat your property with respect. No games, no excuses, no surprises. Just honest, reliable landscaping service you can count on, season after season.
+Evergrow Landscaping has been serving homeowners in El Dorado and Oklahoma City since 2023 with one simple promise: we show up when we say we will, we do quality work, and we treat your property with respect. No games, no excuses, no surprises. Just honest, reliable landscaping service you can count on, season after season.
 
 ---
 

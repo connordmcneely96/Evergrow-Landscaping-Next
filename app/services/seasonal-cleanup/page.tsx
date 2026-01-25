@@ -178,6 +178,6 @@ export default function SeasonalCleanupPage() {
 }
 
 export const metadata = {
-  title: 'Spring & Fall Cleanup Services | Evergreen Landscaping',
+  title: 'Spring & Fall Cleanup Services | Evergrow Landscaping',
   description: 'Professional seasonal cleanup in El Dorado and OKC. Leaf removal, bed maintenance, debris cleanup. Spring and fall services available.',
 }

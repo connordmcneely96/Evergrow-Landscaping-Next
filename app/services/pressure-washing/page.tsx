@@ -170,6 +170,6 @@ export default function PressureWashingPage() {
 }
 
 export const metadata = {
-  title: 'Pressure Washing Services | Evergreen Landscaping',
+  title: 'Pressure Washing Services | Evergrow Landscaping',
   description: 'Professional pressure washing in El Dorado and OKC. Driveways, decks, patios, siding, fences. Safe, effective cleaning with commercial equipment.',
 }

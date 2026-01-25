@@ -99,6 +99,6 @@ export default function QuoteRequestPage() {
 }
 
 export const metadata = {
-    title: 'Get a Free Quote | Evergreen Landscaping',
+    title: 'Get a Free Quote | Evergrow Landscaping',
     description: 'Request a free landscaping quote for El Dorado or Oklahoma City. No obligation, 24-hour response guaranteed.',
 }

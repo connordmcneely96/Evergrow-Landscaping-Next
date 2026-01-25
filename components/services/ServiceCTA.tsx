@@ -8,7 +8,7 @@ interface ServiceCTAProps {
 
 export function ServiceCTA({
   title = "Ready to Get Started?",
-  description = "Request your free quote today and discover why your neighbors trust Evergreen Landscaping."
+  description = "Request your free quote today and discover why your neighbors trust Evergrow Landscaping."
 }: ServiceCTAProps) {
   return (
     <section className="section bg-gradient-to-r from-forest-green to-forest-green-800">

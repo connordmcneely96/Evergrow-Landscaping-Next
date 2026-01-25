@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { CheckCircle2 } from 'lucide-react'
 
 export const metadata: Metadata = {
-    title: 'About Evergreen Landscaping | Family-Owned in El Dorado & OKC',
+    title: 'About Evergrow Landscaping | Family-Owned in El Dorado & OKC',
     description:
-        'Meet the team behind Evergreen Landscaping. Family-owned for 20+ years, serving El Dorado and Oklahoma City with reliable, quality landscaping services.',
+        'Meet the team behind Evergrow Landscaping. Founded in 2023, serving El Dorado and Oklahoma City with reliable, quality landscaping services.',
 }
 
 export default function AboutPage() {
@@ -19,10 +19,9 @@ export default function AboutPage() {
                             More Than Just Landscaping — It&apos;s Personal
                         </h1>
                         <p className="text-xl text-gray-700 leading-relaxed">
-                            We started Evergreen Landscaping because we were tired of seeing
+                            We started Evergrow Landscaping in 2023 because we were tired of seeing
                             homeowners get burned by unreliable contractors who didn&apos;t show
-                            up, didn&apos;t communicate, and didn&apos;t care. For over 20 years,
-                            we&apos;ve built our business on a simple promise: do what we say
+                            up, didn&apos;t communicate, and didn&apos;t care. We&apos;ve built our business on a simple promise: do what we say
                             we&apos;ll do, treat your property with respect, and be there when you
                             need us. That&apos;s not just good business—it&apos;s how we&apos;d want to
                             be treated, and it&apos;s what keeps our customers coming back season
@@ -37,11 +36,11 @@ export default function AboutPage() {
                 <div className="container mx-auto px-4">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
-                            Why We Started Evergreen
+                            Why We Started Evergrow
                         </h2>
                         <div className="prose prose-lg max-w-none text-gray-700">
                             <p>
-                                When Karson started Evergreen over 20 years ago, he kept hearing
+                                When Karson started Evergrow in 2023, he kept hearing
                                 the same frustrations from homeowners: landscapers who didn&apos;t
                                 show up when promised, crews who left properties messy, companies
                                 that added surprise charges, and worst of all—contractors who
@@ -60,7 +59,7 @@ export default function AboutPage() {
                                 landscaping company where reliability wasn&apos;t a bonus, it was the
                                 foundation. Where clear communication wasn&apos;t an afterthought, it
                                 was part of the service. Where quality work wasn&apos;t luck, it was
-                                guaranteed. That vision became Evergreen Landscaping, and it&apos;s
+                                guaranteed. That vision became Evergrow Landscaping, and it&apos;s
                                 guided every decision we&apos;ve made since.
                             </p>
                         </div>
@@ -77,7 +76,7 @@ export default function AboutPage() {
                         </h2>
                         <div className="prose prose-lg max-w-none text-gray-700">
                             <p>
-                                We built Evergreen on four principles that still guide us today:
+                                We built Evergrow on four principles that still guide us today:
                                 craftsmanship, putting customers first, genuine passion for the
                                 work, and unwavering professionalism.
                             </p>
@@ -96,8 +95,7 @@ export default function AboutPage() {
                                 recommend to your neighbors, the one you call year after year
                                 because you know exactly what you&apos;re going to get. Quality over
                                 volume. Relationships over transactions. That&apos;s the Evergreen
-                                difference, and it&apos;s why we&apos;ve been doing this for over two
-                                decades.
+                                difference, and it&apos;s why we&apos;re committed to this mission.
                             </p>
                         </div>
                     </div>
@@ -180,7 +178,7 @@ export default function AboutPage() {
                 <div className="container mx-auto px-4">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
-                            Why Homeowners Choose Evergreen
+                            Why Homeowners Choose Evergrow
                         </h2>
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="flex items-start gap-3">
@@ -201,7 +199,7 @@ export default function AboutPage() {
                                 <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-1">
-                                        20+ years serving Oklahoma
+                                        Serving Oklahoma Since 2023
                                     </h3>
                                     <p className="text-gray-600">
                                         We know this climate. We know what plants thrive here, when to
@@ -290,7 +288,7 @@ export default function AboutPage() {
                         </h2>
                         <p className="text-xl mb-8 text-green-50">
                             Ready to experience landscaping done right? We&apos;d love to hear
-                            about your project and show you what sets Evergreen apart. Whether
+                            about your project and show you what sets Evergrow apart. Whether
                             you need weekly lawn care, a seasonal cleanup, or a complete
                             landscape transformation, we&apos;re here to help.
                         </p>
@@ -309,9 +307,9 @@ export default function AboutPage() {
                             </a>
                         </div>
                         <p className="mt-8 text-green-100">
-                            Join the 40+ homeowners in El Dorado and Oklahoma City who trust
-                            Evergreen for their landscaping needs. We&apos;ve been keeping our
-                            promises for over 20 years—let us prove it to you.
+                            Join the homeowners in El Dorado and Oklahoma City who trust
+                            Evergrow for their landscaping needs. We&apos;ve been keeping our
+                            promises since day one—let us prove it to you.
                         </p>
                     </div>
                 </div>

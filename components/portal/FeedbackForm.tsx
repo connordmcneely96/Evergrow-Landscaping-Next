@@ -189,7 +189,7 @@ export function FeedbackForm() {
             {/* Thank You Note */}
             <div className="mt-6 p-4 bg-warm-cream rounded-lg text-center">
                 <p className="text-sm text-gray-700">
-                    💚 Thank you for choosing Evergreen Landscaping! Your feedback means the world to us.
+                    💚 Thank you for choosing Evergrow Landscaping! Your feedback means the world to us.
                 </p>
             </div>
         </div>

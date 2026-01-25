@@ -188,6 +188,6 @@ export default function LawnCarePage() {
 }
 
 export const metadata = {
-  title: 'Lawn Care & Maintenance Services | Evergreen Landscaping',
+  title: 'Lawn Care & Maintenance Services | Evergrow Landscaping',
   description: 'Professional lawn mowing, edging, and trimming in El Dorado and OKC. Weekly or bi-weekly service. Free quotes, satisfaction guaranteed.',
 }
