@@ -1,69 +1,123 @@
+'use client'
+
+import { useState } from 'react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import Link from 'next/link'
 
-interface ProjectCardProps {
-    id: string
-    serviceType: string
-    status: 'pending' | 'scheduled' | 'in_progress' | 'completed' | 'cancelled'
-    date: string
-    description?: string
-    totalAmount?: number
+interface Project {
+    id: number
+    service_type: string
+    total_amount: number
+    deposit_amount: number
+    deposit_paid: boolean
+    scheduled_date: string | null
+    status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled'
+    completed_at: string | null
+    created_at: string
 }
 
-export function ProjectCard({ id, serviceType, status, date, description, totalAmount }: ProjectCardProps) {
-    const getStatusVariant = (status: string) => {
-        switch (status) {
-            case 'completed': return 'success'
-            case 'in_progress': return 'warning'
-            case 'scheduled': return 'info'
-            case 'cancelled': return 'destructive'
-            default: return 'default'
-        }
+interface ProjectCardProps {
+    project: Project
+    onUpdate: () => void
+}
+
+export function ProjectCard({ project, onUpdate }: ProjectCardProps) {
+    const [isExpanded, setIsExpanded] = useState(false)
+
+    const statusColors = {
+        scheduled: 'info',
+        in_progress: 'warning',
+        completed: 'success',
+        cancelled: 'destructive',
+    } as const
+
+    const formatDate = (dateString: string | null) => {
+        if (!dateString) return 'Not scheduled'
+        return new Date(dateString).toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+        })
     }
 
-    const formatStatus = (status: string) => {
-        return status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    const formatServiceType = (type: string) => {
+        return type
+            .split('_')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ')
     }
 
     return (
-        <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:border-vibrant-gold transition-colors p-6">
-            <div className="flex justify-between items-start mb-4">
-                <div>
-                    <h3 className="font-heading font-bold text-lg text-forest-green mb-1">
-                        {serviceType}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                        {new Date(date).toLocaleDateString(undefined, {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        })}
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                <div className="mb-4 md:mb-0">
+                    <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-xl font-heading font-bold text-gray-900">
+                            {formatServiceType(project.service_type)}
+                        </h3>
+                        <Badge variant={statusColors[project.status]}>
+                            {project.status.replace('_', ' ')}
+                        </Badge>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                        Project #{project.id} • Created {formatDate(project.created_at)}
                     </p>
                 </div>
-                <Badge variant={getStatusVariant(status)}>
-                    {formatStatus(status)}
-                </Badge>
+
+                <div className="text-right">
+                    <p className="text-2xl font-heading font-bold text-ocean-blue">
+                        ${project.total_amount.toFixed(2)}
+                    </p>
+                    {project.deposit_amount > 0 && (
+                        <p className="text-sm text-gray-600">
+                            Deposit: ${project.deposit_amount.toFixed(2)}
+                            {project.deposit_paid ? (
+                                <span className="text-green-600 ml-1">✓ Paid</span>
+                            ) : (
+                                <span className="text-orange-600 ml-1">Pending</span>
+                            )}
+                        </p>
+                    )}
+                </div>
             </div>
 
-            {description && (
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                    {description}
-                </p>
-            )}
+            {/* Project Details */}
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <p className="text-sm font-semibold text-gray-700 mb-1">Scheduled Date</p>
+                    <p className="text-gray-900">{formatDate(project.scheduled_date)}</p>
+                </div>
 
-            <div className="flex items-center justify-between mt-4">
-                {totalAmount ? (
-                    <span className="font-bold text-gray-900">
-                        ${totalAmount.toFixed(2)}
-                    </span>
-                ) : (
-                    <span className="text-sm text-gray-400">Quote Pending</span>
+                {project.completed_at && (
+                    <div>
+                        <p className="text-sm font-semibold text-gray-700 mb-1">Completed Date</p>
+                        <p className="text-gray-900">{formatDate(project.completed_at)}</p>
+                    </div>
+                )}
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-200">
+                {!project.deposit_paid && project.deposit_amount > 0 && (
+                    <Link href="/dashboard/invoices">
+                        <Button variant="primary" size="sm">
+                            Pay Deposit
+                        </Button>
+                    </Link>
                 )}
 
-                <Link href={`/dashboard/projects/${id}`}>
+                {project.status === 'completed' && (
+                    <Link href="/dashboard/feedback">
+                        <Button variant="outline" size="sm">
+                            Leave Feedback
+                        </Button>
+                    </Link>
+                )}
+
+                <Link href="/contact">
                     <Button variant="outline" size="sm">
-                        View Details
+                        Contact About Project
                     </Button>
                 </Link>
             </div>

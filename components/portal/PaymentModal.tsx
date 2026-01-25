@@ -1,156 +1,183 @@
 'use client'
 
-import { useState, Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { X } from 'lucide-react'
+import { useState } from 'react'
+import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { useToast } from '@/components/ui/Toast'
+import { fetchWithAuth } from '@/lib/auth'
+
+interface Invoice {
+    id: number
+    project_id: number
+    amount: number
+    invoice_type: 'deposit' | 'balance'
+}
 
 interface PaymentModalProps {
-    isOpen: boolean
+    invoice: Invoice
     onClose: () => void
-    amount: number
-    invoiceNumber: string
     onSuccess: () => void
 }
 
-export function PaymentModal({ isOpen, onClose, amount, invoiceNumber, onSuccess }: PaymentModalProps) {
+export function PaymentModal({ invoice, onClose, onSuccess }: PaymentModalProps) {
     const [isProcessing, setIsProcessing] = useState(false)
-    const [formData, setFormData] = useState({
-        cardName: '',
-        cardNumber: '',
+    const [savePaymentMethod, setSavePaymentMethod] = useState(false)
+    const { addToast } = useToast()
+
+    // Mock card details (in production, use Stripe Elements)
+    const [cardDetails, setCardDetails] = useState({
+        number: '',
         expiry: '',
-        cvc: ''
+        cvc: '',
+        name: '',
     })
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsProcessing(true)
 
-        // Simulate API call
-        setTimeout(() => {
-            setIsProcessing(false)
+        try {
+            // Create payment intent
+            const endpoint = invoice.invoice_type === 'deposit'
+                ? '/api/payment/create-deposit'
+                : '/api/payment/create-balance'
+
+            const response = await fetchWithAuth(endpoint, {
+                method: 'POST',
+                body: JSON.stringify({
+                    projectId: invoice.project_id,
+                    savePaymentMethod,
+                }),
+            })
+
+            const data = await response.json() as any
+
+            if (!data.success) {
+                throw new Error(data.error || 'Payment failed')
+            }
+
+            // In production, use Stripe.js to confirm payment
+            // For now, simulate success
+            addToast({
+                type: 'success',
+                message: 'Payment successful! Thank you.',
+            })
+
             onSuccess()
-            onClose()
-        }, 2000)
+        } catch (error) {
+            addToast({
+                type: 'error',
+                message: error instanceof Error ? error.message : 'Payment failed',
+            })
+        } finally {
+            setIsProcessing(false)
+        }
     }
 
+    const transactionFee = (invoice.amount * 0.029 + 0.30).toFixed(2)
+    const totalWithFee = (invoice.amount + parseFloat(transactionFee)).toFixed(2)
+
     return (
-        <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={onClose}>
-                <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                >
-                    <div className="fixed inset-0 bg-black/25" />
-                </Transition.Child>
-
-                <div className="fixed inset-0 overflow-y-auto">
-                    <div className="flex min-h-full items-center justify-center p-4 text-center">
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-out duration-300"
-                            enterFrom="opacity-0 scale-95"
-                            enterTo="opacity-100 scale-100"
-                            leave="ease-in duration-200"
-                            leaveFrom="opacity-100 scale-100"
-                            leaveTo="opacity-0 scale-95"
-                        >
-                            <Dialog.Panel className="w-full max-w-md transforms overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                                <div className="flex justify-between items-center mb-4">
-                                    <Dialog.Title as="h3" className="text-lg font-bold text-gray-900">
-                                        Pay Invoice #{invoiceNumber}
-                                    </Dialog.Title>
-                                    <button
-                                        onClick={onClose}
-                                        className="text-gray-400 hover:text-gray-500 transition-colors"
-                                    >
-                                        <X className="w-5 h-5" />
-                                    </button>
-                                </div>
-
-                                <div className="mb-6">
-                                    <p className="text-sm text-gray-500">Total Amount</p>
-                                    <p className="text-3xl font-bold text-forest-green">${amount.toFixed(2)}</p>
-                                </div>
-
-                                <form onSubmit={handleSubmit} className="space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Cardholder Name
-                                        </label>
-                                        <Input
-                                            type="text"
-                                            required
-                                            placeholder="John Doe"
-                                            value={formData.cardName}
-                                            onChange={(e) => setFormData({ ...formData, cardName: e.target.value })}
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Card Number
-                                        </label>
-                                        <Input
-                                            type="text"
-                                            required
-                                            placeholder="0000 0000 0000 0000"
-                                            value={formData.cardNumber}
-                                            onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value })}
-                                        />
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                Expiry Date
-                                            </label>
-                                            <Input
-                                                type="text"
-                                                required
-                                                placeholder="MM/YY"
-                                                value={formData.expiry}
-                                                onChange={(e) => setFormData({ ...formData, expiry: e.target.value })}
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                CVC
-                                            </label>
-                                            <Input
-                                                type="text"
-                                                required
-                                                placeholder="123"
-                                                value={formData.cvc}
-                                                onChange={(e) => setFormData({ ...formData, cvc: e.target.value })}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-6">
-                                        <Button
-                                            type="submit"
-                                            className="w-full"
-                                            disabled={isProcessing}
-                                        >
-                                            {isProcessing ? 'Processing...' : `Pay $${amount.toFixed(2)}`}
-                                        </Button>
-                                    </div>
-                                    <p className="text-xs text-center text-gray-500 mt-4">
-                                        This is a secure 256-bit SSL encrypted payment.
-                                    </p>
-                                </form>
-                            </Dialog.Panel>
-                        </Transition.Child>
+        <Modal isOpen onClose={onClose} title="Complete Payment">
+            <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Invoice Summary */}
+                <div className="bg-warm-cream p-4 rounded-lg">
+                    <div className="flex justify-between mb-2">
+                        <span className="text-gray-700">Invoice Amount:</span>
+                        <span className="font-semibold">${invoice.amount.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between mb-2">
+                        <span className="text-gray-700">Transaction Fee:</span>
+                        <span className="text-sm text-gray-600">${transactionFee}</span>
+                    </div>
+                    <div className="flex justify-between pt-2 border-t border-gray-300">
+                        <span className="font-semibold text-gray-900">Total:</span>
+                        <span className="font-bold text-ocean-blue text-lg">${totalWithFee}</span>
                     </div>
                 </div>
-            </Dialog>
-        </Transition>
+
+                {/* Card Details (Mock - use Stripe Elements in production) */}
+                <div className="space-y-4">
+                    <Input
+                        label="Card Number"
+                        value={cardDetails.number}
+                        onChange={(e) => setCardDetails(prev => ({ ...prev, number: e.target.value }))}
+                        placeholder="1234 5678 9012 3456"
+                        required
+                    />
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Input
+                            label="Expiry Date"
+                            value={cardDetails.expiry}
+                            onChange={(e) => setCardDetails(prev => ({ ...prev, expiry: e.target.value }))}
+                            placeholder="MM/YY"
+                            required
+                        />
+                        <Input
+                            label="CVC"
+                            value={cardDetails.cvc}
+                            onChange={(e) => setCardDetails(prev => ({ ...prev, cvc: e.target.value }))}
+                            placeholder="123"
+                            required
+                        />
+                    </div>
+
+                    <Input
+                        label="Cardholder Name"
+                        value={cardDetails.name}
+                        onChange={(e) => setCardDetails(prev => ({ ...prev, name: e.target.value }))}
+                        placeholder="John Smith"
+                        required
+                    />
+                </div>
+
+                {/* Save Payment Method */}
+                <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={savePaymentMethod}
+                        onChange={(e) => setSavePaymentMethod(e.target.checked)}
+                        className="mt-1 w-4 h-4 text-hopeful-teal rounded"
+                    />
+                    <div>
+                        <p className="font-semibold text-gray-900">Save payment method</p>
+                        <p className="text-sm text-gray-600">
+                            Use this card for future invoices
+                        </p>
+                    </div>
+                </label>
+
+                {/* Security Note */}
+                <div className="flex items-start gap-2 text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+                    <span>🔒</span>
+                    <p>
+                        Your payment information is encrypted and secure. We use Stripe for payment processing.
+                    </p>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-4">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={onClose}
+                        className="flex-1"
+                        disabled={isProcessing}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        className="flex-1"
+                        disabled={isProcessing}
+                    >
+                        {isProcessing ? 'Processing...' : `Pay $${totalWithFee}`}
+                    </Button>
+                </div>
+            </form>
+        </Modal>
     )
 }
