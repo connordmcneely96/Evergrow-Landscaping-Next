@@ -126,7 +126,7 @@ export default function CommercialPage() {
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
                 </div>
 
-                <div className="container relative z-10">
+                <div className="container relative z-10 pt-32">
                     <div className="max-w-4xl">
                         <span className="inline-block py-1 px-3 rounded-full bg-hopeful-teal/20 text-hopeful-teal border border-hopeful-teal/30 mb-6 font-medium tracking-wide">
                             Mullti-State Commercial Landscaping

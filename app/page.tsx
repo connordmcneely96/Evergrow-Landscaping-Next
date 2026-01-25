@@ -9,51 +9,51 @@ export default function HomePage() {
     <main className="flex-col">
       {/* Hero Section */}
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen min-h-[700px] flex flex-col justify-start pt-0 md:pt-0 overflow-hidden">
         {/* Background Image Placeholder */}
-        <div className="absolute inset-0 bg-deep-charcoal-900">
-          <div className="absolute inset-0 bg-gradient-to-r from-deep-charcoal-900/90 to-deep-charcoal-800/70 z-10" />
+        <div className="absolute inset-0 bg-forest-green-900">
+          <div className="absolute inset-0 bg-gradient-to-r from-forest-green-900/95 to-forest-green-800/80 z-10" />
           <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
         </div>
 
-        <div className="container relative z-20 px-4">
+        <div className="container relative z-20 px-4 h-full flex flex-col justify-center pt-24 md:pt-32">
           <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="max-w-4xl mx-auto md:mx-0 md:max-w-3xl text-center md:text-left"
           >
-            <div className="inline-block bg-hopeful-teal/20 backdrop-blur-sm border border-hopeful-teal/30 rounded-full px-4 py-1 mb-6">
-              <span className="text-hopeful-teal font-bold text-sm tracking-wider uppercase">Arkansas • Oklahoma • Texas</span>
+            <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1 mb-6">
+              <span className="text-vibrant-gold font-bold text-sm tracking-wider uppercase">Arkansas • Oklahoma • Texas</span>
             </div>
             <h1 className="text-white font-heading font-extrabold text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight drop-shadow-lg">
               Professional Multi-Location <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-hopeful-teal to-teal-200">Landscaping Services</span>
+              <span className="text-vibrant-gold">Landscaping Services</span>
             </h1>
-            <p className="text-gray-200 text-lg md:text-2xl mb-10 max-w-2xl mx-auto md:mx-0 leading-relaxed">
+            <p className="text-gray-100 text-lg md:text-2xl mb-10 max-w-2xl mx-auto md:mx-0 leading-relaxed">
               Managing 40+ properties with consistent quality across all locations. Licensed and insured in AR, OK, and TX. Family-owned, owner-managed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
               <Link
                 href="/commercial"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-hopeful-teal text-white font-bold text-lg hover:bg-teal-500 hover:scale-105 transition-all shadow-xl"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-vibrant-gold text-deep-charcoal font-bold text-lg hover:bg-yellow-400 hover:scale-105 transition-all shadow-xl"
               >
                 Commercial Inquiries
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
               <Link
                 href="/quote-request"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-ocean-blue text-white font-bold text-lg hover:bg-blue-700 transition-all shadow-lg"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-white/10 border-2 border-white text-white font-bold text-lg hover:bg-white hover:text-forest-green transition-all shadow-lg"
               >
                 Residential Quote
               </Link>
             </div>
 
             <div className="mt-12 flex flex-wrap justify-center md:justify-start gap-6 md:gap-8 text-white/90 text-sm md:text-base font-medium">
-              <div className="flex items-center"><Shield className="w-5 h-5 text-hopeful-teal mr-2" /> Licensed & Insured in AR, OK, TX</div>
-              <div className="flex items-center"><MapPin className="w-5 h-5 text-hopeful-teal mr-2" /> 40+ Properties Managed</div>
-              <div className="flex items-center"><CheckCircle className="w-5 h-5 text-hopeful-teal mr-2" /> Family-Owned & Operated</div>
-              <div className="flex items-center"><Clock className="w-5 h-5 text-hopeful-teal mr-2" /> 20+ Years Experience</div>
+              <div className="flex items-center"><Shield className="w-5 h-5 text-vibrant-gold mr-2" /> Licensed & Insured in AR, OK, TX</div>
+              <div className="flex items-center"><MapPin className="w-5 h-5 text-vibrant-gold mr-2" /> 40+ Properties Managed</div>
+              <div className="flex items-center"><CheckCircle className="w-5 h-5 text-vibrant-gold mr-2" /> Family-Owned & Operated</div>
+              <div className="flex items-center"><Clock className="w-5 h-5 text-vibrant-gold mr-2" /> 20+ Years Experience</div>
             </div>
           </MotionDiv>
         </div>

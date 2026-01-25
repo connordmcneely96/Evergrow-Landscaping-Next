@@ -42,8 +42,8 @@ export default function Header() {
         setActiveSubmenu(null);
     }, [pathname]);
 
-    const isHomePage = pathname === '/';
-    const headerBg = isScrolled || !isHomePage ? 'bg-forest-green shadow-lg py-2' : 'bg-transparent py-4';
+    const isTransparent = !isScrolled && (pathname === '/' || pathname === '/commercial');
+    const headerBg = !isTransparent ? 'bg-forest-green shadow-lg py-2' : 'bg-transparent py-4';
     const textColor = 'text-white'; // Always white
 
     return (
@@ -58,7 +58,7 @@ export default function Header() {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden lg:flex items-center space-x-8">
+                    <nav className="hidden lg:flex items-center space-x-6">
                         {navigation.map((item) => (
                             <Link
                                 key={item.name}
