@@ -1,166 +1,183 @@
-import { ServiceLayout, ServicePageContent } from '@/components/services/ServiceLayout'
+import { ServiceHero } from '@/components/services/ServiceHero'
+import { ServiceFeatures } from '@/components/services/ServiceFeatures'
+import { ServiceProcess } from '@/components/services/ServiceProcess'
+import { ServiceFAQ } from '@/components/services/ServiceFAQ'
+import { ServiceCTA } from '@/components/services/ServiceCTA'
 
-export const metadata = {
-  title: 'Flower Bed Installation El Dorado & OKC | Custom Landscaping',
-  description:
-    'Custom flower bed design and installation in El Dorado & Oklahoma City. Professional landscaping with plants that thrive. Free consultations.',
-}
+const features = [
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+      </svg>
+    ),
+    title: 'Custom Design',
+    description: 'We work with you to create a flower bed design that complements your home and fits your budget.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+    ),
+    title: 'Climate-Appropriate Plants',
+    description: 'We select native and hardy plants that thrive in Oklahoma\'s climate and require less maintenance.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+    title: 'Quality Soil Preparation',
+    description: 'Proper bed preparation with quality soil, compost, and mulch for healthy, long-lasting plants.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+    title: 'Fast Installation',
+    description: 'Most flower bed installations completed in 1-2 days with minimal disruption to your routine.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+    title: 'Maintenance Tips',
+    description: 'We provide detailed care instructions and ongoing support to keep your beds looking beautiful.',
+  },
+]
 
-const service: ServicePageContent = {
-  slug: 'flower-beds',
-  title: 'Custom Flower Bed Design & Installation',
-  subtitle:
-    'Transform your landscape with vibrant, expertly designed flower beds',
-  metaDescription: metadata.description,
-  breadcrumbLabel: 'Flower Beds',
-  heroImage: {
-    src: '/images/services/hero-pattern.svg',
-    alt: 'Flower bed installation in El Dorado & OKC',
+const process = [
+  {
+    number: '1',
+    title: 'Free Consultation & Design',
+    description: 'We visit your property to discuss your vision, assess sunlight and soil conditions, and create a custom design. You\'ll receive detailed drawings and plant selections.',
   },
-  problem:
-    "You drive past homes with gorgeous flower beds and wonder how they do it. You've tried planting flowers yourself, but they either died within weeks or never looked quite right. The choices at the garden center are overwhelming—which plants actually survive Oklahoma summers? Which ones need full sun versus shade? How do you even design a bed that looks intentional instead of random? Your yard has so much potential, but right now it's just...bland. No color, no personality, nothing that makes people slow down and admire it. You want beautiful flower beds, but you don't want to waste money on another DIY disaster.",
-  solution:
-    "That's where we come in. We design custom flower beds that fit your home's style and your property's unique conditions. We select plants that thrive in Oklahoma's climate—not just survive, but actually flourish. Our team handles everything from soil preparation to professional installation, and we place every plant exactly where it'll grow best. You'll get a detailed care guide so you know how to keep things looking great, and we can even handle seasonal refreshes if you want year-round color. The result? A stunning landscape that looks professionally designed because it is.",
-  included: [
-    'Free design consultation to understand your vision and preferences',
-    'Complete site assessment including soil analysis and sun exposure mapping',
-    'Custom design plan with detailed plant selection and placement',
-    'Professional soil preparation and amendment for optimal plant health',
-    'Expert installation by experienced landscapers',
-    'Premium mulching to retain moisture and prevent weeds',
-    'Strategic plant placement for color, height, and seasonal interest',
-    'Drainage considerations to prevent water pooling and root rot',
-    'Initial watering schedule to establish healthy root systems',
-    'Detailed care and maintenance guide for long-term success',
-    'Seasonal refresh options to keep your beds looking fresh year-round',
-  ],
-  processHeading: 'From Vision to Blooming Results',
-  processLead:
-    'We guide you through a simple, collaborative process that makes design decisions easy.',
-  processSteps: [
-    {
-      title: 'Free Design Consultation',
-      description:
-        "We meet at your property to discuss your style preferences, budget, and vision. We'll look at sun exposure, existing landscape features, and your home's architecture to create a cohesive design.",
-    },
-    {
-      title: 'Custom Design Plan',
-      description:
-        "Within a few days, we'll present a detailed plan showing exactly what we'll plant and where. You'll see plant photos, mature sizes, and seasonal color expectations. We'll adjust anything until you love it.",
-    },
-    {
-      title: 'Plant Selection & Approval',
-      description:
-        "We source high-quality plants from trusted nurseries and confirm everything with you before installation. You'll know exactly what's going in your beds.",
-    },
-    {
-      title: 'Professional Installation',
-      description:
-        'Our crew prepares the soil, installs your plants with proper spacing and depth, adds premium mulch, and cleans up completely. Most installations are finished in one day.',
-    },
-    {
-      title: 'Care Instructions & Follow-up',
-      description:
-        "We provide a detailed care guide and check in after a few weeks to make sure everything's thriving. Have questions? We're always available.",
-    },
-  ],
-  benefitsHeading: 'Make Your Home Stand Out',
-  benefitsLead:
-    "Your home's curb appeal transforms overnight. Neighbors will stop to compliment your landscape.",
-  benefits: [
-    {
-      title: 'Instant curb appeal transformation',
-      description:
-        "Your home's curb appeal transforms overnight. Neighbors will stop to compliment your landscape.",
-    },
-    {
-      title: 'Vibrant color that changes with seasons',
-      description:
-        "You'll have vibrant color that changes with the seasons, and because we choose low-maintenance plants suited to Oklahoma, you won't spend hours every week trying to keep things alive.",
-    },
-    {
-      title: 'Increased property value',
-      description:
-        "Your property value increases, and you'll actually enjoy spending time in your yard.",
-    },
-    {
-      title: 'Low-maintenance beauty',
-      description:
-        'We select plants that thrive with minimal care, so you can enjoy the beauty without constant upkeep.',
-    },
-  ],
-  faqs: [
-    {
-      question: 'How much does flower bed installation cost?',
-      answer:
-        "It varies based on bed size, plant selection, and site preparation needs. Most residential projects range from $800-$3,500. We'll give you a detailed quote after the consultation so you know exactly what to expect.",
-    },
-    {
-      question: 'Can you work with my existing landscape?',
-      answer:
-        "Absolutely! We can enhance existing beds, add new ones, or completely redesign your landscape. We'll work around mature trees, hardscaping, and anything else you want to keep.",
-    },
-    {
-      question: 'What plants grow best in Oklahoma?',
-      answer:
-        "We love native and adapted plants that handle our hot summers and unpredictable weather. Think Black-Eyed Susans, Purple Coneflowers, Knockout Roses, Daylilies, and ornamental grasses. We'll recommend specific varieties based on your property's conditions.",
-    },
-    {
-      question: 'Do I need to pay a deposit?',
-      answer:
-        'Yes, we require a 50% deposit to secure your installation date and order your plants. The remaining balance is due upon completion.',
-    },
-    {
-      question: 'How long does installation take?',
-      answer:
-        "Most residential flower bed installations are completed in one day. Larger or more complex projects might take two days. We'll give you a timeline upfront.",
-    },
-    {
-      question: 'Do you offer maintenance after installation?',
-      answer:
-        'Yes! We offer seasonal refresh services where we replace annuals, add new mulch, and keep your beds looking fresh. Many customers have us come out twice a year—spring and fall.',
-    },
-    {
-      question: "What's your design process like?",
-      answer:
-        "We start by listening to what you want, then we create a plan that balances aesthetics, budget, and practicality. You'll see everything before we plant a single thing. We don't move forward until you're excited about the design.",
-    },
-  ],
-  ctaHeading: "Let's Create Your Dream Flower Beds",
-  ctaDescription:
-    'Schedule your free design consultation today and see how beautiful your landscape can be.',
-  relatedServices: [
-    {
-      title: 'Lawn Care & Maintenance',
-      description:
-        'Pair new beds with weekly mowing and edging for a complete look.',
-      href: '/services/lawn-care',
-    },
-    {
-      title: 'Seasonal Cleanup',
-      description:
-        'Keep beds fresh with leaf removal and seasonal refreshes.',
-      href: '/services/seasonal-cleanup',
-    },
-    {
-      title: 'Pressure Washing',
-      description:
-        'Brighten walkways and patios to match your new landscape.',
-      href: '/services/pressure-washing',
-    },
-  ],
-  testimonial: {
-    quote:
-      'Our new flower beds look amazing and Evergreen helped us pick plants that actually thrive.',
-    name: 'Jordan L.',
-    location: 'Oklahoma City, OK',
+  {
+    number: '2',
+    title: 'Quote & Approval',
+    description: 'Within 24 hours, you\'ll receive a detailed quote including materials, plants, and labor. Once approved, we collect a 50% deposit to order materials.',
   },
-  schema: {
-    serviceType: 'Flower bed design and installation',
-    description: metadata.description,
+  {
+    number: '3',
+    title: 'Bed Preparation',
+    description: 'We remove existing grass or weeds, define bed edges, and amend soil with compost and nutrients for optimal plant health.',
   },
-}
+  {
+    number: '4',
+    title: 'Planting & Finishing',
+    description: 'Plants are installed according to the design, then we add mulch and edging. Final walkthrough ensures you\'re thrilled with the results.',
+  },
+]
+
+const faqs = [
+  {
+    question: 'How much does a flower bed installation cost?',
+    answer: 'Pricing depends on size, complexity, and plant selection. Most residential flower beds range from $500-$2,500. We provide exact quotes after the initial consultation.',
+  },
+  {
+    question: 'What types of plants do you recommend?',
+    answer: 'We specialize in native Oklahoma plants and drought-tolerant varieties that thrive in our climate. Options include perennials, annuals, shrubs, and ornamental grasses tailored to your preferences.',
+  },
+  {
+    question: 'When is the best time to install a flower bed?',
+    answer: 'Spring (March-May) and fall (September-October) are ideal for planting in Oklahoma. However, we can install beds year-round with proper care considerations.',
+  },
+  {
+    question: 'Do you offer maintenance services?',
+    answer: 'Yes! We offer seasonal cleanup packages to refresh mulch, prune plants, and remove weeds. Many customers combine this with our lawn care service.',
+  },
+  {
+    question: 'How long will the plants last?',
+    answer: 'Perennials come back year after year, while annuals last one season. We\'ll design a mix based on your preferences and budget. Native plants typically require less replacement.',
+  },
+  {
+    question: 'What\'s included in the 50% deposit?',
+    answer: 'The deposit covers material ordering (plants, soil, mulch, edging). The remaining 50% is due upon completion.',
+  },
+]
 
 export default function FlowerBedsPage() {
-  return <ServiceLayout service={service} />
+  return (
+    <main>
+      <ServiceHero
+        title="Flower Bed Installation & Design"
+        description="Transform your landscape with beautiful, custom-designed flower beds that add color and curb appeal year-round."
+        imageSrc="/images/services/flower-beds-hero.jpg"
+        imageAlt="Beautiful flower bed installation in Oklahoma"
+      />
+
+      {/* Problem/Solution Section */}
+      <section className="section">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-12">
+              <h2 className="text-h2 font-heading text-forest-green mb-4">
+                Want a Yard That Makes Your Neighbors Jealous?
+              </h2>
+              <p className="text-lg text-gray-600 mb-4">
+                A well-designed flower bed can completely transform your home's curb appeal. But getting it right is harder than it looks.
+              </p>
+              <p className="text-lg text-gray-600 mb-4">
+                Maybe you've tried DIY flower beds before, only to watch plants die within weeks because they weren't suited for our Oklahoma climate. Or you've hired someone who created beds that looked great for a month, then turned into a weedy mess.
+              </p>
+              <p className="text-lg text-gray-600">
+                <strong>You need a flower bed that looks great AND lasts.</strong>
+              </p>
+            </div>
+
+            <div className="bg-forest-green-50 border-l-4 border-forest-green p-6 rounded-lg">
+              <h3 className="text-xl font-heading font-bold text-forest-green mb-3">
+                Our Approach to Flower Beds:
+              </h3>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Climate-smart plant selection.</strong> We only use plants that thrive in Oklahoma's heat, humidity, and occasional cold snaps.</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Proper soil preparation.</strong> We don't cut corners. Quality compost and soil amendments set your plants up for success.</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Year-round color.</strong> We design beds with a mix of perennials and seasonals so something's always blooming.</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Low-maintenance options.</strong> We can design beds that look amazing without requiring constant attention.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ServiceFeatures features={features} />
+      <ServiceProcess steps={process} />
+      <ServiceFAQ faqs={faqs} />
+      <ServiceCTA
+        title="Ready to Add Color to Your Landscape?"
+        description="Get a free consultation and custom flower bed design. No obligation, just ideas and a detailed quote."
+      />
+    </main>
+  )
+}
+
+export const metadata = {
+  title: 'Flower Bed Installation & Design | Evergreen Landscaping',
+  description: 'Custom flower bed design and installation in El Dorado and OKC. Native plants, quality soil prep, beautiful results that last.',
 }

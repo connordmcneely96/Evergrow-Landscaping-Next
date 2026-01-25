@@ -1,45 +1,43 @@
-interface ProcessStep {
-  title: string
-  description: string
-}
-
 interface ServiceProcessProps {
-  heading?: string
-  lead?: string
-  steps: ProcessStep[]
+  steps: {
+    number: string
+    title: string
+    description: string
+  }[]
 }
 
-export function ServiceProcess({
-  heading = 'How Our Process Works',
-  lead = 'Clear steps, steady communication, and a finished result you can feel proud of.',
-  steps,
-}: ServiceProcessProps) {
+export function ServiceProcess({ steps }: ServiceProcessProps) {
   return (
-    <section className="section">
+    <section className="section section-alt">
       <div className="container">
-        <div className="max-w-3xl mb-12">
-          <h2 className="text-h2 font-heading text-forest-green mb-4">{heading}</h2>
-          <p className="text-lg text-gray-600">{lead}</p>
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h2 className="text-h2 font-heading text-forest-green mb-4">
+            Our Process
+          </h2>
+          <p className="text-lg text-gray-600">
+            Here's exactly what you can expect when you work with us:
+          </p>
         </div>
 
-        <ol className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="max-w-4xl mx-auto space-y-8">
           {steps.map((step, index) => (
-            <li key={step.title} className="card">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-semibold text-vibrant-gold">
-                  Step {index + 1}
-                </span>
-                <span className="text-xs uppercase tracking-wide text-gray-400">
-                  Evergreen Process
-                </span>
+            <div key={index} className="flex gap-6">
+              <div className="flex-shrink-0">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-forest-green text-white font-heading font-bold text-2xl">
+                  {step.number}
+                </div>
               </div>
-              <h3 className="text-lg font-semibold text-forest-green mb-2">
-                {step.title}
-              </h3>
-              <p className="text-gray-600 mb-0">{step.description}</p>
-            </li>
+              <div className="flex-1">
+                <h3 className="text-xl font-heading font-bold text-forest-green mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-gray-600">
+                  {step.description}
+                </p>
+              </div>
+            </div>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
   )

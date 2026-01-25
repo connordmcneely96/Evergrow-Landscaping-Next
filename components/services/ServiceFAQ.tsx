@@ -1,34 +1,56 @@
-interface FAQItem {
+'use client'
+
+import { useState } from 'react'
+
+interface FAQ {
   question: string
   answer: string
 }
 
 interface ServiceFAQProps {
-  heading?: string
-  lead?: string
-  items: FAQItem[]
+  faqs: FAQ[]
 }
 
-export function ServiceFAQ({
-  heading = 'Frequently Asked Questions',
-  lead = 'Clear answers to the questions we hear most often.',
-  items,
-}: ServiceFAQProps) {
+export function ServiceFAQ({ faqs }: ServiceFAQProps) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+
   return (
     <section className="section">
       <div className="container">
-        <div className="max-w-3xl mb-12">
-          <h2 className="text-h2 font-heading text-forest-green mb-4">{heading}</h2>
-          <p className="text-lg text-gray-600">{lead}</p>
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h2 className="text-h2 font-heading text-forest-green mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-lg text-gray-600">
+            Got questions? We've got answers.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {items.map((item) => (
-            <div key={item.question} className="card h-full">
-              <h3 className="text-lg font-semibold text-forest-green mb-2">
-                {item.question}
-              </h3>
-              <p className="text-gray-600 mb-0">{item.answer}</p>
+        <div className="max-w-3xl mx-auto space-y-4">
+          {faqs.map((faq, index) => (
+            <div key={index} className="border border-gray-200 rounded-lg">
+              <button
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+              >
+                <span className="font-heading font-bold text-forest-green pr-4">
+                  {faq.question}
+                </span>
+                <svg
+                  className={`w-5 h-5 text-forest-green flex-shrink-0 transition-transform ${openIndex === index ? 'rotate-180' : ''
+                    }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {openIndex === index && (
+                <div className="px-6 pb-4">
+                  <p className="text-gray-600">{faq.answer}</p>
+                </div>
+              )}
             </div>
           ))}
         </div>

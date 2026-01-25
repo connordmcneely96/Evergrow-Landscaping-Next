@@ -1,155 +1,183 @@
-import { ServiceLayout, ServicePageContent } from '@/components/services/ServiceLayout'
+import { ServiceHero } from '@/components/services/ServiceHero'
+import { ServiceFeatures } from '@/components/services/ServiceFeatures'
+import { ServiceProcess } from '@/components/services/ServiceProcess'
+import { ServiceFAQ } from '@/components/services/ServiceFAQ'
+import { ServiceCTA } from '@/components/services/ServiceCTA'
 
-export const metadata = {
-  title: 'Seasonal Cleanup El Dorado & OKC | Leaf Removal Service',
-  description:
-    'Professional spring and fall cleanup in El Dorado & Oklahoma City. Fast debris removal, all hauled away. Book your seasonal cleanup today.',
-}
+const features = [
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+    ),
+    title: 'Complete Leaf Removal',
+    description: 'We remove all leaves from lawns, beds, and hard surfaces. Nothing left behind.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+      </svg>
+    ),
+    title: 'Bed Maintenance',
+    description: 'Trim back perennials, remove dead annuals, refresh mulch, and prepare beds for the season ahead.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+      </svg>
+    ),
+    title: 'Gutter Clearing',
+    description: 'Optional gutter cleaning to prevent water damage and ice dams during winter months.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+    ),
+    title: 'Hauling & Disposal',
+    description: 'All debris is hauled away and disposed of properly. Your yard is left clean and ready.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    ),
+    title: 'Flexible Scheduling',
+    description: 'Book spring cleanup (March-April) and fall cleanup (October-November) at discounted rates.',
+  },
+]
 
-const service: ServicePageContent = {
-  slug: 'seasonal-cleanup',
-  title: 'Spring & Fall Cleanup Services',
-  subtitle:
-    'Remove debris, prepare your yard, and start each season fresh',
-  metaDescription: metadata.description,
-  breadcrumbLabel: 'Seasonal Cleanup',
-  heroImage: {
-    src: '/images/services/hero-pattern.svg',
-    alt: 'Seasonal cleanup in El Dorado & OKC',
+const process = [
+  {
+    number: '1',
+    title: 'Schedule Your Cleanup',
+    description: 'Book online or call us directly. We offer priority scheduling for recurring customers.',
   },
-  problem:
-    "The leaves are piling up faster than you can rake them. Or it's spring, and your yard is covered in dead branches, matted leaves, and winter debris that makes the whole property look abandoned. You know you need to tackle it, but the thought of spending an entire weekend raking, bagging, and hauling is exhausting. You don't have the right equipment. Your back hurts just thinking about it. And meanwhile, your neighbors' yards already look pristine and ready for the season. Every time you pull into your driveway, you feel a little embarrassed. You want a clean, fresh-looking yard, but you just don't have the time or energy to make it happen.",
-  solution:
-    "That's exactly what our seasonal cleanup service is for. We bring a full crew with professional equipment and knock out your entire property in just a few hours. We remove every leaf, every stick, every piece of debris—and we haul it all away. Your beds get cleaned out and edged. Your lawn gets dethatched if needed. We even refresh your mulch so everything looks sharp and ready for the new season. You don't lift a finger, and by the time we're done, your yard looks like it's ready for a magazine photoshoot. It's the fastest, easiest way to start spring or fall off right.",
-  included: [
-    'Complete leaf removal and disposal from all areas',
-    'Dead plant material removal to make room for new growth',
-    'Bed cleanup and edging for crisp, defined borders',
-    'Lawn dethatching to remove dead grass and promote healthy growth',
-    'Early weed removal before they take over',
-    'Mulch refreshing to give beds a clean, finished look',
-    'Storm debris removal from summer weather',
-    'Final mowing and edging before winter dormancy',
-    'Gutter cleaning (optional add-on)',
-    'Full property walkthrough to catch any issues',
-  ],
-  processHeading: 'A Simple Cleanup You Can Trust',
-  processLead:
-    'We handle the heavy lifting while keeping you informed at every step.',
-  processSteps: [
-    {
-      title: 'Schedule Your Cleanup',
-      description:
-        "Call or text us to schedule your spring or fall cleanup. We'll confirm a date and give you an estimated arrival time.",
-    },
-    {
-      title: 'Thorough Property Service',
-      description:
-        'Our crew arrives with professional equipment and works through your entire property systematically. We clean beds, remove debris, edge borders, and refresh mulch.',
-    },
-    {
-      title: 'Debris Hauled Away',
-      description:
-        "We load everything into our trucks and haul it away. You don't have to worry about disposal or filling your trash cans for weeks.",
-    },
-    {
-      title: 'Final Walkthrough',
-      description:
-        "Before we leave, we do a final check to make sure everything looks perfect. If you're home, we'll walk the property with you to confirm you're happy.",
-    },
-  ],
-  benefitsHeading: 'Start the Season with a Fresh Yard',
-  benefitsLead:
-    "Your yard looks clean, fresh, and ready for the new season. You didn't spend your entire weekend doing backbreaking work.",
-  benefits: [
-    {
-      title: 'Clean, fresh yard ready for the season',
-      description:
-        'Your yard looks clean, fresh, and ready for the new season. Your property has instant curb appeal again.',
-    },
-    {
-      title: 'No backbreaking weekend work',
-      description:
-        "You didn't spend your entire weekend doing backbreaking work. Let us handle the bags, hauling, and heavy lifting.",
-    },
-    {
-      title: 'Properly prepared landscape',
-      description:
-        "You have peace of mind knowing everything's been properly prepared—whether that's removing dead material in spring or protecting your landscape for winter.",
-    },
-    {
-      title: 'Professional results',
-      description:
-        'Your lawn and beds look tidy, healthy, and ready for new growth with professional attention to detail.',
-    },
-  ],
-  faqs: [
-    {
-      question: 'When is the best time for spring/fall cleanup?',
-      answer:
-        "For spring cleanup, we recommend scheduling as soon as the ground thaws and you can see what needs attention—usually late March or early April in Oklahoma. For fall cleanup, wait until most leaves have fallen, typically late October through November. We'll help you time it right.",
-    },
-    {
-      question: 'Do I need to be home during service?',
-      answer:
-        "Nope! As long as we can access your yard, we're good to go. We'll text you when we arrive and when we're finished. Many customers aren't home, and it works out perfectly.",
-    },
-    {
-      question: 'What do you do with the debris?',
-      answer:
-        "We haul everything away in our trucks and dispose of it properly. Organic material goes to composting facilities when possible. You don't have to worry about a thing.",
-    },
-    {
-      question: 'Can you clean up storm damage?',
-      answer:
-        "Absolutely. If you've had storm damage with downed branches or scattered debris, give us a call. We can usually get out within a day or two to clean it up and haul it away.",
-    },
-    {
-      question: 'Do you offer one-time cleanup or only to regular customers?',
-      answer:
-        "We offer one-time seasonal cleanups to anyone! You don't have to be a regular lawn care customer. Many people just call us twice a year for spring and fall cleanup.",
-    },
-    {
-      question: 'How long does a typical cleanup take?',
-      answer:
-        "Most residential properties take 2-4 hours depending on size and debris amount. Larger properties or heavy leaf coverage might take longer. We'll give you an estimate when you call.",
-    },
-  ],
-  ctaHeading: 'Book Your Seasonal Cleanup Today',
-  ctaDescription:
-    'Get your yard ready for the season without spending your weekend doing it. Professional cleanup, fast service, all debris hauled away.',
-  relatedServices: [
-    {
-      title: 'Lawn Care & Maintenance',
-      description:
-        'Keep your yard looking sharp after your cleanup with weekly care.',
-      href: '/services/lawn-care',
-    },
-    {
-      title: 'Flower Bed Installation',
-      description:
-        'Refresh beds with new color after a thorough cleanup.',
-      href: '/services/flower-beds',
-    },
-    {
-      title: 'Pressure Washing',
-      description:
-        'Pair cleanup with a fresh wash for driveways and patios.',
-      href: '/services/pressure-washing',
-    },
-  ],
-  testimonial: {
-    quote:
-      'They cleared every leaf and branch, and the yard looked brand new by the time they left.',
-    name: 'Chris M.',
-    location: 'Edmond, OK',
+  {
+    number: '2',
+    title: 'We Assess & Quote',
+    description: 'For larger properties, we may visit to provide an accurate quote. Most quotes are provided within 24 hours.',
   },
-  schema: {
-    serviceType: 'Seasonal cleanup services',
-    description: metadata.description,
+  {
+    number: '3',
+    title: 'Cleanup Day',
+    description: 'Our crew arrives with commercial-grade equipment and completes the work efficiently. Most properties done in 2-4 hours.',
   },
-}
+  {
+    number: '4',
+    title: 'Final Walkthrough',
+    description: 'We do a final check to ensure everything meets our standards. You\'ll receive photos of the completed work.',
+  },
+]
+
+const faqs = [
+  {
+    question: 'How much does seasonal cleanup cost?',
+    answer: 'Pricing depends on property size and scope of work. Most residential cleanups range from $150-$500. Spring cleanups are typically less than fall cleanups due to leaf volume.',
+  },
+  {
+    question: 'When should I schedule spring cleanup?',
+    answer: 'March-April is ideal for spring cleanup in Oklahoma. This prepares your yard for the growing season and removes winter debris.',
+  },
+  {
+    question: 'When should I schedule fall cleanup?',
+    answer: 'Late October through November is best for fall cleanup. We recommend scheduling after most leaves have fallen but before the first hard freeze.',
+  },
+  {
+    question: 'Do you include gutter cleaning?',
+    answer: 'Gutter cleaning is available as an add-on service. It\'s highly recommended with fall cleanup to prevent ice dams and water damage.',
+  },
+  {
+    question: 'Can I combine cleanup with other services?',
+    answer: 'Absolutely! Many customers bundle seasonal cleanup with flower bed refreshing or mulch installation at discounted rates.',
+  },
+  {
+    question: 'Do you offer recurring seasonal cleanup?',
+    answer: 'Yes! Sign up for both spring and fall cleanup and save 15%. We\'ll automatically schedule your cleanups each year.',
+  },
+]
 
 export default function SeasonalCleanupPage() {
-  return <ServiceLayout service={service} />
+  return (
+    <main>
+      <ServiceHero
+        title="Spring & Fall Cleanup Services"
+        description="Start each season with a fresh, clean yard. Professional leaf removal, bed maintenance, and debris cleanup."
+        imageSrc="/images/services/cleanup-hero.jpg"
+        imageAlt="Fall leaf cleanup service in El Dorado"
+      />
+
+      {/* Problem/Solution Section */}
+      <section className="section">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-12">
+              <h2 className="text-h2 font-heading text-forest-green mb-4">
+                Don't Let Seasonal Debris Overwhelm Your Yard
+              </h2>
+              <p className="text-lg text-gray-600 mb-4">
+                Leaves, dead plants, and winter debris don't just look bad – they can damage your lawn and create pest problems if left untreated.
+              </p>
+              <p className="text-lg text-gray-600 mb-4">
+                We know what you're thinking: "I can just rake the leaves myself." Sure, you could. But it'll take you an entire weekend (or two), you'll need to rent or buy equipment, and you'll still need to figure out how to dispose of all that debris.
+              </p>
+              <p className="text-lg text-gray-600">
+                <strong>We'll have it done in a few hours – and you won't lift a finger.</strong>
+              </p>
+            </div>
+
+            <div className="bg-forest-green-50 border-l-4 border-forest-green p-6 rounded-lg">
+              <h3 className="text-xl font-heading font-bold text-forest-green mb-3">
+                What's Included in Our Seasonal Cleanup:
+              </h3>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Complete leaf removal</strong> from lawns, beds, driveways, and patios using commercial blowers and vacuums.</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Flower bed cleanup</strong> including removing dead annuals, trimming perennials, and refreshing mulch.</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Branch and debris removal</strong> from winter storms or summer storms.</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Complete haul-away</strong> of all debris. We don't just pile it on the curb.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ServiceFeatures features={features} />
+      <ServiceProcess steps={process} />
+      <ServiceFAQ faqs={faqs} />
+      <ServiceCTA
+        title="Ready for a Fresh Start This Season?"
+        description="Book your spring or fall cleanup today. Early booking gets priority scheduling."
+      />
+    </main>
+  )
+}
+
+export const metadata = {
+  title: 'Spring & Fall Cleanup Services | Evergreen Landscaping',
+  description: 'Professional seasonal cleanup in El Dorado and OKC. Leaf removal, bed maintenance, debris cleanup. Spring and fall services available.',
 }

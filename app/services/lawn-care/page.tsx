@@ -1,160 +1,193 @@
-import { ServiceLayout, ServicePageContent } from '@/components/services/ServiceLayout'
+import { ServiceHero } from '@/components/services/ServiceHero'
+import { ServiceFeatures } from '@/components/services/ServiceFeatures'
+import { ServiceProcess } from '@/components/services/ServiceProcess'
+import { ServiceFAQ } from '@/components/services/ServiceFAQ'
+import { ServiceCTA } from '@/components/services/ServiceCTA'
 
-export const metadata = {
-  title: 'Lawn Care El Dorado & OKC | Weekly Mowing Service',
-  description:
-    'Professional lawn care in El Dorado & Oklahoma City. Weekly mowing, edging, and maintenance. Free quotes. Reliable service you can trust.',
-}
+const features = [
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+    title: 'Professional Mowing',
+    description: 'Precision cutting with commercial-grade equipment for a perfectly manicured lawn.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+      </svg>
+    ),
+    title: 'Edging & Trimming',
+    description: 'Crisp, clean edges along walkways, driveways, and flower beds for a polished look.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+      </svg>
+    ),
+    title: 'Debris Cleanup',
+    description: 'All clippings removed and disposed of properly. We leave your yard spotless.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+    title: 'Flexible Scheduling',
+    description: 'Weekly, bi-weekly, or custom schedules that fit your needs and budget.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ),
+    title: '24-Hour Reminders',
+    description: 'Automatic text or email reminders sent the day before each scheduled service.',
+  },
+  {
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+    title: 'Satisfaction Guarantee',
+    description: 'If you\'re not happy with our work, we\'ll come back and make it right. No charge.',
+  },
+]
 
-const service: ServicePageContent = {
-  slug: 'lawn-care',
-  title: 'Professional Lawn Care in El Dorado & Oklahoma City',
-  subtitle:
-    'Enjoy a perfectly manicured lawn every week — without lifting a finger',
-  metaDescription: metadata.description,
-  breadcrumbLabel: 'Lawn Care',
-  heroImage: {
-    src: '/images/services/hero-pattern.svg',
-    alt: 'Lawn care in El Dorado & OKC',
+const process = [
+  {
+    number: '1',
+    title: 'Initial Consultation',
+    description: 'We visit your property to assess lawn size, conditions, and any special requirements. You\'ll receive a detailed quote within 24 hours.',
   },
-  problem:
-    "You know the feeling. It's Saturday morning, and while your neighbors are heading to the lake, you're stuck pushing a mower around your yard. Again. You try to keep up with it, but between work, family, and everything else, your lawn always seems to be the thing that gets neglected. Brown patches start appearing. Weeds creep in faster than you can pull them. Your mower breaks down at the worst possible time. And every time you drive up to your house, you can't help but notice how much better the neighbor's yard looks. It's exhausting, frustrating, and honestly, it's stealing your weekends.",
-  solution:
-    "That's exactly why we created our weekly lawn care service. Our experienced crew handles everything—mowing, edging, trimming, and cleanup—so you never have to think about it again. We show up on the same day every week, rain or shine, and take care of your lawn like it's our own. We know Oklahoma's climate inside and out, so we adjust our care throughout the year to keep your grass healthy and green. You get consistent, professional results every single week, and you get your weekends back to actually enjoy. No equipment to store, no schedules to juggle, no worrying about whether it'll get done.",
-  included: [
-    'Weekly mowing with professional-grade equipment for a clean, even cut',
-    'Precision edging along all sidewalks, driveways, and flower beds',
-    'String trimming around trees, fences, mailboxes, and other obstacles',
-    'Complete debris cleanup and removal after every visit',
-    'Seasonal aeration in spring and fall to promote healthy root growth',
-    'Overseeding to fill in thin spots and maintain thick, lush grass',
-    'Weed control treatments to keep your lawn looking its best',
-    'Custom fertilization schedule tailored to Oklahoma soil and climate',
-    'Free lawn health consultations whenever you have questions',
-    'Flexible scheduling that works around your life',
-  ],
-  processHeading: 'Your Lawn Care Plan, Step by Step',
-  processLead:
-    'We keep things simple: clear expectations, reliable scheduling, and friendly communication.',
-  processSteps: [
-    {
-      title: 'Free Quote & Consultation',
-      description:
-        "We'll visit your property, measure your lawn, and discuss your goals. You'll get a clear, upfront price with no hidden fees or surprises.",
-    },
-    {
-      title: 'Custom Service Plan',
-      description:
-        "We create a maintenance schedule that fits your lawn's specific needs and your budget. You'll know exactly what to expect and when.",
-    },
-    {
-      title: 'Weekly Service',
-      description:
-        "Our crew arrives on your scheduled day, completes the work efficiently, and leaves your property looking pristine. We text you when we're done.",
-    },
-    {
-      title: 'Ongoing Communication',
-      description:
-        "Have a concern? Want to adjust something? Just call or text. We're always available to make sure you're completely happy with your lawn.",
-    },
-  ],
-  benefitsHeading: 'Results You Can Count On',
-  benefitsLead:
-    "With Evergrow handling your lawn care, you'll enjoy benefits that go beyond just a nice-looking yard.",
-  benefits: [
-    {
-      title: "A yard you're proud of",
-      description:
-        'A consistently beautiful yard that makes you proud to pull into your driveway every single day.',
-    },
-    {
-      title: 'More time for what matters',
-      description:
-        "You'll have more time for the things that actually matter—family dinners, weekend trips, or just relaxing on your patio.",
-    },
-    {
-      title: 'Increased property value',
-      description:
-        'Your curb appeal and property value increase with professional, consistent care.',
-    },
-    {
-      title: 'Complete peace of mind',
-      description:
-        "You'll have complete peace of mind knowing it's handled by professionals who actually care.",
-    },
-  ],
-  faqs: [
-    {
-      question: 'How much does weekly lawn care cost?',
-      answer:
-        "Our pricing is straightforward and based on your lawn size and specific needs. Most residential lawns in El Dorado and OKC range from $35-$75 per visit. We'll give you an exact quote after seeing your property—no guessing, no surprises. The price includes everything: mowing, edging, trimming, and cleanup.",
-    },
-    {
-      question: 'Do you offer one-time mowing or just contracts?',
-      answer:
-        "We offer both! While most of our customers love the convenience of weekly service, we're happy to help with one-time cuts if you're going on vacation or just need a quick cleanup. Just give us a call and we'll fit you in.",
-    },
-    {
-      question: "What if I'm not happy with a service visit?",
-      answer:
-        "If something's not right, we want to know immediately. Call or text us, and we'll come back out the same day or next day to make it right—no charge, no questions asked. Your satisfaction is our reputation.",
-    },
-    {
-      question: 'How do I schedule or reschedule service?',
-      answer:
-        "Super easy. Just call or text us. Need to skip a week because you're out of town? No problem. Want us to come a day earlier? We'll do our best to accommodate. We're flexible because life happens.",
-    },
-    {
-      question: 'Do you work in bad weather?',
-      answer:
-        "We monitor the weather closely and adjust our schedule as needed. If it's pouring rain, we'll reschedule for the next available day. We'll always communicate with you if there's a change so you're never left wondering.",
-    },
-    {
-      question: 'What makes you different from other lawn care companies?',
-      answer:
-        "Honestly? We show up when we say we will, we communicate clearly, and we treat your property with respect. We're not a huge national company—we're local, and your neighbors are our neighbors. We care about doing quality work because our reputation depends on it.",
-    },
-    {
-      question: 'Are you licensed and insured?',
-      answer:
-        "Absolutely. We carry full liability insurance and workers' compensation coverage. You're completely protected, and so are we.",
-    },
-  ],
-  ctaHeading: 'Ready for a Beautiful Lawn?',
-  ctaDescription:
-    'Join hundreds of homeowners in El Dorado and Oklahoma City who trust Evergrow for reliable, professional lawn care every week.',
-  relatedServices: [
-    {
-      title: 'Flower Bed Installation',
-      description:
-        'Add vibrant color with custom beds designed for Oklahoma weather.',
-      href: '/services/flower-beds',
-    },
-    {
-      title: 'Seasonal Cleanup',
-      description:
-        'Clear leaves and debris to keep your lawn healthy year-round.',
-      href: '/services/seasonal-cleanup',
-    },
-    {
-      title: 'Pressure Washing',
-      description:
-        'Pair lawn care with a clean driveway and refreshed patio.',
-      href: '/services/pressure-washing',
-    },
-  ],
-  testimonial: {
-    quote:
-      'Evergreen keeps our yard looking perfect every week and they always show up when they say they will.',
-    name: 'Megan T.',
-    location: 'El Dorado, OK',
+  {
+    number: '2',
+    title: 'Schedule Setup',
+    description: 'Choose your preferred schedule (weekly or bi-weekly). We\'ll set up automatic reminders and add you to our route.',
   },
-  schema: {
-    serviceType: 'Lawn care and maintenance',
-    description: metadata.description,
+  {
+    number: '3',
+    title: 'Consistent Service',
+    description: 'Our crew arrives on your scheduled day, mows, edges, trims, and cleans up all debris. Same high quality every single time.',
   },
-}
+  {
+    number: '4',
+    title: 'Easy Payments',
+    description: 'Choose monthly invoicing or pay-as-you-go. We accept all major credit cards and offer auto-pay options.',
+  },
+]
+
+const faqs = [
+  {
+    question: 'How much does lawn care cost?',
+    answer: 'Our pricing depends on lawn size, frequency, and location. Most residential lawns in El Dorado range from $35-$60 per visit for weekly service. We provide exact quotes after an initial site visit.',
+  },
+  {
+    question: 'What if it rains on my scheduled day?',
+    answer: 'We monitor weather closely and reschedule rain-outs for the next available day. You\'ll receive a notification if your service day changes.',
+  },
+  {
+    question: 'Do I need to be home during service?',
+    answer: 'Nope! As long as we can access your lawn and any gates are unlocked, we can complete the work while you\'re away. We\'ll send you a notification when we\'re done.',
+  },
+  {
+    question: 'What happens if I\'m not satisfied?',
+    answer: 'We stand behind our work 100%. If you\'re not happy with the results, just let us know within 24 hours and we\'ll come back to make it right at no additional charge.',
+  },
+  {
+    question: 'Can I cancel or pause service?',
+    answer: 'Yes! There are no long-term contracts for our standard lawn care. We just ask for 1 week notice if you need to cancel or pause your service.',
+  },
+  {
+    question: 'Do you offer any discounts?',
+    answer: 'We offer a 10% discount for customers who sign up for recurring service (4+ months). We also have seasonal promotions throughout the year.',
+  },
+  {
+    question: 'What equipment do you use?',
+    answer: 'We use commercial-grade zero-turn mowers, professional trimmers, and edgers. All equipment is well-maintained and serviced regularly for the best results.',
+  },
+]
 
 export default function LawnCarePage() {
-  return <ServiceLayout service={service} />
+  return (
+    <main>
+      <ServiceHero
+        title="Lawn Care & Maintenance"
+        description="Keep your lawn looking pristine year-round with our professional mowing, edging, and trimming services."
+        imageSrc="/images/services/lawn-care-hero.jpg"
+        imageAlt="Beautifully maintained lawn in El Dorado"
+      />
+
+      {/* Problem/Solution Section */}
+      <section className="section">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-12">
+              <h2 className="text-h2 font-heading text-forest-green mb-4">
+                Tired of Spending Your Weekends Pushing a Mower?
+              </h2>
+              <p className="text-lg text-gray-600 mb-4">
+                We get it. Between work, family, and everything else on your plate, the last thing you want to do is spend your Saturday sweating in the Arkansas heat or dealing with Oklahoma's unpredictable weather.
+              </p>
+              <p className="text-lg text-gray-600 mb-4">
+                Maybe you've tried hiring someone before, only to deal with unreliable service, inconsistent results, or crews that don't show up when they say they will. Or worse – they do show up, but leave your yard looking worse than before.
+              </p>
+              <p className="text-lg text-gray-600">
+                <strong>You deserve better.</strong>
+              </p>
+            </div>
+
+            <div className="bg-forest-green-50 border-l-4 border-forest-green p-6 rounded-lg">
+              <h3 className="text-xl font-heading font-bold text-forest-green mb-3">
+                Here's How We're Different:
+              </h3>
+              <ul className="space-y-2 text-gray-700">
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>We show up on time, every time.</strong> Our crews follow a strict schedule and you'll get reminders 24 hours before each service.</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Consistent, professional results.</strong> Same crew, same equipment, same high standards. No surprises.</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Complete cleanup.</strong> We don't just cut and run. All clippings are removed and disposed of properly.</span>
+                </li>
+                <li className="flex items-start">
+                  <svg className="w-5 h-5 text-forest-green mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  <span><strong>Clear communication.</strong> Questions? Call or text. We respond within 24 hours, guaranteed.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ServiceFeatures features={features} />
+      <ServiceProcess steps={process} />
+      <ServiceFAQ faqs={faqs} />
+      <ServiceCTA />
+    </main>
+  )
+}
+
+export const metadata = {
+  title: 'Lawn Care & Maintenance Services | Evergreen Landscaping',
+  description: 'Professional lawn mowing, edging, and trimming in El Dorado and OKC. Weekly or bi-weekly service. Free quotes, satisfaction guaranteed.',
 }
