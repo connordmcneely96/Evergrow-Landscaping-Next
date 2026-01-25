@@ -60,12 +60,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         const data = await response.json()
 
+
         if (!response.ok) {
-            throw new Error(data.error || 'Login failed')
+            throw new Error((data as any).error || 'Login failed')
         }
 
-        localStorage.setItem('auth_token', data.token)
-        setUser(data.user)
+        localStorage.setItem('auth_token', (data as any).token)
+        setUser((data as any).user)
         router.push('/dashboard')
     }
 
@@ -78,12 +79,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         const data = await response.json()
 
+
         if (!response.ok) {
-            throw new Error(data.error || 'Registration failed')
+            throw new Error((data as any).error || 'Registration failed')
         }
 
-        localStorage.setItem('auth_token', data.token)
-        setUser(data.user)
+        localStorage.setItem('auth_token', (data as any).token)
+        setUser((data as any).user)
         router.push('/dashboard')
     }
 
