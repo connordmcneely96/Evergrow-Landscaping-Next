@@ -1,59 +1,104 @@
-export const metadata = {
-    title: 'Request a Quote | Evergrow Landscaping',
-    description: 'Get a free quote for professional landscaping services in El Dorado and Oklahoma City. Fast response within 24 hours.',
-};
-
-import QuoteForm from '@/components/forms/QuoteForm';
+import { QuoteForm } from '@/components/forms/QuoteForm'
 
 export default function QuoteRequestPage() {
     return (
-        <main className="min-h-screen bg-clean-white">
-            <div className="container py-16">
-                <div className="max-w-2xl mx-auto">
-                    <h1 className="text-h1 font-heading text-forest-green mb-4">
-                        Request Your Free Quote
-                    </h1>
-                    <p className="text-lg text-gray-600 mb-8">
-                        Tell us about your project and we'll get back to you within 24 hours with a transparent, detailed quote.
-                    </p>
-
-                    <div className="card">
-                        <QuoteForm />
-                    </div>
-
-                    <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="text-center">
-                            <div className="w-12 h-12 bg-vibrant-gold rounded-full flex items-center justify-center mx-auto mb-3">
-                                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <main>
+            {/* Hero Section */}
+            <section className="relative bg-gradient-to-r from-forest-green to-forest-green-600 py-16">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-3xl mx-auto text-center text-white">
+                        <h1 className="text-h1 font-heading font-bold mb-4 text-white">
+                            Get Your Free Quote
+                        </h1>
+                        <p className="text-xl mb-6">
+                            Tell us about your project and we'll provide a detailed quote within 24 hours.
+                        </p>
+                        <div className="flex flex-wrap items-center justify-center gap-8 text-sm">
+                            <div className="flex items-center gap-2">
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                 </svg>
+                                <span>Free Estimates</span>
                             </div>
-                            <h3 className="font-semibold text-forest-green mb-1">Fast Response</h3>
-                            <p className="text-sm text-gray-600">Quote within 24 hours</p>
-                        </div>
-
-                        <div className="text-center">
-                            <div className="w-12 h-12 bg-vibrant-gold rounded-full flex items-center justify-center mx-auto mb-3">
-                                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <div className="flex items-center gap-2">
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                 </svg>
+                                <span>No Obligation</span>
                             </div>
-                            <h3 className="font-semibold text-forest-green mb-1">Transparent Pricing</h3>
-                            <p className="text-sm text-gray-600">No hidden fees</p>
-                        </div>
-
-                        <div className="text-center">
-                            <div className="w-12 h-12 bg-vibrant-gold rounded-full flex items-center justify-center mx-auto mb-3">
-                                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            <div className="flex items-center gap-2">
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                 </svg>
+                                <span>24-Hour Response</span>
                             </div>
-                            <h3 className="font-semibold text-forest-green mb-1">Licensed & Insured</h3>
-                            <p className="text-sm text-gray-600">Professional team</p>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            {/* Form Section */}
+            <section className="section py-16">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-3xl mx-auto -mt-20 relative z-10">
+                        <QuoteForm />
+                    </div>
+                </div>
+            </section>
+
+            {/* Trust Section */}
+            <section className="section section-alt py-16 bg-gray-50">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-4xl mx-auto">
+                        <h2 className="text-h2 font-heading text-forest-green mb-10 text-center">
+                            What Happens Next?
+                        </h2>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            <div className="text-center">
+                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-forest-green text-white font-heading font-bold text-2xl mb-4 shadow-md">
+                                    1
+                                </div>
+                                <h3 className="font-heading font-bold text-forest-green mb-2">
+                                    We Review Your Request
+                                </h3>
+                                <p className="text-gray-600">
+                                    Our team reviews your project details and assesses what's needed for an accurate quote.
+                                </p>
+                            </div>
+
+                            <div className="text-center">
+                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-forest-green text-white font-heading font-bold text-2xl mb-4 shadow-md">
+                                    2
+                                </div>
+                                <h3 className="font-heading font-bold text-forest-green mb-2">
+                                    You Receive a Detailed Quote
+                                </h3>
+                                <p className="text-gray-600">
+                                    Within 24 hours, we'll email you a transparent breakdown of costs, timeline, and what's included.
+                                </p>
+                            </div>
+
+                            <div className="text-center">
+                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-forest-green text-white font-heading font-bold text-2xl mb-4 shadow-md">
+                                    3
+                                </div>
+                                <h3 className="font-heading font-bold text-forest-green mb-2">
+                                    We Schedule Your Service
+                                </h3>
+                                <p className="text-gray-600">
+                                    If you're happy with the quote, we'll schedule a convenient time and get to work.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
-    );
+    )
+}
+
+export const metadata = {
+    title: 'Get a Free Quote | Evergreen Landscaping',
+    description: 'Request a free landscaping quote for El Dorado or Oklahoma City. No obligation, 24-hour response guaranteed.',
 }
