@@ -8,6 +8,7 @@ import { Menu, X, Phone, MapPin } from 'lucide-react';
 
 const navigation = [
     { name: 'Home', href: '/' },
+    { name: 'Commercial', href: '/commercial' },
     { name: 'About', href: '/about' },
     { name: 'Blog', href: '/blog' },
     { name: 'Contact', href: '/contact' },
@@ -97,7 +98,7 @@ export default function Header() {
                             <span>405-479-5794</span>
                         </a>
                         <Link
-                            href="/login"
+                            href="/portal"
                             className={`text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors mr-4 ${textColor}`}
                         >
                             Client Login

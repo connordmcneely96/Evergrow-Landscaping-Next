@@ -4,15 +4,20 @@ import { Button } from '@/components/ui/Button'
 interface ServiceCTAProps {
   title?: string
   description?: string
+  buttonText?: string
+  buttonLink?: string
 }
 
 export function ServiceCTA({
   title = "Ready to Get Started?",
-  description = "Request your free quote today and discover why your neighbors trust Evergrow Landscaping."
+  description = "Request your free quote today and discover why your neighbors trust Evergrow Landscaping.",
+  buttonText = "Get Your Free Quote",
+  buttonLink = "/quote-request"
 }: ServiceCTAProps) {
   return (
-    <section className="section bg-gradient-to-r from-forest-green to-forest-green-800">
-      <div className="container">
+    <section className="section bg-gradient-to-r from-forest-green to-forest-green-800 relative overflow-hidden">
+      {/* Optional: Add a subtle overlay or pattern if needed to match new branding in future */}
+      <div className="container relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-h2 font-heading text-white mb-4">
             {title}
@@ -22,9 +27,9 @@ export function ServiceCTA({
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/quote-request">
+            <Link href={buttonLink}>
               <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                Get Your Free Quote
+                {buttonText}
               </Button>
             </Link>
             <a href="tel:405-479-5794">

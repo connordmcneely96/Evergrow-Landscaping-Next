@@ -37,6 +37,11 @@
   --color-deep-charcoal-700: #262626;
   --color-deep-charcoal-800: #1F1F1F;
   --color-deep-charcoal-900: #171717;
+  /* Murphy USA Bid Colors */
+  --color-ocean-blue: #2E5A8F;
+  --color-warm-cream: #F5F1E8;
+  --color-hopeful-teal: #4DB8AC;
+  --color-brand-charcoal: #333333;
 
   /* Semantic Colors */
   --color-primary: var(--color-forest-green);

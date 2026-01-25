@@ -8,52 +8,52 @@ export default function HomePage() {
   return (
     <main className="flex-col">
       {/* Hero Section */}
+      {/* Hero Section */}
       <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Background Image Placeholder - In production, this would be a high-quality Next.js Image */}
-        <div className="absolute inset-0 bg-forest-green-900">
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-forest-green-900/90 to-forest-green-800/70 z-10" />
-          {/* Texture/Pattern (Optional) */}
-          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
+        {/* Background Image Placeholder */}
+        <div className="absolute inset-0 bg-deep-charcoal-900">
+          <div className="absolute inset-0 bg-gradient-to-r from-deep-charcoal-900/90 to-deep-charcoal-800/70 z-10" />
+          <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
         </div>
 
-        <div className="container relative z-20 text-center px-4">
+        <div className="container relative z-20 px-4">
           <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
+            className="max-w-4xl mx-auto md:mx-0 md:max-w-3xl text-center md:text-left"
           >
-            <div className="inline-block bg-vibrant-gold/20 backdrop-blur-sm border border-vibrant-gold/30 rounded-full px-4 py-1 mb-6">
-              <span className="text-vibrant-gold font-bold text-sm tracking-wider uppercase">Professional Landscaping</span>
+            <div className="inline-block bg-hopeful-teal/20 backdrop-blur-sm border border-hopeful-teal/30 rounded-full px-4 py-1 mb-6">
+              <span className="text-hopeful-teal font-bold text-sm tracking-wider uppercase">Arkansas • Oklahoma • Texas</span>
             </div>
             <h1 className="text-white font-heading font-extrabold text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight drop-shadow-lg">
-              Trusted Landscaping in <br className="hidden md:block" /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-vibrant-gold to-yellow-200">El Dorado & OKC</span>
+              Professional Multi-Location <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-hopeful-teal to-teal-200">Landscaping Services</span>
             </h1>
-            <p className="text-gray-200 text-lg md:text-2xl mb-10 max-w-2xl mx-auto leading-relaxed">
-              Tired of landscapers who don't show up? We're different. Family-owned, fully licensed, and committed to clear communication and honest pricing.
+            <p className="text-gray-200 text-lg md:text-2xl mb-10 max-w-2xl mx-auto md:mx-0 leading-relaxed">
+              Managing 40+ properties with consistent quality across all locations. Licensed and insured in AR, OK, and TX. Family-owned, owner-managed.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
               <Link
-                href="/quote-request"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-vibrant-gold text-deep-charcoal font-bold text-lg hover:bg-yellow-400 hover:scale-105 transition-all shadow-xl"
+                href="/commercial"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-hopeful-teal text-white font-bold text-lg hover:bg-teal-500 hover:scale-105 transition-all shadow-xl"
               >
-                Get Your Free Quote
+                Commercial Inquiries
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
-              <a
-                href="tel:+14054795794"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white font-bold text-lg hover:bg-white hover:text-forest-green transition-all"
+              <Link
+                href="/quote-request"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-ocean-blue text-white font-bold text-lg hover:bg-blue-700 transition-all shadow-lg"
               >
-                <Phone className="w-5 h-5 mr-2" />
-                (405) 479-5794
-              </a>
+                Residential Quote
+              </Link>
             </div>
 
-            <div className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 text-white/90 text-sm md:text-base font-medium">
-              <div className="flex items-center"><Shield className="w-5 h-5 text-vibrant-gold mr-2" /> Licensed & Insured</div>
-              <div className="flex items-center"><Clock className="w-5 h-5 text-vibrant-gold mr-2" /> 24-Hour Response</div>
-              <div className="flex items-center"><BadgeDollarSign className="w-5 h-5 text-vibrant-gold mr-2" /> No Hidden Fees</div>
+            <div className="mt-12 flex flex-wrap justify-center md:justify-start gap-6 md:gap-8 text-white/90 text-sm md:text-base font-medium">
+              <div className="flex items-center"><Shield className="w-5 h-5 text-hopeful-teal mr-2" /> Licensed & Insured in AR, OK, TX</div>
+              <div className="flex items-center"><MapPin className="w-5 h-5 text-hopeful-teal mr-2" /> 40+ Properties Managed</div>
+              <div className="flex items-center"><CheckCircle className="w-5 h-5 text-hopeful-teal mr-2" /> Family-Owned & Operated</div>
+              <div className="flex items-center"><Clock className="w-5 h-5 text-hopeful-teal mr-2" /> 20+ Years Experience</div>
             </div>
           </MotionDiv>
         </div>
