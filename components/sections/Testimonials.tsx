@@ -64,7 +64,7 @@ export default function Testimonials() {
     }
 
     return (
-        <section className="py-20 bg-white" id="testimonials">
+        <section className="py-20 bg-white" id="reviews">
             <div className="container">
                 <div className="text-center mb-16">
                     <span className="text-forest-green font-bold uppercase tracking-wider text-sm mb-2 block">Testimonials</span>

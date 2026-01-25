@@ -3,6 +3,7 @@ import { Open_Sans, Lato } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import MainLayout from "@/components/layout/MainLayout";
 
 const openSans = Open_Sans({
   variable: "--font-heading",
@@ -40,9 +41,9 @@ export default function RootLayout({
         className={`${openSans.variable} ${lato.variable} antialiased flex flex-col min-h-screen`}
       >
         <Header />
-        <main className="flex-grow pt-[72px] lg:pt-[88px]">
+        <MainLayout>
           {children}
-        </main>
+        </MainLayout>
         <Footer />
       </body>
     </html>

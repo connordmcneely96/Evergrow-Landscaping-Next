@@ -8,6 +8,7 @@ import { Menu, X, Phone, MapPin } from 'lucide-react';
 
 const navigation = [
     { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
     { name: 'Services', href: '/#services' },
     { name: 'Why Us', href: '/#why-us' },
     { name: 'Reviews', href: '/#reviews' },
@@ -41,8 +42,9 @@ export default function Header() {
         setActiveSubmenu(null);
     }, [pathname]);
 
-    const headerBg = isScrolled ? 'bg-forest-green shadow-lg py-2' : 'bg-transparent py-4';
-    const textColor = isScrolled ? 'text-white' : 'text-white'; // Always white on dark header or overlay
+    const isHomePage = pathname === '/';
+    const headerBg = isScrolled || !isHomePage ? 'bg-forest-green shadow-lg py-2' : 'bg-transparent py-4';
+    const textColor = 'text-white'; // Always white
 
     return (
         <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerBg}`}>
