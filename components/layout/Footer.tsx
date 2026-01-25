@@ -49,15 +49,15 @@ const Footer = () => {
                         <ul className="space-y-4 text-sm text-gray-300">
                             <li className="flex items-start">
                                 <MapPin className="w-5 h-5 mr-3 text-vibrant-gold flex-shrink-0" />
-                                <span>123 Main St,<br />El Dorado, OK 73537</span>
+                                <span>El Dorado, AR 71730</span>
                             </li>
                             <li className="flex items-center">
                                 <Phone className="w-5 h-5 mr-3 text-vibrant-gold flex-shrink-0" />
-                                <a href="tel:+14054795794" className="hover:text-white transition-colors">(405) 479-5794</a>
+                                <a href="tel:+14054795794" className="hover:text-white transition-colors">405-479-5794</a>
                             </li>
                             <li className="flex items-center">
                                 <Mail className="w-5 h-5 mr-3 text-vibrant-gold flex-shrink-0" />
-                                <a href="mailto:contact@evergrow.com" className="hover:text-white transition-colors">contact@evergrow.com</a>
+                                <a href="mailto:contact@evergrowlandscaping.com" className="hover:text-white transition-colors">contact@evergrowlandscaping.com</a>
                             </li>
                         </ul>
                     </div>

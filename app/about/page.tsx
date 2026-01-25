@@ -302,10 +302,10 @@ export default function AboutPage() {
                                 Get Your Free Quote
                             </Link>
                             <a
-                                href="tel:+15555555555"
+                                href="tel:+14054795794"
                                 className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-green-700 transition-colors inline-block"
                             >
-                                Call Us: (555) 555-5555
+                                Call Us: 405-479-5794
                             </a>
                         </div>
                         <p className="mt-8 text-green-100">

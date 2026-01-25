@@ -7,9 +7,9 @@ export function ContactInfo() {
                 </svg>
             ),
             title: 'Phone',
-            content: '(405) 479-5794',
+            content: '405-479-5794',
             link: 'tel:4054795794',
-            description: 'Mon-Sat, 7AM-6PM',
+            description: 'Mon-Fri, 8AM-5PM',
         },
         {
             icon: (
@@ -18,8 +18,8 @@ export function ContactInfo() {
                 </svg>
             ),
             title: 'Email',
-            content: 'connordmcneely96@gmail.com',
-            link: 'mailto:connordmcneely96@gmail.com',
+            content: 'contact@evergrowlandscaping.com',
+            link: 'mailto:contact@evergrowlandscaping.com',
             description: '24-hour response time',
         },
         {
@@ -30,8 +30,8 @@ export function ContactInfo() {
                 </svg>
             ),
             title: 'Locations',
-            content: 'El Dorado, AR & Oklahoma City, OK',
-            description: 'Serving both metro areas',
+            content: 'El Dorado, AR 71730',
+            description: 'Serving El Dorado & Oklahoma City areas',
         },
     ]
 
@@ -82,11 +82,11 @@ export function ContactInfo() {
                 <div className="space-y-2 text-gray-700">
                     <div className="flex justify-between">
                         <span>Monday - Friday</span>
-                        <span className="font-semibold">7:00 AM - 6:00 PM</span>
+                        <span className="font-semibold">8:00 AM - 5:00 PM</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Saturday</span>
-                        <span className="font-semibold">7:00 AM - 4:00 PM</span>
+                        <span className="font-semibold">Closed</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Sunday</span>

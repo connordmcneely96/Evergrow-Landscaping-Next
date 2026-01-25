@@ -124,7 +124,7 @@ export function ContactStep({ initialData, onBack, onNext }: ContactStepProps) {
                         type="text"
                         value={formData.address}
                         onChange={(e) => handleChange('address', e.target.value)}
-                        placeholder="123 Main Street, El Dorado, AR 71730"
+                        placeholder="Your Property Address"
                         required
                         helperText="Where will the work be done?"
                     />

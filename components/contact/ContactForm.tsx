@@ -83,7 +83,7 @@ export function ContactForm() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                placeholder="your.email@example.com"
+                placeholder="you@email.com"
             />
 
             <Input

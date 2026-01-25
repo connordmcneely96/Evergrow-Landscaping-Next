@@ -94,7 +94,7 @@ export default function Header() {
                             className={`flex items-center space-x-2 font-semibold hover:text-vibrant-gold transition-colors ${textColor}`}
                         >
                             <Phone className="w-4 h-4" />
-                            <span>(405) 479-5794</span>
+                            <span>405-479-5794</span>
                         </a>
                         <Link
                             href="/login"
