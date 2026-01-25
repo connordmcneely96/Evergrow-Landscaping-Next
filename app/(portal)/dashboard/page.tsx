@@ -33,7 +33,7 @@ export default function DashboardPage() {
         try {
             // Fetch projects
             const projectsRes = await fetchWithAuth('/api/customer/projects')
-            const projectsData = await projectsRes.json()
+            const projectsData = await projectsRes.json() as any
 
             if (projectsData.success) {
                 const projects = projectsData.data
@@ -50,7 +50,7 @@ export default function DashboardPage() {
 
             // Fetch invoices
             const invoicesRes = await fetchWithAuth('/api/customer/invoices')
-            const invoicesData = await invoicesRes.json()
+            const invoicesData = await invoicesRes.json() as any
 
             if (invoicesData.success) {
                 const pendingCount = invoicesData.data.filter((inv: any) => inv.status === 'pending').length
