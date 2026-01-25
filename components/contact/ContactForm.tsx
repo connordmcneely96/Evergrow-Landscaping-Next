@@ -46,7 +46,7 @@ export function ContactForm() {
                     message: '',
                 })
             } else {
-                throw new Error(data.error || 'Failed to send message')
+                throw new Error((data as any).error || 'Failed to send message')
             }
         } catch (error) {
             addToast({
