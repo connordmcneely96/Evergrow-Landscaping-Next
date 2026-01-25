@@ -9,9 +9,6 @@ import { Menu, X, Phone, MapPin } from 'lucide-react';
 const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { name: 'Services', href: '/#services' },
-    { name: 'Why Us', href: '/#why-us' },
-    { name: 'Reviews', href: '/#reviews' },
 ];
 
 const services = [
