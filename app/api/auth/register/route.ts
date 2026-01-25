@@ -4,7 +4,7 @@ export const dynamic = 'force-static'
 
 export async function POST(request: Request) {
     try {
-        const body = await request.json()
+        const body = await request.json() as any
 
         // Simulate successful registration
         // In a real app, we would validate and save to DB
