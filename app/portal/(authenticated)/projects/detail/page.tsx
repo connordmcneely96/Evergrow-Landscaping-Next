@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/components/portal/AuthContext'
-import { useParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Calendar, DollarSign, FileText } from 'lucide-react'
 import { PhotoGallery } from '@/components/portal/PhotoGallery'
@@ -12,8 +12,8 @@ type TabType = 'details' | 'photos'
 
 export default function ProjectDetailPage() {
     const { token } = useAuth()
-    const params = useParams()
-    const projectId = params.id as string
+    const searchParams = useSearchParams()
+    const projectId = searchParams.get('id') || ''
 
     const [project, setProject] = useState<any>(null)
     const [photos, setPhotos] = useState<any[]>([])

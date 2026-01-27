@@ -54,7 +54,7 @@ export default function ProjectsPage() {
                     ) : (
                         projects.map((project: any) => (
                             <li key={project.id}>
-                                <Link href={`/portal/projects/${project.id}`} className="block px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors">
+                                <Link href={`/portal/projects/detail?id=${project.id}`} className="block px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors">
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-col">
                                             <span className="text-sm font-medium text-ocean-blue">{project.serviceName}</span>
