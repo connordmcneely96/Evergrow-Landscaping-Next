@@ -113,10 +113,13 @@ class ApiClient {
             )
         }
 
+        // Exclude photos property to avoid serialization issues
+        const { photos, ...dataWithoutPhotos } = data
+
         return this.request('/quotes/request', {
             method: 'POST',
             body: JSON.stringify({
-                ...data,
+                ...dataWithoutPhotos,
                 photoUrls: photoUrls.length > 0 ? photoUrls : undefined,
             }),
         })
