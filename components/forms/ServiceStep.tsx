@@ -200,7 +200,7 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
 
                 if (photoUrls.length !== formData.photos.length) {
                     addToast({
-                        type: 'warning',
+                        type: 'info',
                         message: `${formData.photos.length - photoUrls.length} photo(s) failed to upload. Continuing with submission.`
                     })
                 }
