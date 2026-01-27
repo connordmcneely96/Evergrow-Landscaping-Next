@@ -1,5 +1,5 @@
-import { Env } from '../types';
-import { sendEmail, getQuoteRequestNotificationEmail, getQuoteRequestConfirmationEmail } from '../lib/email';
+import { Env } from '../../types';
+import { sendEmail, getQuoteRequestNotificationEmail, getQuoteRequestConfirmationEmail } from '../../lib/email';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
