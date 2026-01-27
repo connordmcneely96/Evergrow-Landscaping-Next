@@ -40,15 +40,82 @@ const propertySizes = [
 export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: ServiceStepProps) {
     const [formData, setFormData] = useState(initialData)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isUploadingPhotos, setIsUploadingPhotos] = useState(false)
     const [errors, setErrors] = useState<any>({})
+    const [isDragging, setIsDragging] = useState(false)
     const { addToast } = useToast()
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const newFiles = Array.from(e.target.files)
+            const validFiles = newFiles.filter(file => {
+                // Validate file size (10MB max)
+                if (file.size > 10 * 1024 * 1024) {
+                    addToast({
+                        type: 'error',
+                        message: `${file.name} is too large. Max size is 10MB.`
+                    })
+                    return false
+                }
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic']
+                if (!validTypes.includes(file.type)) {
+                    addToast({
+                        type: 'error',
+                        message: `${file.name} is not a valid image type. Please use JPG, PNG, or HEIC.`
+                    })
+                    return false
+                }
+                return true
+            })
+
             setFormData((prev) => ({
                 ...prev,
-                photos: [...prev.photos, ...newFiles].slice(0, 5), // Max 5 photos
+                photos: [...prev.photos, ...validFiles].slice(0, 6), // Max 6 photos
+            }))
+        }
+    }
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault()
+        setIsDragging(true)
+    }
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault()
+        setIsDragging(false)
+    }
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault()
+        setIsDragging(false)
+
+        if (e.dataTransfer.files) {
+            const newFiles = Array.from(e.dataTransfer.files)
+            const validFiles = newFiles.filter(file => {
+                // Validate file size (10MB max)
+                if (file.size > 10 * 1024 * 1024) {
+                    addToast({
+                        type: 'error',
+                        message: `${file.name} is too large. Max size is 10MB.`
+                    })
+                    return false
+                }
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/heic']
+                if (!validTypes.includes(file.type)) {
+                    addToast({
+                        type: 'error',
+                        message: `${file.name} is not a valid image type. Please use JPG, PNG, or HEIC.`
+                    })
+                    return false
+                }
+                return true
+            })
+
+            setFormData((prev) => ({
+                ...prev,
+                photos: [...prev.photos, ...validFiles].slice(0, 6), // Max 6 photos
             }))
         }
     }
@@ -58,6 +125,38 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
             ...prev,
             photos: prev.photos.filter((_, i) => i !== index),
         }))
+    }
+
+    const uploadPhotosToR2 = async (files: File[]): Promise<string[]> => {
+        const uploadedUrls: string[] = []
+
+        for (const file of files) {
+            try {
+                const formDataToSend = new FormData()
+                formDataToSend.append('file', file)
+
+                const response = await fetch('/api/quotes/upload-photo', {
+                    method: 'POST',
+                    body: formDataToSend,
+                })
+
+                const result = await response.json()
+
+                if (result.success && result.url) {
+                    uploadedUrls.push(result.url)
+                } else {
+                    throw new Error(result.error || 'Upload failed')
+                }
+            } catch (error) {
+                console.error('Photo upload error:', error)
+                addToast({
+                    type: 'error',
+                    message: `Failed to upload ${file.name}`
+                })
+            }
+        }
+
+        return uploadedUrls
     }
 
     const validate = (): boolean => {
@@ -85,9 +184,26 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
         setIsSubmitting(true)
 
         try {
+            let photoUrls: string[] = []
+
+            // Upload photos to R2 if any
+            if (formData.photos.length > 0) {
+                setIsUploadingPhotos(true)
+                photoUrls = await uploadPhotosToR2(formData.photos)
+                setIsUploadingPhotos(false)
+
+                if (photoUrls.length !== formData.photos.length) {
+                    addToast({
+                        type: 'warning',
+                        message: `${formData.photos.length - photoUrls.length} photo(s) failed to upload. Continuing with submission.`
+                    })
+                }
+            }
+
             const completeData = {
                 ...fullFormData,
                 ...formData,
+                photoUrls, // Send URLs instead of File objects
             }
 
             const result = await api.submitQuoteRequest(completeData)
@@ -108,6 +224,7 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
             })
         } finally {
             setIsSubmitting(false)
+            setIsUploadingPhotos(false)
         }
     }
 
@@ -207,15 +324,24 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
                 {/* Photo Upload */}
                 <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Photos (Optional)
+                        Upload Property Photos (Optional)
                     </label>
                     <p className="text-sm text-gray-500 mb-3">
-                        Upload photos of your property to help us provide an accurate quote (max 5 photos)
+                        Photos help us provide more accurate quotes (max 6 photos, 10MB each)
                     </p>
 
-                    {formData.photos.length < 5 && (
+                    {formData.photos.length < 6 && (
                         <div className="mb-4">
-                            <label className="flex items-center justify-center w-full px-4 py-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-forest-green transition-colors">
+                            <label
+                                className={`flex items-center justify-center w-full px-4 py-6 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+                                    isDragging
+                                        ? 'border-forest-green bg-forest-green-50'
+                                        : 'border-gray-300 hover:border-forest-green'
+                                }`}
+                                onDragOver={handleDragOver}
+                                onDragLeave={handleDragLeave}
+                                onDrop={handleDrop}
+                            >
                                 <div className="text-center">
                                     <svg
                                         className="mx-auto h-12 w-12 text-gray-400"
@@ -234,13 +360,14 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
                                         <span className="font-semibold text-forest-green">Click to upload</span> or drag and drop
                                     </p>
                                     <p className="text-xs text-gray-500 mt-1">
-                                        PNG, JPG up to 10MB each
+                                        JPG, PNG, HEIC up to 10MB each
                                     </p>
                                 </div>
                                 <input
                                     type="file"
-                                    accept="image/*"
+                                    accept="image/jpeg,image/jpg,image/png,image/heic"
                                     multiple
+                                    capture="environment"
                                     onChange={handleFileChange}
                                     className="hidden"
                                 />
@@ -281,9 +408,13 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
                         type="submit"
                         variant="primary"
                         className="flex-1"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || isUploadingPhotos}
                     >
-                        {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
+                        {isUploadingPhotos
+                            ? 'Uploading Photos...'
+                            : isSubmitting
+                                ? 'Submitting...'
+                                : 'Submit Quote Request'}
                     </Button>
                 </div>
             </form>

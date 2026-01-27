@@ -1,6 +1,5 @@
-interface Env {
-    DB: D1Database;
-}
+import { Env } from '../types';
+import { sendEmail, getQuoteRequestNotificationEmail, getQuoteRequestConfirmationEmail } from '../lib/email';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
@@ -13,14 +12,23 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             phone,
             address,
             city,
+            zipCode,
             zip_code,
+            serviceType,
             service_type,
+            propertySize,
             property_size,
             description,
+            photoUrls,
         } = body;
 
+        // Normalize field names (support both camelCase and snake_case)
+        const normalizedZipCode = zipCode || zip_code;
+        const normalizedServiceType = serviceType || service_type;
+        const normalizedPropertySize = propertySize || property_size;
+
         // Validate required fields
-        if (!name || !email || !service_type) {
+        if (!name || !email || !normalizedServiceType) {
             return new Response(JSON.stringify({
                 success: false,
                 error: 'Name, email, and service type are required',
@@ -37,10 +45,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         // Validate service area if zip code provided
-        if (zip_code) {
+        if (normalizedZipCode) {
             const serviceArea = await env.DB.prepare(`
         SELECT * FROM service_areas WHERE zip_code = ? AND is_active = 1
-      `).bind(zip_code).first();
+      `).bind(normalizedZipCode).first();
 
             if (!serviceArea) {
                 return new Response(JSON.stringify({
@@ -51,28 +59,66 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             }
         }
 
+        // Convert photoUrls array to JSON string for storage
+        const photoUrlsJson = photoUrls && Array.isArray(photoUrls) && photoUrls.length > 0
+            ? JSON.stringify(photoUrls)
+            : null;
+
         // Insert quote request
         const result = await env.DB.prepare(`
       INSERT INTO quotes (
         contact_name, contact_email, contact_phone, contact_address,
-        contact_city, contact_zip, service_type, property_size, description, status
+        contact_city, contact_zip, service_type, property_size, description, photo_urls, status
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
     `).bind(
             name.trim(),
             email.trim(),
             phone?.trim() || null,
             address?.trim() || null,
             city?.trim() || null,
-            zip_code?.trim() || null,
-            service_type,
-            property_size || null,
-            description?.trim() || null
+            normalizedZipCode?.trim() || null,
+            normalizedServiceType,
+            normalizedPropertySize || null,
+            description?.trim() || null,
+            photoUrlsJson
         ).run();
 
         if (!result.success) {
             throw new Error('Failed to save quote request');
         }
+
+        // Format service type for display
+        const serviceTypeDisplay = normalizedServiceType
+            .split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+
+        // Send notification email to business owner
+        const notificationEmail = env.NOTIFICATION_EMAIL || 'contact@evergrowlandscaping.com';
+        await sendEmail(env, {
+            to: notificationEmail,
+            subject: `New Quote Request - ${serviceTypeDisplay}`,
+            html: getQuoteRequestNotificationEmail({
+                name,
+                email,
+                phone,
+                address,
+                city,
+                zipCode: normalizedZipCode,
+                serviceType: serviceTypeDisplay,
+                propertySize: normalizedPropertySize,
+                description,
+                photoUrls: photoUrls && Array.isArray(photoUrls) ? photoUrls : undefined,
+            }),
+        });
+
+        // Send confirmation email to customer
+        await sendEmail(env, {
+            to: email,
+            subject: 'Quote Request Received - Evergrow Landscaping',
+            html: getQuoteRequestConfirmationEmail(name, serviceTypeDisplay),
+        });
 
         return new Response(JSON.stringify({
             success: true,
