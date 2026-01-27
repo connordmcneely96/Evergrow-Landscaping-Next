@@ -9,6 +9,7 @@ interface QuoteRequestData {
     email: string
     phone: string
     address: string
+    city?: string
     zipCode: string
     serviceType: string
     propertySize?: string
