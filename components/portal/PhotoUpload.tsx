@@ -67,7 +67,7 @@ export function PhotoUpload({ projectId, token, onUploadSuccess }: PhotoUploadPr
                 body: formData,
             })
 
-            const result = await response.json()
+            const result = await response.json() as any
 
             if (result.success) {
                 // Reset form
