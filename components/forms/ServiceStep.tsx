@@ -208,7 +208,9 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
 
             const completeData = {
                 ...fullFormData,
-                ...formData,
+                serviceType: formData.serviceType,
+                propertySize: formData.propertySize,
+                description: formData.description,
                 photoUrls, // Send URLs instead of File objects
             }
 
