@@ -8,7 +8,15 @@ import { ArrowLeft, Calendar, DollarSign, FileText } from 'lucide-react'
 import { PhotoGallery } from '@/components/portal/PhotoGallery'
 import { PhotoUpload } from '@/components/portal/PhotoUpload'
 
+export const dynamic = 'force-dynamic'
+export const dynamicParams = true
+
 type TabType = 'details' | 'photos'
+
+// Required for static export - return empty array since this is a dynamic authenticated route
+export async function generateStaticParams() {
+    return []
+}
 
 export default function ProjectDetailPage() {
     const { token } = useAuth()
