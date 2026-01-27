@@ -64,25 +64,50 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             ? JSON.stringify(photoUrls)
             : null;
 
-        // Insert quote request
-        const result = await env.DB.prepare(`
-      INSERT INTO quotes (
-        contact_name, contact_email, contact_phone, contact_address,
-        contact_city, contact_zip, service_type, property_size, description, photo_urls, status
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
-    `).bind(
-            name.trim(),
-            email.trim(),
-            phone?.trim() || null,
-            address?.trim() || null,
-            city?.trim() || null,
-            normalizedZipCode?.trim() || null,
-            normalizedServiceType,
-            normalizedPropertySize || null,
-            description?.trim() || null,
-            photoUrlsJson
-        ).run();
+        console.log('Saving quote request:', { name, email, serviceType: normalizedServiceType, photoCount: photoUrls?.length || 0 });
+
+        // Insert quote request (try without photo_urls first if column doesn't exist)
+        let result;
+        try {
+            result = await env.DB.prepare(`
+              INSERT INTO quotes (
+                contact_name, contact_email, contact_phone, contact_address,
+                contact_city, contact_zip, service_type, property_size, description, photo_urls, status
+              )
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
+            `).bind(
+                name.trim(),
+                email.trim(),
+                phone?.trim() || null,
+                address?.trim() || null,
+                city?.trim() || null,
+                normalizedZipCode?.trim() || null,
+                normalizedServiceType,
+                normalizedPropertySize || null,
+                description?.trim() || null,
+                photoUrlsJson
+            ).run();
+        } catch (dbError) {
+            // If photo_urls column doesn't exist, try without it
+            console.warn('Failed to insert with photo_urls, trying without:', dbError);
+            result = await env.DB.prepare(`
+              INSERT INTO quotes (
+                contact_name, contact_email, contact_phone, contact_address,
+                contact_city, contact_zip, service_type, property_size, description, status
+              )
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
+            `).bind(
+                name.trim(),
+                email.trim(),
+                phone?.trim() || null,
+                address?.trim() || null,
+                city?.trim() || null,
+                normalizedZipCode?.trim() || null,
+                normalizedServiceType,
+                normalizedPropertySize || null,
+                description?.trim() || null
+            ).run();
+        }
 
         if (!result.success) {
             throw new Error('Failed to save quote request');
@@ -94,31 +119,38 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
             .join(' ');
 
-        // Send notification email to business owner
-        const notificationEmail = env.NOTIFICATION_EMAIL || 'contact@evergrowlandscaping.com';
-        await sendEmail(env, {
-            to: notificationEmail,
-            subject: `New Quote Request - ${serviceTypeDisplay}`,
-            html: getQuoteRequestNotificationEmail({
-                name,
-                email,
-                phone,
-                address,
-                city,
-                zipCode: normalizedZipCode,
-                serviceType: serviceTypeDisplay,
-                propertySize: normalizedPropertySize,
-                description,
-                photoUrls: photoUrls && Array.isArray(photoUrls) ? photoUrls : undefined,
-            }),
-        });
+        // Send notification emails (don't fail the request if emails fail)
+        try {
+            const notificationEmail = env.NOTIFICATION_EMAIL || 'contact@evergrowlandscaping.com';
 
-        // Send confirmation email to customer
-        await sendEmail(env, {
-            to: email,
-            subject: 'Quote Request Received - Evergrow Landscaping',
-            html: getQuoteRequestConfirmationEmail(name, serviceTypeDisplay),
-        });
+            // Send notification email to business owner
+            await sendEmail(env, {
+                to: notificationEmail,
+                subject: `New Quote Request - ${serviceTypeDisplay}`,
+                html: getQuoteRequestNotificationEmail({
+                    name,
+                    email,
+                    phone,
+                    address,
+                    city,
+                    zipCode: normalizedZipCode,
+                    serviceType: serviceTypeDisplay,
+                    propertySize: normalizedPropertySize,
+                    description,
+                    photoUrls: photoUrls && Array.isArray(photoUrls) ? photoUrls : undefined,
+                }),
+            });
+
+            // Send confirmation email to customer
+            await sendEmail(env, {
+                to: email,
+                subject: 'Quote Request Received - Evergrow Landscaping',
+                html: getQuoteRequestConfirmationEmail(name, serviceTypeDisplay),
+            });
+        } catch (emailError) {
+            // Log email error but don't fail the request
+            console.error('Failed to send email notifications:', emailError);
+        }
 
         return new Response(JSON.stringify({
             success: true,
@@ -128,9 +160,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     } catch (error) {
         console.error('Quote request error:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Failed to submit quote request';
         return new Response(JSON.stringify({
             success: false,
-            error: 'Failed to submit quote request',
+            error: errorMessage,
         }), { status: 500, headers: { 'Content-Type': 'application/json' } });
     }
 }
