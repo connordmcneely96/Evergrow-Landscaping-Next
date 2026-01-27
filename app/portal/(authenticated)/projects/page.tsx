@@ -54,13 +54,13 @@ export default function ProjectsPage() {
                     ) : (
                         projects.map((project: any) => (
                             <li key={project.id}>
-                                <div className="px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors">
+                                <Link href={`/portal/projects/${project.id}`} className="block px-4 py-4 sm:px-6 hover:bg-gray-50 transition-colors">
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-col">
                                             <span className="text-sm font-medium text-ocean-blue">{project.serviceName}</span>
                                             <span className="text-xs text-gray-400">ID: #{project.id}</span>
                                         </div>
-                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                        ${project.status === 'completed' ? 'bg-green-100 text-green-800' :
                                                 project.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
                                                     'bg-yellow-100 text-yellow-800'}`}>
@@ -76,7 +76,7 @@ export default function ProjectsPage() {
                                             {project.totalAmount > 0 ? `$${project.totalAmount.toFixed(2)}` : 'Quoted'}
                                         </span>
                                     </div>
-                                </div>
+                                </Link>
                             </li>
                         ))
                     )}
