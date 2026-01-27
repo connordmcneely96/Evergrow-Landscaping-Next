@@ -20,6 +20,12 @@ interface ServiceStepProps {
     onSuccess: () => void
 }
 
+interface UploadPhotoResponse {
+    success: boolean
+    url?: string
+    error?: string
+}
+
 const serviceTypes = [
     { id: 'lawn-care', label: 'Lawn Care & Maintenance' },
     { id: 'flower-beds', label: 'Flower Bed Installation' },
@@ -140,7 +146,7 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
                     body: formDataToSend,
                 })
 
-                const result = await response.json()
+                const result = await response.json() as UploadPhotoResponse
 
                 if (result.success && result.url) {
                     uploadedUrls.push(result.url)
