@@ -37,7 +37,7 @@ export default function ProjectDetailPage() {
             const res = await fetch(`/api/customer/projects?limit=1&projectId=${projectId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
-            const data = await res.json()
+            const data = await res.json() as any
             if (data.success && data.projects && data.projects.length > 0) {
                 setProject(data.projects[0])
             }
@@ -54,7 +54,7 @@ export default function ProjectDetailPage() {
             const res = await fetch(`/api/projects/${projectId}/photos`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
-            const data = await res.json()
+            const data = await res.json() as any
             if (data.success) {
                 setPhotos(data.photos || [])
             }
