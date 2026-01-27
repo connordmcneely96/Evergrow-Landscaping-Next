@@ -14,6 +14,7 @@ interface QuoteRequestData {
     propertySize?: string
     description: string
     photos?: File[]
+    photoUrls?: string[]
 }
 
 class ApiClient {
@@ -96,10 +97,11 @@ class ApiClient {
     }
 
     async submitQuoteRequest(data: QuoteRequestData): Promise<ApiResponse> {
-        // Convert photos to base64 if present
-        let photoUrls: string[] = []
+        // Use provided photoUrls (from R2) if available, otherwise fall back to base64 conversion
+        let photoUrls: string[] = data.photoUrls || []
 
-        if (data.photos && data.photos.length > 0) {
+        // Only convert to base64 if no photoUrls provided and photos exist (backwards compatibility)
+        if (photoUrls.length === 0 && data.photos && data.photos.length > 0) {
             photoUrls = await Promise.all(
                 Array.from(data.photos).map(async (file) => {
                     return new Promise<string>((resolve) => {
