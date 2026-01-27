@@ -13,9 +13,18 @@ interface ServiceData {
     photos: File[]
 }
 
+interface FullFormData {
+    name: string
+    email: string
+    phone: string
+    address: string
+    location: string
+    zipCode: string
+}
+
 interface ServiceStepProps {
     initialData: ServiceData
-    fullFormData: any
+    fullFormData: FullFormData
     onBack: () => void
     onSuccess: () => void
 }
@@ -207,7 +216,12 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
             }
 
             const completeData = {
-                ...fullFormData,
+                name: fullFormData.name,
+                email: fullFormData.email,
+                phone: fullFormData.phone,
+                address: fullFormData.address,
+                city: fullFormData.location, // Map location to city
+                zipCode: fullFormData.zipCode,
                 serviceType: formData.serviceType,
                 propertySize: formData.propertySize,
                 description: formData.description,
