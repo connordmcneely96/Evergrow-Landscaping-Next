@@ -88,6 +88,20 @@ export interface Project {
 }
 
 /**
+ * Project photo database record
+ */
+export interface ProjectPhoto {
+    id: number;
+    project_id: number;
+    photo_url: string;
+    uploader_type: 'customer' | 'business';
+    uploader_id?: number;
+    caption?: string;
+    phase?: 'before' | 'progress' | 'after';
+    uploaded_at: string;
+}
+
+/**
  * Invoice database record
  */
 export interface Invoice {

@@ -1017,3 +1017,82 @@ export function getFeedbackOwnerReviewEmail(data: {
     projectId: data.projectId
   });
 }
+
+/**
+ * Project photo notification email
+ */
+export function getProjectPhotoNotificationEmail(data: {
+  projectId: number;
+  uploaderName: string;
+  uploaderType: 'customer' | 'business';
+  photoUrl: string;
+  caption?: string;
+}): string {
+  const isCustomerUpload = data.uploaderType === 'customer';
+  const recipient = isCustomerUpload ? 'team' : 'customer';
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #2E5A8F; color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .content { padding: 30px 20px; background: #f9f9f9; }
+        .field { margin-bottom: 20px; padding: 15px; background: white; border-left: 4px solid #4DB8AC; border-radius: 4px; }
+        .label { font-weight: bold; color: #2E5A8F; display: block; margin-bottom: 5px; }
+        .value { color: #333; }
+        .photo { max-width: 100%; margin: 15px 0; border-radius: 8px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 14px; background: #e9ecef; border-radius: 0 0 8px 8px; }
+        .cta { display: inline-block; margin: 20px 0; background: #4DB8AC; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>📸 New Photos Added</h1>
+          <p style="margin: 5px 0 0 0; font-size: 14px;">Project #${data.projectId}</p>
+        </div>
+        <div class="content">
+          <div class="field">
+            <span class="label">${isCustomerUpload ? '👤 Customer Upload' : '🏢 Business Upload'}</span>
+            <span class="value">${escapeHtml(data.uploaderName)} added new photos to Project #${data.projectId}</span>
+          </div>
+
+          ${data.caption ? `
+          <div class="field">
+            <span class="label">💬 Caption</span>
+            <span class="value">${escapeHtml(data.caption)}</span>
+          </div>
+          ` : ''}
+
+          <div class="field">
+            <span class="label">📷 Photo</span>
+            <a href="${data.photoUrl}" target="_blank">
+              <img src="${data.photoUrl}" alt="Project photo" class="photo" />
+            </a>
+          </div>
+
+          ${isCustomerUpload ? `
+          <p style="text-align: center;">
+            <a href="https://evergrowlandscaping.com/portal/projects/${data.projectId}" class="cta">View Project Photos</a>
+          </p>
+          ` : `
+          <p style="text-align: center;">
+            <a href="https://evergrowlandscaping.com/portal/projects/${data.projectId}" class="cta">View All Photos</a>
+          </p>
+          `}
+        </div>
+        <div class="footer">
+          <p><strong>Evergrow Landscaping</strong></p>
+          <p>${isCustomerUpload ? 'Review and respond to customer photos in your admin portal' : 'View your project progress photos anytime in your customer portal'}</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
