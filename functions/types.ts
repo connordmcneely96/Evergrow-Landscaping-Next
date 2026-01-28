@@ -199,3 +199,25 @@ export interface ServiceArea {
     region: 'el-dorado' | 'okc';
     is_active: number;
 }
+
+/**
+ * Job application database record
+ */
+export interface JobApplication {
+    id: number;
+    name: string;
+    email: string;
+    phone: string;
+    city_state: string;
+    position: string;
+    willing_to_travel: number;
+    has_license: number;
+    years_experience?: number;
+    equipment_skills?: string; // JSON array
+    resume_url?: string;
+    cover_letter?: string;
+    availability_date?: string;
+    status: 'pending' | 'reviewing' | 'interviewed' | 'accepted' | 'rejected' | 'withdrawn';
+    submitted_at: string;
+    updated_at: string;
+}

@@ -62,18 +62,16 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    {/* CTA Column */}
+                    {/* Company Column */}
                     <div>
-                        <h3 className="text-lg font-bold mb-4 text-vibrant-gold">Get Started</h3>
-                        <p className="text-gray-300 text-sm mb-6">
-                            Ready to transform your lawn? Get a free, no-obligation quote today.
-                        </p>
-                        <Link
-                            href="/quote-request"
-                            className="inline-block bg-vibrant-gold text-deep-charcoal px-6 py-3 rounded-md font-bold text-sm hover:bg-yellow-400 transition-colors w-full text-center"
-                        >
-                            Request a Free Quote
-                        </Link>
+                        <h3 className="text-lg font-bold mb-4 text-vibrant-gold">Company</h3>
+                        <ul className="space-y-3 text-sm text-gray-300">
+                            <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
+                            <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
+                            <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+                            <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                            <li><Link href="/quote-request" className="hover:text-white transition-colors">Get a Quote</Link></li>
+                        </ul>
                     </div>
                 </div>
 
