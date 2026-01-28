@@ -1096,3 +1096,220 @@ export function getProjectPhotoNotificationEmail(data: {
     </html>
   `;
 }
+
+/**
+ * Job application notification email (to business)
+ */
+export function getJobApplicationNotificationEmail(data: {
+  applicationId: number;
+  name: string;
+  email: string;
+  phone: string;
+  cityState: string;
+  position: string;
+  willingToTravel: boolean;
+  hasLicense: boolean;
+  yearsExperience: number;
+  equipmentSkills: string[];
+  resumeUrl?: string;
+  coverLetter?: string;
+  availabilityDate?: string;
+}): string {
+  const skillsList = data.equipmentSkills && data.equipmentSkills.length > 0
+    ? `<ul style="margin: 10px 0; padding-left: 25px;">${data.equipmentSkills.map(skill => `<li>${escapeHtml(skill)}</li>`).join('')}</ul>`
+    : '<p style="color: #666;">No equipment skills selected</p>';
+
+  const resumeSection = data.resumeUrl
+    ? `<div class="field">
+         <span class="label">📎 Resume</span>
+         <span class="value"><a href="${escapeHtml(data.resumeUrl)}" target="_blank" style="color: #4DB8AC; text-decoration: underline;">Download Resume (PDF)</a></span>
+       </div>`
+    : '<div class="field"><span class="label">📎 Resume</span><span class="value" style="color: #666;">No resume uploaded</span></div>';
+
+  const coverLetterSection = data.coverLetter
+    ? `<div class="field">
+         <span class="label">✍️ Why Join Evergrow?</span>
+         <span class="value">${escapeHtml(data.coverLetter).replace(/\n/g, '<br>')}</span>
+       </div>`
+    : '';
+
+  const availabilitySection = data.availabilityDate
+    ? `<div class="field">
+         <span class="label">📅 Availability Start Date</span>
+         <span class="value">${escapeHtml(data.availabilityDate)}</span>
+       </div>`
+    : '';
+
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #24663B; color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .content { padding: 30px 20px; background: #f9f9f9; }
+        .field { margin-bottom: 20px; padding: 15px; background: white; border-left: 4px solid #4DB8AC; border-radius: 4px; }
+        .label { font-weight: bold; color: #2E5A8F; display: block; margin-bottom: 5px; }
+        .value { color: #333; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 14px; background: #e9ecef; border-radius: 0 0 8px 8px; }
+        .urgent { background: #fff3cd; border-left-color: #ffc107; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>💼 New Job Application</h1>
+          <p style="margin: 5px 0 0 0; font-size: 14px;">Application #${data.applicationId}</p>
+        </div>
+        <div class="content">
+          <div class="field urgent">
+            <span class="label">⚡ Priority</span>
+            <span class="value">New job application requires review</span>
+          </div>
+
+          <div class="field">
+            <span class="label">👤 Applicant Name</span>
+            <span class="value">${escapeHtml(data.name)}</span>
+          </div>
+
+          <div class="field">
+            <span class="label">📧 Email</span>
+            <span class="value"><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></span>
+          </div>
+
+          <div class="field">
+            <span class="label">📱 Phone</span>
+            <span class="value"><a href="tel:${escapeHtml(data.phone)}">${escapeHtml(data.phone)}</a></span>
+          </div>
+
+          <div class="field">
+            <span class="label">📍 Current City/State</span>
+            <span class="value">${escapeHtml(data.cityState)}</span>
+          </div>
+
+          <div class="field">
+            <span class="label">💼 Position</span>
+            <span class="value">${escapeHtml(data.position)}</span>
+          </div>
+
+          <div class="field">
+            <span class="label">🚗 Willing to Travel Between Locations?</span>
+            <span class="value">${data.willingToTravel ? '✅ Yes' : '❌ No'}</span>
+          </div>
+
+          <div class="field">
+            <span class="label">🪪 Valid Driver's License?</span>
+            <span class="value">${data.hasLicense ? '✅ Yes' : '❌ No'}</span>
+          </div>
+
+          <div class="field">
+            <span class="label">📊 Years Experience in Landscaping</span>
+            <span class="value">${data.yearsExperience} years</span>
+          </div>
+
+          <div class="field">
+            <span class="label">🛠️ Equipment Skills</span>
+            ${skillsList}
+          </div>
+
+          ${resumeSection}
+          ${coverLetterSection}
+          ${availabilitySection}
+        </div>
+        <div class="footer">
+          <p><strong>Evergrow Landscaping</strong></p>
+          <p>Application submitted at ${new Date().toLocaleString()}</p>
+          <p>Review application in your admin portal or contact applicant directly</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+/**
+ * Job application confirmation email (to applicant)
+ */
+export function getJobApplicationConfirmationEmail(data: {
+  name: string;
+  position: string;
+}): string {
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #24663B; color: white; padding: 40px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .header h1 { margin: 0; font-size: 28px; }
+        .content { padding: 30px; background: white; }
+        .content p { margin: 15px 0; }
+        .checklist { background: #f8f9fa; padding: 20px; border-radius: 4px; margin: 20px 0; }
+        .checklist h3 { margin-top: 0; color: #24663B; }
+        .checklist ul { margin: 10px 0; padding-left: 25px; }
+        .checklist li { margin: 8px 0; }
+        .contact-box { background: #e7f3f5; padding: 20px; border-radius: 4px; margin: 20px 0; text-align: center; }
+        .contact-box strong { color: #2E5A8F; font-size: 18px; }
+        .footer { text-align: center; padding: 30px 20px; color: #666; font-size: 14px; background: #f8f9fa; border-radius: 0 0 8px 8px; }
+        .footer p { margin: 5px 0; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🌿 Application Received!</h1>
+        </div>
+        <div class="content">
+          <p>Hi <strong>${escapeHtml(data.name)}</strong>,</p>
+
+          <p>Thank you for applying for the <strong>${escapeHtml(data.position)}</strong> position at Evergrow Landscaping! We've successfully received your application and appreciate your interest in joining our team.</p>
+
+          <div class="checklist">
+            <h3>📋 What Happens Next:</h3>
+            <ul>
+              <li>✅ We'll review your application within 5 business days</li>
+              <li>📞 Qualified candidates will be contacted for a phone screening</li>
+              <li>🤝 Selected applicants will be invited for an in-person interview</li>
+              <li>💼 Final candidates will receive an offer to join our team</li>
+            </ul>
+          </div>
+
+          <p><strong>Why Work at Evergrow Landscaping?</strong></p>
+          <ul>
+            <li>🏆 Family-owned business, owner-managed</li>
+            <li>📍 Multi-location opportunities across AR, OK, and TX</li>
+            <li>💯 Competitive pay and steady work</li>
+            <li>📈 Opportunity to grow with an expanding company</li>
+          </ul>
+
+          <div class="contact-box">
+            <p>Have questions about your application?</p>
+            <strong>📱 Call us: (405) 479-5794</strong>
+            <p>📧 Email: contact@evergrowlandscaping.com</p>
+          </div>
+
+          <p>We look forward to reviewing your application!</p>
+
+          <p>Best regards,<br>
+          <strong>The Evergrow Landscaping Team</strong></p>
+        </div>
+        <div class="footer">
+          <p><strong>Evergrow Landscaping</strong></p>
+          <p>Serving El Dorado, AR | Oklahoma City, OK | Texas Locations</p>
+          <p>Licensed & Insured | Family-Owned</p>
+          <p style="margin-top: 15px; font-size: 12px;">
+            This email was sent because you applied for a position at evergrowlandscaping.com
+          </p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
