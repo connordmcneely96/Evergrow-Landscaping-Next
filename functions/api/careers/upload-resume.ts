@@ -1,5 +1,5 @@
 import { Env } from '../../types';
-import { uploadToR2, validateFile } from '../../lib/r2';
+import { uploadToR2, validateFile } from '../../lib/r2-upload';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
