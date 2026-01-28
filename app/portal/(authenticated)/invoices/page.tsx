@@ -9,6 +9,7 @@ export default function InvoicesPage() {
     const { token } = useAuth()
     const [invoices, setInvoices] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
+    const [payingInvoiceId, setPayingInvoiceId] = useState<number | null>(null)
 
     useEffect(() => {
         async function fetchInvoices() {
@@ -29,6 +30,31 @@ export default function InvoicesPage() {
         }
         fetchInvoices()
     }, [token])
+
+    async function handlePayNow(invoiceId: number) {
+        setPayingInvoiceId(invoiceId)
+        try {
+            const res = await fetch(`/api/payment/invoice/${invoiceId}`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await res.json() as any
+            if (data.success && data.url) {
+                // Redirect to Stripe Checkout
+                window.location.href = data.url
+            } else {
+                alert('Failed to create payment session: ' + (data.error || 'Unknown error'))
+                setPayingInvoiceId(null)
+            }
+        } catch (error) {
+            console.error('Payment error:', error)
+            alert('Failed to start payment process')
+            setPayingInvoiceId(null)
+        }
+    }
 
     if (loading) {
         return <div className="p-4">Loading invoices...</div>
@@ -73,9 +99,13 @@ export default function InvoicesPage() {
                                             <span className="text-lg font-bold text-gray-900">${invoice.amount.toFixed(2)}</span>
 
                                             {invoice.canPay && (
-                                                <button className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-ocean-blue hover:bg-ocean-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ocean-blue">
+                                                <button
+                                                    onClick={() => handlePayNow(invoice.id)}
+                                                    disabled={payingInvoiceId === invoice.id}
+                                                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-hopeful-teal hover:bg-hopeful-teal/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hopeful-teal disabled:opacity-50 disabled:cursor-not-allowed"
+                                                >
                                                     <CreditCard className="h-3 w-3 mr-1" />
-                                                    Pay Now
+                                                    {payingInvoiceId === invoice.id ? 'Loading...' : 'Pay Now'}
                                                 </button>
                                             )}
 
