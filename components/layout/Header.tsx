@@ -98,7 +98,7 @@ export default function Header() {
                             <span>405-479-5794</span>
                         </a>
                         <Link
-                            href="/portal/invoices"
+                            href="/pay"
                             className={`text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors ${textColor}`}
                         >
                             Make a Payment
@@ -193,7 +193,7 @@ export default function Header() {
                                     Get a Free Quote
                                 </Link>
                                 <Link
-                                    href="/portal/invoices"
+                                    href="/pay"
                                     className="bg-hopeful-teal text-white py-3 rounded-lg font-bold uppercase text-center tracking-wide shadow-md"
                                 >
                                     Make a Payment
