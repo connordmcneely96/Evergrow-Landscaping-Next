@@ -65,7 +65,7 @@ export default function GuestPaymentPage() {
             if (data.success && data.url) {
                 window.location.href = data.url
             } else {
-                setError(data.error || 'Failed to create payment session')
+                setError(data.details || data.error || 'Failed to create payment session')
                 setPayingInvoiceId(null)
             }
         } catch {
