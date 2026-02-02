@@ -96,6 +96,26 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         // Create a real JWT session
+        if (!env.JWT_SECRET) {
+            return new Response(JSON.stringify({
+                success: false,
+                error: 'Server configuration error: JWT_SECRET is not set',
+            }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        if (!env.SESSIONS) {
+            return new Response(JSON.stringify({
+                success: false,
+                error: 'Server configuration error: SESSIONS KV namespace is not bound',
+            }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
         const token = await createSession(env, {
             userId: customer.id,
             email: customer.email,
@@ -115,11 +135,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             headers: { 'Content-Type': 'application/json' },
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Register error:', error);
         return new Response(JSON.stringify({
             success: false,
-            error: 'Internal server error',
+            error: `Registration failed: ${error?.message || 'Unknown error'}`,
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
