@@ -193,18 +193,28 @@ export default function GuestPaymentPage() {
                             </div>
                         )}
 
-                        {/* Portal Login Link */}
-                        <div className="mt-8 text-center">
-                            <p className="text-gray-500 text-sm mb-2">
-                                Need to view payment history or manage your projects?
+                        {/* Portal Links */}
+                        <div className="mt-8 text-center space-y-3">
+                            <p className="text-gray-500 text-sm">
+                                Want to view payment history, project photos, and more?
                             </p>
-                            <Link
-                                href="/portal/login"
-                                className="inline-flex items-center text-hopeful-teal font-semibold hover:underline"
-                            >
-                                Log in to Customer Portal
-                                <ArrowRight className="h-4 w-4 ml-1" />
-                            </Link>
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <Link
+                                    href="/portal/register"
+                                    className="inline-flex items-center text-hopeful-teal font-semibold hover:underline"
+                                >
+                                    Create an Account
+                                    <ArrowRight className="h-4 w-4 ml-1" />
+                                </Link>
+                                <span className="hidden sm:inline text-gray-300">|</span>
+                                <Link
+                                    href="/portal/login"
+                                    className="inline-flex items-center text-gray-600 font-medium hover:underline"
+                                >
+                                    Sign In
+                                    <ArrowRight className="h-4 w-4 ml-1" />
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
