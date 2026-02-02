@@ -17,6 +17,7 @@ type QuoteRow = {
     quoted_amount: number | null;
     status: string;
     description: string | null;
+    photo_urls: string | null;
     contact_name: string | null;
     contact_email: string | null;
     customer_name: string | null;
@@ -501,6 +502,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             q.quoted_amount,
             q.status,
             q.description,
+            q.photo_urls,
             q.contact_name,
             q.contact_email,
             c.name as customer_name,
@@ -615,6 +617,24 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         const projectId = Number(projectInsert.meta.last_row_id);
+
+        // Copy quote photos to project_photos table as 'before' phase
+        if (quote.photo_urls) {
+            try {
+                const photoUrls: string[] = JSON.parse(quote.photo_urls as string);
+                for (const url of photoUrls) {
+                    if (url && typeof url === 'string') {
+                        await env.DB.prepare(
+                            `INSERT INTO project_photos (project_id, photo_url, uploader_type, uploader_id, caption, phase)
+                             VALUES (?, ?, 'customer', ?, 'Submitted with quote request', 'before')`
+                        ).bind(projectId, url, quote.customer_id).run();
+                    }
+                }
+            } catch (photoErr) {
+                console.error('Failed to copy quote photos to project:', photoErr);
+                // Non-fatal - continue with project creation
+            }
+        }
 
         let depositInvoice: {
             id: number;
