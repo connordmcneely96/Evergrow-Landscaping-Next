@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useAuth } from '@/components/portal/AuthContext'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -10,7 +10,7 @@ import { PhotoUpload } from '@/components/portal/PhotoUpload'
 
 type TabType = 'details' | 'photos'
 
-export default function ProjectDetailPage() {
+function ProjectDetailContent() {
     const { token } = useAuth()
     const searchParams = useSearchParams()
     const projectId = searchParams.get('id') || ''
@@ -22,19 +22,19 @@ export default function ProjectDetailPage() {
     const [photosLoading, setPhotosLoading] = useState(false)
 
     useEffect(() => {
-        if (!token) return
+        if (!token || !projectId) return
         fetchProject()
     }, [token, projectId])
 
     useEffect(() => {
-        if (activeTab === 'photos' && token) {
+        if (activeTab === 'photos' && token && projectId) {
             fetchPhotos()
         }
     }, [activeTab, token, projectId])
 
     async function fetchProject() {
         try {
-            const res = await fetch(`/api/customer/projects?limit=1&projectId=${projectId}`, {
+            const res = await fetch(`/api/customer/projects?projectId=${projectId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             const data = await res.json() as any
@@ -97,7 +97,7 @@ export default function ProjectDetailPage() {
                 </div>
                 <span className={`px-3 py-1 text-sm font-semibold rounded-full
                     ${project.status === 'completed' ? 'bg-green-100 text-green-800' :
-                        project.status === 'in-progress' ? 'bg-blue-100 text-blue-800' :
+                        project.status === 'in_progress' ? 'bg-blue-100 text-blue-800' :
                             'bg-yellow-100 text-yellow-800'}`}>
                     {project.statusDisplay}
                 </span>
@@ -123,7 +123,7 @@ export default function ProjectDetailPage() {
                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                             }`}
                     >
-                        📸 Photos {photos.length > 0 && `(${photos.length})`}
+                        Photos {photos.length > 0 && `(${photos.length})`}
                     </button>
                 </nav>
             </div>
@@ -164,13 +164,13 @@ export default function ProjectDetailPage() {
                                     <div className="flex justify-between">
                                         <span className="text-gray-600">Deposit:</span>
                                         <span className={project.depositPaid ? 'text-green-600 font-medium' : 'text-gray-900'}>
-                                            {project.depositPaid ? '✓ Paid' : `$${(project.depositAmount || 0).toFixed(2)}`}
+                                            {project.depositPaid ? 'Paid' : `$${(project.depositAmount || 0).toFixed(2)}`}
                                         </span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-gray-600">Balance:</span>
                                         <span className={project.balancePaid ? 'text-green-600 font-medium' : 'text-gray-900'}>
-                                            {project.balancePaid ? '✓ Paid' : `$${(project.totalAmount - (project.depositAmount || 0)).toFixed(2)}`}
+                                            {project.balancePaid ? 'Paid' : `$${(project.totalAmount - (project.depositAmount || 0)).toFixed(2)}`}
                                         </span>
                                     </div>
                                 </div>
@@ -198,5 +198,13 @@ export default function ProjectDetailPage() {
                 )}
             </div>
         </div>
+    )
+}
+
+export default function ProjectDetailPage() {
+    return (
+        <Suspense fallback={<div className="p-4">Loading project...</div>}>
+            <ProjectDetailContent />
+        </Suspense>
     )
 }

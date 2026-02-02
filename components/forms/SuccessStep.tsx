@@ -78,9 +78,9 @@ export function SuccessStep() {
                         Return to Homepage
                     </Button>
                 </Link>
-                <Link href="/gallery">
+                <Link href="/services">
                     <Button variant="primary" size="lg">
-                        View Our Work
+                        View Our Services
                     </Button>
                 </Link>
             </div>

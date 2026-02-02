@@ -156,7 +156,7 @@ export default function PortalDashboard() {
                     ) : (
                         recentProjects.map((project: any) => (
                             <li key={project.id}>
-                                <Link href={`/portal/projects/${project.id}`} className="block hover:bg-gray-50">
+                                <Link href={`/portal/projects/detail?id=${project.id}`} className="block hover:bg-gray-50">
                                     <div className="px-4 py-4 sm:px-6">
                                         <div className="flex items-center justify-between">
                                             <p className="text-sm font-medium text-ocean-blue truncate">{project.serviceName}</p>
