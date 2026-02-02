@@ -135,6 +135,37 @@ export default function LoginPage() {
                         </Link>
                     </div>
                 </div>
+
+                {/* Create Account CTA */}
+                <div className="mt-6 bg-white py-6 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-100">
+                    <h3 className="text-center text-lg font-semibold text-gray-900 mb-3">
+                        New here? Create a free account
+                    </h3>
+                    <ul className="text-sm text-gray-600 space-y-2 mb-5">
+                        <li className="flex items-start">
+                            <span className="text-hopeful-teal font-bold mr-2 mt-0.5">&#10003;</span>
+                            View and pay invoices from your dashboard
+                        </li>
+                        <li className="flex items-start">
+                            <span className="text-hopeful-teal font-bold mr-2 mt-0.5">&#10003;</span>
+                            Track your active projects and timelines
+                        </li>
+                        <li className="flex items-start">
+                            <span className="text-hopeful-teal font-bold mr-2 mt-0.5">&#10003;</span>
+                            Browse and upload project photos
+                        </li>
+                        <li className="flex items-start">
+                            <span className="text-hopeful-teal font-bold mr-2 mt-0.5">&#10003;</span>
+                            See your outstanding balance at a glance
+                        </li>
+                    </ul>
+                    <Link
+                        href="/portal/register"
+                        className="block w-full text-center py-2.5 px-4 rounded-md bg-forest-green text-white font-semibold hover:bg-forest-green-600 transition-colors"
+                    >
+                        Create an Account
+                    </Link>
+                </div>
             </div>
         </div>
     )
