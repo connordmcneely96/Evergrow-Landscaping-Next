@@ -58,6 +58,10 @@ export default function LoginPage() {
                     <Link href="/portal/register" className="font-medium text-ocean-blue hover:text-ocean-blue/80">
                         Sign up
                     </Link>
+                    {' '}or{' '}
+                    <Link href="/quote-request" className="font-medium text-ocean-blue hover:text-ocean-blue/80">
+                        request a new quote
+                    </Link>
                 </p>
             </div>
 
