@@ -8,12 +8,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const { request, env, params } = context;
 
     try {
-        const session = await requireAuth(request, env);
-        if (!session) {
-            return new Response(JSON.stringify({
-                success: false,
-                error: 'Unauthorized',
-            }), { status: 401, headers: { 'Content-Type': 'application/json' } });
+        const authResult = await requireAuth(request, env);
+        if (authResult instanceof Response) {
+            return authResult;
         }
 
         const projectId = params.id as string;
@@ -30,8 +27,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             }), { status: 404, headers: { 'Content-Type': 'application/json' } });
         }
 
-        // Check if customer owns project (customer_id matches session user_id)
-        if (project.customer_id !== session.user_id && !session.is_admin) {
+        // Check if customer owns project (customer_id matches session userId)
+        if (project.customer_id !== authResult.userId && authResult.role !== 'admin') {
             return new Response(JSON.stringify({
                 success: false,
                 error: 'You do not have access to this project',
@@ -71,12 +68,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env, params } = context;
 
     try {
-        const session = await requireAuth(request, env);
-        if (!session) {
-            return new Response(JSON.stringify({
-                success: false,
-                error: 'Unauthorized',
-            }), { status: 401, headers: { 'Content-Type': 'application/json' } });
+        const authResult = await requireAuth(request, env);
+        if (authResult instanceof Response) {
+            return authResult;
         }
 
         const projectId = params.id as string;
@@ -96,8 +90,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             }), { status: 404, headers: { 'Content-Type': 'application/json' } });
         }
 
-        // Check if customer owns project (customer_id matches session user_id)
-        if (project.customer_id !== session.user_id && !session.is_admin) {
+        // Check if customer owns project (customer_id matches session userId)
+        if (project.customer_id !== authResult.userId && authResult.role !== 'admin') {
             return new Response(JSON.stringify({
                 success: false,
                 error: 'You do not have access to this project',
@@ -145,7 +139,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         // Determine uploader type
-        const uploaderType = session.is_admin ? 'business' : 'customer';
+        const uploaderType = authResult.role === 'admin' ? 'business' : 'customer';
 
         // Upload to R2
         const folder = `projects/${projectId}/${uploaderType}`;
@@ -167,7 +161,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             projectId,
             uploadResult.url,
             uploaderType,
-            session.user_id,
+            authResult.userId,
             caption || null,
             phase || null
         ).run();
@@ -222,7 +216,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 project_id: projectId,
                 photo_url: uploadResult.url,
                 uploader_type: uploaderType,
-                uploader_id: session.user_id,
+                uploader_id: authResult.userId,
                 caption,
                 phase,
                 uploaded_at: new Date().toISOString(),

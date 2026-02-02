@@ -84,6 +84,87 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         const statusQuery = url.searchParams.get('status');
         const limitQuery = url.searchParams.get('limit');
         const pageQuery = url.searchParams.get('page');
+        const projectIdQuery = url.searchParams.get('projectId');
+
+        // If a specific projectId is requested, fetch just that project
+        if (projectIdQuery) {
+            const projectId = parsePositiveInt(projectIdQuery, 0);
+            if (projectId <= 0) {
+                return new Response(
+                    JSON.stringify({ success: false, error: 'Invalid project ID' }),
+                    { status: 400, headers: { 'Content-Type': 'application/json' } }
+                );
+            }
+
+            const row = await env.DB.prepare(
+                `
+                SELECT
+                  p.id,
+                  p.service_type,
+                  p.description as project_description,
+                  p.total_amount,
+                  p.deposit_amount,
+                  p.deposit_paid,
+                  p.balance_paid,
+                  p.scheduled_date,
+                  p.status,
+                  p.completed_at,
+                  p.created_at,
+                  q.quoted_amount,
+                  q.description as quote_description
+                FROM projects p
+                LEFT JOIN quotes q ON p.quote_id = q.id
+                WHERE p.id = ? AND p.customer_id = ?
+              `
+            )
+                .bind(projectId, authResult.userId)
+                .first<ProjectRow>();
+
+            if (!row) {
+                return new Response(
+                    JSON.stringify({ success: false, error: 'Project not found' }),
+                    { status: 404, headers: { 'Content-Type': 'application/json' } }
+                );
+            }
+
+            const normalizedServiceType = normalizeServiceType(row.service_type);
+            const serviceName = normalizedServiceType
+                ? SERVICE_TYPE_LABELS[normalizedServiceType] || formatTitle(normalizedServiceType)
+                : 'Service';
+            const normalizedRowStatus = normalizeStatus(row.status) ?? row.status;
+            const statusDisplay =
+                STATUS_LABELS[normalizedRowStatus] || formatTitle(normalizedRowStatus);
+            const totalAmount = toNumber(row.total_amount, 0);
+            const depositAmount = toNumber(row.deposit_amount, 0);
+            const depositPaid = row.deposit_paid === 1 || row.deposit_paid === true;
+            const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid);
+
+            const project = {
+                id: row.id,
+                serviceType: normalizedServiceType ?? row.service_type,
+                serviceName,
+                totalAmount,
+                depositAmount,
+                depositPaid,
+                balancePaid: false,
+                balanceDue,
+                scheduledDate: row.scheduled_date,
+                status: normalizedRowStatus,
+                statusDisplay,
+                completedAt: row.completed_at,
+                createdAt: row.created_at,
+                description: row.quote_description ?? row.project_description ?? null,
+            };
+
+            return new Response(
+                JSON.stringify({
+                    success: true,
+                    projects: [project],
+                    pagination: { currentPage: 1, totalPages: 1, totalProjects: 1, hasMore: false },
+                }),
+                { status: 200, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
 
         const limit = parsePositiveInt(limitQuery, 20);
         const page = parsePositiveInt(pageQuery, 1);
