@@ -32,7 +32,7 @@ interface QuoteRow {
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
-const R2_PUBLIC_BASE_URL = 'https://evergreenlandscaping.com/assets/';
+const R2_PUBLIC_BASE_URL = 'https://evergrowlandscaping.com/assets/';
 
 const SERVICE_NAME_DISPLAY: Record<string, string> = {
     lawn_care: 'Lawn Care & Maintenance',

@@ -92,7 +92,7 @@ export async function createPaymentIntent(
         currency: 'usd',
         customer: customerId,
         metadata: {
-            source: 'evergreen-landscaping-website',
+            source: 'evergrow-landscaping-website',
             ...metadata,
         },
         setup_future_usage: options?.setupFutureUsage,
@@ -122,7 +122,7 @@ export async function createDepositPaymentIntent(
             currency: 'usd',
             customer: input.stripeCustomerId,
             metadata: {
-                source: 'evergreen-landscaping-website',
+                source: 'evergrow-landscaping-website',
                 project_id: String(input.projectId),
                 customer_id: String(input.customerId),
                 invoice_type: 'deposit',
@@ -160,7 +160,7 @@ export async function createCustomer(
         phone,
         address,
         metadata: {
-            source: 'evergreen-landscaping-website',
+            source: 'evergrow-landscaping-website',
         },
     });
 }
@@ -211,7 +211,7 @@ export async function createInvoice(
         collection_method: 'send_invoice',
         days_until_due: dueDate ? Math.ceil((dueDate - Date.now()) / (1000 * 60 * 60 * 24)) : 30,
         metadata: {
-            source: 'evergreen-landscaping-website',
+            source: 'evergrow-landscaping-website',
         },
     });
 

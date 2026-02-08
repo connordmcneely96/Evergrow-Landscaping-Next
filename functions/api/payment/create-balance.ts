@@ -312,7 +312,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 currency: 'usd',
                 customer: customer.stripe_customer_id,
                 metadata: {
-                    source: 'evergreen-landscaping-website',
+                    source: 'evergrow-landscaping-website',
                     project_id: String(projectId),
                     customer_id: String(customerId),
                     invoice_type: 'balance',

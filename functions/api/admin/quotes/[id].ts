@@ -4,8 +4,8 @@ import { Env } from '../../../types';
 
 const QUOTE_TOKEN_TTL_SECONDS = 60 * 60 * 24 * 30;
 const QUOTE_TOKEN_PREFIX = 'quote_token:';
-const ACCEPT_QUOTE_URL = 'https://evergreenlandscaping.com/portal/quotes/accept';
-const TERMS_URL = 'https://evergreenlandscaping.com/terms';
+const ACCEPT_QUOTE_URL = 'https://evergrowlandscaping.com/portal/quotes/accept';
+const TERMS_URL = 'https://evergrowlandscaping.com/terms';
 
 const SERVICE_TYPE_LABELS: Record<string, string> = {
     'lawn-care': 'Lawn Care & Maintenance',
@@ -340,7 +340,7 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
 
             const emailResult = await sendEmail(env, {
                 to: customerEmail,
-                subject: 'Your Landscaping Quote from Evergreen',
+                subject: 'Your Landscaping Quote from Evergrow',
                 html: emailHtml,
             });
 

@@ -12,7 +12,7 @@ const posts = [
         excerpt: 'Finding a trustworthy landscaping company shouldn\'t be a gamble. Here are 7 key factors to consider before hiring anyone to work on your property.',
         featuredImage: '/images/blog/choosing-landscaper.jpg',
         category: 'Landscaping Tips',
-        author: 'Evergreen Team',
+        author: 'Evergrow Team',
         publishedAt: '2025-01-20',
         readTime: '5 min read',
     },
@@ -23,7 +23,7 @@ const posts = [
         excerpt: 'Oklahoma\'s unpredictable spring weather requires a strategic approach to lawn care. Learn what to do (and when) for a lush green lawn all summer.',
         featuredImage: '/images/blog/spring-lawn-care.jpg',
         category: 'Lawn Care',
-        author: 'Evergreen Team',
+        author: 'Evergrow Team',
         publishedAt: '2025-01-15',
         readTime: '7 min read',
     },
@@ -34,7 +34,7 @@ const posts = [
         excerpt: 'Not all plants are created equal in Oklahoma\'s climate. Discover native and hardy plant options that look beautiful and require less maintenance.',
         featuredImage: '/images/blog/flower-bed-ideas.jpg',
         category: 'Flower Beds',
-        author: 'Evergreen Team',
+        author: 'Evergrow Team',
         publishedAt: '2025-01-10',
         readTime: '6 min read',
     },
@@ -45,7 +45,7 @@ const posts = [
         excerpt: 'Skipping lawn care to save money? Here\'s why that approach actually costs more in the long run—and how consistent maintenance protects your investment.',
         featuredImage: '/images/blog/lawn-maintenance-savings.jpg',
         category: 'Lawn Care',
-        author: 'Evergreen Team',
+        author: 'Evergrow Team',
         publishedAt: '2025-01-05',
         readTime: '4 min read',
     },
@@ -56,7 +56,7 @@ const posts = [
         excerpt: 'Thinking about pressure washing your driveway or deck? Learn about the benefits, risks, and why hiring a pro is often the safer choice.',
         featuredImage: '/images/blog/pressure-washing-guide.jpg',
         category: 'Pressure Washing',
-        author: 'Evergreen Team',
+        author: 'Evergrow Team',
         publishedAt: '2025-01-01',
         readTime: '5 min read',
     },
@@ -142,6 +142,6 @@ export default function BlogPage() {
 }
 
 export const metadata = {
-    title: 'Blog | Evergreen Landscaping',
+    title: 'Blog | Evergrow Landscaping',
     description: 'Landscaping tips, lawn care advice, and seasonal guides for homeowners in El Dorado and Oklahoma City.',
 }

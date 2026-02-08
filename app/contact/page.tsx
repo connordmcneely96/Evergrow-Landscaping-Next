@@ -60,6 +60,6 @@ export default function ContactPage() {
 }
 
 export const metadata = {
-    title: 'Contact Us | Evergreen Landscaping',
-    description: 'Contact Evergreen Landscaping for a free quote. Serving El Dorado, AR and Oklahoma City, OK. Phone, email, or contact form available.',
+    title: 'Contact Us | Evergrow Landscaping',
+    description: 'Contact Evergrow Landscaping for a free quote. Serving El Dorado, AR and Oklahoma City, OK. Phone, email, or contact form available.',
 }

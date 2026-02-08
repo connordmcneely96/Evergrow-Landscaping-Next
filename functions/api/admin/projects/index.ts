@@ -73,7 +73,7 @@ const STATUS_FILTERS: Record<string, string> = {
 
 const DEPOSIT_REQUIRED_SERVICES = new Set(['flower_beds', 'pressure_washing']);
 const NO_DEPOSIT_SERVICES = new Set(['lawn_care', 'seasonal_cleanup', 'other']);
-const PAYMENT_PORTAL_BASE_URL = 'https://evergreenlandscaping.com';
+const PAYMENT_PORTAL_BASE_URL = 'https://evergrowlandscaping.com';
 const REMINDER_KEY_PREFIX = 'project_reminder:';
 const DEPOSIT_DUE_DAYS_BEFORE = 4;
 
@@ -704,7 +704,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
             const emailResult = await sendEmail(env, {
                 to: customerEmail,
-                subject: 'Project Scheduled - Evergreen Landscaping',
+                subject: 'Project Scheduled - Evergrow Landscaping',
                 html: emailHtml,
             });
 
