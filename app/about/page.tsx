@@ -94,7 +94,7 @@ export default function AboutPage() {
                                 Oklahoma. We&apos;re trying to be the one you trust, the one you
                                 recommend to your neighbors, the one you call year after year
                                 because you know exactly what you&apos;re going to get. Quality over
-                                volume. Relationships over transactions. That&apos;s the Evergreen
+                                volume. Relationships over transactions. That&apos;s the Evergrow
                                 difference, and it&apos;s why we&apos;re committed to this mission.
                             </p>
                         </div>

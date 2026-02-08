@@ -833,7 +833,7 @@ export function getProjectFeedbackRequestEmail(data: {
         </div>
         <div class="content">
           <p>Hi ${escapeHtml(data.name)},</p>
-          <p>Thank you again for choosing Evergreen Landscaping for your ${escapeHtml(data.serviceType)}.</p>
+          <p>Thank you again for choosing Evergrow Landscaping for your ${escapeHtml(data.serviceType)}.</p>
           <p>Our goal is to provide 5-star service to every customer. We would love to hear about your experience!</p>
           
           <div style="text-center: center;">
