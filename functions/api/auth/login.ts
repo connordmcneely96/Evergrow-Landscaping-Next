@@ -6,6 +6,7 @@ interface CustomerRow {
     name: string;
     email: string;
     password_hash: string | null;
+    role: 'customer' | 'admin';
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -29,7 +30,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         // Look up customer in database
         const customer = await env.DB.prepare(
-            'SELECT id, name, email, password_hash FROM customers WHERE LOWER(email) = ?'
+            'SELECT id, name, email, password_hash, role FROM customers WHERE LOWER(email) = ?'
         ).bind(normalizedEmail).first<CustomerRow>();
 
         if (!customer) {
@@ -83,7 +84,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             userId: customer.id,
             email: customer.email,
             name: customer.name,
-            role: 'customer',
+            role: customer.role || 'customer',
         });
 
         return new Response(JSON.stringify({
@@ -93,6 +94,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 id: customer.id.toString(),
                 name: customer.name,
                 email: customer.email,
+                role: customer.role || 'customer',
             },
         }), {
             headers: { 'Content-Type': 'application/json' },

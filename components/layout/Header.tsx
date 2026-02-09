@@ -110,7 +110,7 @@ export default function Header() {
                             Client Login
                         </Link>
                         <Link
-                            href="/admin"
+                            href="/admin/login"
                             className={`flex items-center space-x-1 text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors ${textColor}`}
                         >
                             <Shield className="w-4 h-4" />
@@ -212,7 +212,7 @@ export default function Header() {
                                     Customer Portal
                                 </Link>
                                 <Link
-                                    href="/admin"
+                                    href="/admin/login"
                                     className="flex items-center justify-center space-x-2 bg-deep-charcoal text-white py-3 rounded-lg font-bold uppercase tracking-wide shadow-md"
                                 >
                                     <Shield className="w-5 h-5" />
