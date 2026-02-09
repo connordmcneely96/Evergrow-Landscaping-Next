@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone, Shield } from 'lucide-react';
-import { getAuthToken } from '@/lib/auth';
 
 const navigation = [
     { name: 'Home', href: '/' },
@@ -26,23 +25,7 @@ export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-    const [isAdmin, setIsAdmin] = useState(false);
     const pathname = usePathname();
-
-    // Check if logged-in user is admin
-    useEffect(() => {
-        const token = getAuthToken();
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setIsAdmin(payload.role === 'admin');
-            } catch {
-                setIsAdmin(false);
-            }
-        } else {
-            setIsAdmin(false);
-        }
-    }, [pathname]);
 
     // Handle scroll effect
     useEffect(() => {
@@ -126,15 +109,13 @@ export default function Header() {
                         >
                             Client Login
                         </Link>
-                        {isAdmin && (
-                            <Link
-                                href="/admin"
-                                className={`flex items-center space-x-1 text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors ${textColor}`}
-                            >
-                                <Shield className="w-4 h-4" />
-                                <span>Admin</span>
-                            </Link>
-                        )}
+                        <Link
+                            href="/admin"
+                            className={`flex items-center space-x-1 text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors ${textColor}`}
+                        >
+                            <Shield className="w-4 h-4" />
+                            <span>Admin</span>
+                        </Link>
                         <Link
                             href="/quote-request"
                             className="bg-vibrant-gold text-deep-charcoal px-6 py-2.5 rounded-md font-bold uppercase text-sm tracking-wide hover:bg-yellow-400 transition-colors shadow-md"
@@ -230,15 +211,13 @@ export default function Header() {
                                 >
                                     Customer Portal
                                 </Link>
-                                {isAdmin && (
-                                    <Link
-                                        href="/admin"
-                                        className="flex items-center justify-center space-x-2 bg-deep-charcoal text-white py-3 rounded-lg font-bold uppercase tracking-wide shadow-md"
-                                    >
-                                        <Shield className="w-5 h-5" />
-                                        <span>Admin Panel</span>
-                                    </Link>
-                                )}
+                                <Link
+                                    href="/admin"
+                                    className="flex items-center justify-center space-x-2 bg-deep-charcoal text-white py-3 rounded-lg font-bold uppercase tracking-wide shadow-md"
+                                >
+                                    <Shield className="w-5 h-5" />
+                                    <span>Admin Panel</span>
+                                </Link>
                             </div>
                         </div>
                     </motion.div>
