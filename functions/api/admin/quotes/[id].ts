@@ -178,8 +178,9 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
     let body: unknown;
     try {
         body = await request.json();
+        console.log('[Send Quote] Request body:', body);
     } catch (error) {
-        console.error('Admin quote body parse error:', error);
+        console.error('[Send Quote] Body parse error:', error);
         return new Response(JSON.stringify({ success: false, error: 'Invalid request body' }), {
             status: 400,
             headers: { 'Content-Type': 'application/json' },
@@ -187,6 +188,7 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
     }
 
     if (!body || typeof body !== 'object') {
+        console.error('[Send Quote] Invalid body type:', typeof body);
         return new Response(JSON.stringify({ success: false, error: 'Invalid request body' }), {
             status: 400,
             headers: { 'Content-Type': 'application/json' },
@@ -194,6 +196,7 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
     }
 
     const { quotedAmount, notes, timeline, terms } = body as Record<string, unknown>;
+    console.log('[Send Quote] Parsed fields:', { quotedAmount, hasNotes: !!notes, hasTimeline: !!timeline, hasTerms: !!terms });
 
     const amountValue = parseQuotedAmount(quotedAmount);
     if (amountValue === null) {
@@ -231,6 +234,7 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
     }
 
     try {
+        console.log('[Send Quote] Querying database for quote:', quoteId);
         const quote = await env.DB.prepare(
             `
         SELECT
@@ -252,7 +256,15 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
             .bind(quoteId)
             .first<QuoteRow>();
 
+        console.log('[Send Quote] Quote found:', {
+            id: quote?.id,
+            status: quote?.status,
+            hasContactEmail: !!quote?.contact_email,
+            hasCustomerEmail: !!quote?.customer_email
+        });
+
         if (!quote) {
+            console.error('[Send Quote] Quote not found in database:', quoteId);
             return new Response(JSON.stringify({ success: false, error: 'Quote not found' }), {
                 status: 404,
                 headers: { 'Content-Type': 'application/json' },
@@ -260,6 +272,10 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
         }
 
         if (quote.status !== 'pending') {
+            console.error('[Send Quote] Quote not in pending status:', {
+                quoteId,
+                status: quote.status
+            });
             return new Response(
                 JSON.stringify({
                     success: false,
@@ -334,7 +350,7 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
 
         // Validate that customer has an email address
         if (!customerEmail) {
-            console.error('Cannot send quote without customer email:', quoteId);
+            console.error('[Send Quote] Cannot send quote without customer email:', quoteId);
             return new Response(
                 JSON.stringify({
                     success: false,
@@ -343,6 +359,8 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
                 { status: 400, headers: { 'Content-Type': 'application/json' } }
             );
         }
+
+        console.log('[Send Quote] Proceeding with email send to:', customerEmail);
 
         let emailSent = false;
         if (customerEmail) {
