@@ -125,41 +125,41 @@ function AdminQuotesContent() {
         <div className="space-y-6">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">Quotes</h1>
+                <h1 className="text-2xl font-bold text-white">Quotes</h1>
                 <p className="text-sm text-gray-500 mt-1">Manage quote requests from customers</p>
             </div>
 
             {/* Summary pills */}
             <div className="flex flex-wrap gap-3">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-1.5 text-sm">
-                    <span className="font-semibold text-yellow-800">{summary.pending}</span>
-                    <span className="text-yellow-700 ml-1">Pending</span>
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-3 py-1.5 text-sm">
+                    <span className="font-semibold text-yellow-400">{summary.pending}</span>
+                    <span className="text-yellow-500 ml-1">Pending</span>
                 </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-1.5 text-sm">
-                    <span className="font-semibold text-blue-800">{summary.quoted}</span>
-                    <span className="text-blue-700 ml-1">Quoted</span>
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg px-3 py-1.5 text-sm">
+                    <span className="font-semibold text-blue-400">{summary.quoted}</span>
+                    <span className="text-blue-500 ml-1">Quoted</span>
                 </div>
-                <div className="bg-green-50 border border-green-200 rounded-lg px-3 py-1.5 text-sm">
-                    <span className="font-semibold text-green-800">{summary.accepted}</span>
-                    <span className="text-green-700 ml-1">Accepted</span>
+                <div className="bg-green-500/10 border border-green-500/30 rounded-lg px-3 py-1.5 text-sm">
+                    <span className="font-semibold text-green-400">{summary.accepted}</span>
+                    <span className="text-green-500 ml-1">Accepted</span>
                 </div>
-                <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-1.5 text-sm">
-                    <span className="font-semibold text-red-800">{summary.declined}</span>
-                    <span className="text-red-700 ml-1">Declined</span>
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-1.5 text-sm">
+                    <span className="font-semibold text-red-400">{summary.declined}</span>
+                    <span className="text-red-500 ml-1">Declined</span>
                 </div>
             </div>
 
             {/* Filter tabs + search */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex gap-1 bg-gray-100 p-1 rounded-lg overflow-x-auto">
+                <div className="flex gap-1 bg-gray-800 p-1 rounded-lg overflow-x-auto">
                     {STATUS_TABS.map((tab) => (
                         <button
                             key={tab.key}
                             onClick={() => handleTabChange(tab.key)}
                             className={`px-3 py-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${
                                 statusFilter === tab.key
-                                    ? 'bg-white text-gray-900 shadow-sm'
-                                    : 'text-gray-600 hover:text-gray-900'
+                                    ? 'bg-gray-700 text-white shadow-sm'
+                                    : 'text-gray-400 hover:text-white'
                             }`}
                         >
                             {tab.label}
@@ -173,14 +173,14 @@ function AdminQuotesContent() {
                         placeholder="Search name, email, phone..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent w-full sm:w-64"
+                        className="border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent w-full sm:w-64"
                     />
                     <Button type="submit" variant="outline" size="sm">Search</Button>
                 </form>
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
                 {loading ? (
                     <div className="p-8 flex justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-forest-green" />
@@ -195,28 +195,28 @@ function AdminQuotesContent() {
                         <div className="hidden md:block overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
-                                    <tr className="border-b border-gray-100 bg-gray-50">
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Customer</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Service</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Size</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Amount</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
-                                        <th className="text-left px-4 py-3 font-medium text-gray-600">Received</th>
-                                        <th className="text-right px-4 py-3 font-medium text-gray-600">Action</th>
+                                    <tr className="border-b border-gray-700 bg-gray-800">
+                                        <th className="text-left px-4 py-3 font-medium text-gray-400">Customer</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-400">Service</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-400">Size</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-400">Amount</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-400">Status</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-400">Received</th>
+                                        <th className="text-right px-4 py-3 font-medium text-gray-400">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-50">
+                                <tbody className="divide-y divide-gray-800">
                                     {quotes.map((quote) => (
-                                        <tr key={quote.id} className="hover:bg-gray-50 transition-colors">
+                                        <tr key={quote.id} className="hover:bg-gray-800/50 transition-colors">
                                             <td className="px-4 py-3">
                                                 <div>
-                                                    <p className="font-medium text-gray-900">{quote.customerName || 'Unknown'}</p>
+                                                    <p className="font-medium text-white">{quote.customerName || 'Unknown'}</p>
                                                     <p className="text-xs text-gray-500">{quote.customerEmail}</p>
                                                 </div>
                                             </td>
-                                            <td className="px-4 py-3 text-gray-700">{quote.serviceName}</td>
-                                            <td className="px-4 py-3 text-gray-700">{PROPERTY_SIZE_LABELS[quote.propertySize || ''] || '—'}</td>
-                                            <td className="px-4 py-3 text-gray-700 font-medium">
+                                            <td className="px-4 py-3 text-gray-300">{quote.serviceName}</td>
+                                            <td className="px-4 py-3 text-gray-300">{PROPERTY_SIZE_LABELS[quote.propertySize || ''] || '—'}</td>
+                                            <td className="px-4 py-3 text-gray-300 font-medium">
                                                 {quote.quotedAmount !== null ? formatCurrency(quote.quotedAmount) : '—'}
                                             </td>
                                             <td className="px-4 py-3">
@@ -226,7 +226,7 @@ function AdminQuotesContent() {
                                                 </div>
                                             </td>
                                             <td className="px-4 py-3">
-                                                <p className="text-gray-700">{formatDate(quote.createdAt)}</p>
+                                                <p className="text-gray-300">{formatDate(quote.createdAt)}</p>
                                                 {quote.daysWaiting > 0 && (
                                                     <p className={`text-xs ${quote.daysWaiting > 2 ? 'text-red-600 font-medium' : 'text-gray-500'}`}>
                                                         {quote.daysWaiting}d ago
@@ -247,12 +247,12 @@ function AdminQuotesContent() {
                         </div>
 
                         {/* Mobile cards */}
-                        <div className="md:hidden divide-y divide-gray-100">
+                        <div className="md:hidden divide-y divide-gray-800">
                             {quotes.map((quote) => (
-                                <Link key={quote.id} href={`/admin/quotes/detail?id=${quote.id}`} className="block p-4 hover:bg-gray-50">
+                                <Link key={quote.id} href={`/admin/quotes/detail?id=${quote.id}`} className="block p-4 hover:bg-gray-800/50">
                                     <div className="flex items-start justify-between mb-2">
                                         <div>
-                                            <p className="font-medium text-gray-900">{quote.customerName || 'Unknown'}</p>
+                                            <p className="font-medium text-white">{quote.customerName || 'Unknown'}</p>
                                             <p className="text-xs text-gray-500">{quote.serviceName}</p>
                                         </div>
                                         <div className="flex items-center gap-1.5">
@@ -263,7 +263,7 @@ function AdminQuotesContent() {
                                     <div className="flex items-center justify-between text-xs text-gray-500">
                                         <span>{formatDate(quote.createdAt)}</span>
                                         {quote.quotedAmount !== null && (
-                                            <span className="font-medium text-gray-900">{formatCurrency(quote.quotedAmount)}</span>
+                                            <span className="font-medium text-white">{formatCurrency(quote.quotedAmount)}</span>
                                         )}
                                     </div>
                                 </Link>
@@ -274,7 +274,7 @@ function AdminQuotesContent() {
 
                 {/* Pagination */}
                 {pagination.totalPages > 1 && (
-                    <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
+                    <div className="px-4 py-3 border-t border-gray-800 flex items-center justify-between">
                         <p className="text-sm text-gray-500">
                             Page {pagination.currentPage} of {pagination.totalPages} ({pagination.totalQuotes} total)
                         </p>
@@ -307,8 +307,8 @@ export default function AdminQuotesPage() {
     return (
         <Suspense fallback={
             <div className="space-y-6">
-                <div className="h-8 bg-gray-200 rounded w-32 animate-pulse" />
-                <div className="h-64 bg-white rounded-xl border animate-pulse" />
+                <div className="h-8 bg-gray-800 rounded w-32 animate-pulse" />
+                <div className="h-64 bg-gray-900 rounded-xl border border-gray-800 animate-pulse" />
             </div>
         }>
             <AdminQuotesContent />

@@ -141,8 +141,8 @@ function QuoteDetailContent() {
     if (loading) {
         return (
             <div className="space-y-6">
-                <div className="h-6 bg-gray-200 rounded w-32 animate-pulse" />
-                <div className="h-64 bg-white rounded-xl border animate-pulse" />
+                <div className="h-6 bg-gray-800 rounded w-32 animate-pulse" />
+                <div className="h-64 bg-gray-900 rounded-xl border border-gray-800 animate-pulse" />
             </div>
         )
     }
@@ -162,18 +162,18 @@ function QuoteDetailContent() {
         <div className="space-y-6 max-w-4xl">
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-sm text-gray-500">
-                <Link href="/admin" className="hover:text-gray-900">Dashboard</Link>
+                <Link href="/admin" className="hover:text-white">Dashboard</Link>
                 <span>/</span>
-                <Link href="/admin/quotes" className="hover:text-gray-900">Quotes</Link>
+                <Link href="/admin/quotes" className="hover:text-white">Quotes</Link>
                 <span>/</span>
-                <span className="text-gray-900">#{quote.id}</span>
+                <span className="text-white">#{quote.id}</span>
             </nav>
 
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                     <div className="flex items-center gap-3">
-                        <h1 className="text-2xl font-bold text-gray-900">Quote #{quote.id}</h1>
+                        <h1 className="text-2xl font-bold text-white">Quote #{quote.id}</h1>
                         <Badge variant={STATUS_BADGE[quote.status] || 'secondary'} className="text-sm">
                             {quote.statusDisplay}
                         </Badge>
@@ -187,7 +187,7 @@ function QuoteDetailContent() {
 
             {/* Urgency banner */}
             {quote.needsResponse && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2 text-sm text-red-700">
+                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 flex items-center gap-2 text-sm text-red-400">
                     <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse flex-shrink-0" />
                     This quote has been waiting {quote.daysWaiting} day{quote.daysWaiting !== 1 ? 's' : ''} for a response
                 </div>
@@ -197,14 +197,14 @@ function QuoteDetailContent() {
                 {/* Left column - Quote details */}
                 <div className="lg:col-span-3 space-y-6">
                     {/* Customer info */}
-                    <section className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                        <div className="px-5 py-3 bg-gray-50 border-b border-gray-100">
-                            <h2 className="font-semibold text-gray-900 text-sm">Customer Information</h2>
+                    <section className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                        <div className="px-5 py-3 bg-gray-800 border-b border-gray-700">
+                            <h2 className="font-semibold text-white text-sm">Customer Information</h2>
                         </div>
                         <div className="p-5 grid sm:grid-cols-2 gap-4">
                             <div>
                                 <p className="text-xs text-gray-500 mb-0.5">Name</p>
-                                <p className="text-sm font-medium text-gray-900">{quote.customerName || '—'}</p>
+                                <p className="text-sm font-medium text-white">{quote.customerName || '—'}</p>
                             </div>
                             <div>
                                 <p className="text-xs text-gray-500 mb-0.5">Email</p>
@@ -220,31 +220,31 @@ function QuoteDetailContent() {
                             </div>
                             <div>
                                 <p className="text-xs text-gray-500 mb-0.5">Address</p>
-                                <p className="text-sm text-gray-900">{quote.customerAddress || '—'}</p>
+                                <p className="text-sm text-white">{quote.customerAddress || '—'}</p>
                             </div>
                         </div>
                     </section>
 
                     {/* Service details */}
-                    <section className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                        <div className="px-5 py-3 bg-gray-50 border-b border-gray-100">
-                            <h2 className="font-semibold text-gray-900 text-sm">Service Details</h2>
+                    <section className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                        <div className="px-5 py-3 bg-gray-800 border-b border-gray-700">
+                            <h2 className="font-semibold text-white text-sm">Service Details</h2>
                         </div>
                         <div className="p-5 space-y-4">
                             <div className="grid sm:grid-cols-2 gap-4">
                                 <div>
                                     <p className="text-xs text-gray-500 mb-0.5">Service Type</p>
-                                    <p className="text-sm font-medium text-gray-900">{quote.serviceName}</p>
+                                    <p className="text-sm font-medium text-white">{quote.serviceName}</p>
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500 mb-0.5">Property Size</p>
-                                    <p className="text-sm text-gray-900">{PROPERTY_SIZE_LABELS[quote.propertySize || ''] || '—'}</p>
+                                    <p className="text-sm text-white">{PROPERTY_SIZE_LABELS[quote.propertySize || ''] || '—'}</p>
                                 </div>
                             </div>
                             {quote.description && (
                                 <div>
                                     <p className="text-xs text-gray-500 mb-1">Description</p>
-                                    <p className="text-sm text-gray-700 bg-gray-50 rounded-lg p-3 whitespace-pre-wrap">{quote.description}</p>
+                                    <p className="text-sm text-gray-300 bg-gray-800 rounded-lg p-3 whitespace-pre-wrap">{quote.description}</p>
                                 </div>
                             )}
                         </div>
@@ -252,16 +252,16 @@ function QuoteDetailContent() {
 
                     {/* Photos */}
                     {quote.photoUrls.length > 0 && (
-                        <section className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                            <div className="px-5 py-3 bg-gray-50 border-b border-gray-100">
-                                <h2 className="font-semibold text-gray-900 text-sm">Photos ({quote.photoUrls.length})</h2>
+                        <section className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                            <div className="px-5 py-3 bg-gray-800 border-b border-gray-700">
+                                <h2 className="font-semibold text-white text-sm">Photos ({quote.photoUrls.length})</h2>
                             </div>
                             <div className="p-5 grid grid-cols-2 sm:grid-cols-3 gap-3">
                                 {quote.photoUrls.map((url, idx) => (
                                     <button
                                         key={idx}
                                         onClick={() => setLightboxImg(url)}
-                                        className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:border-ocean-blue transition-colors"
+                                        className="relative aspect-square rounded-lg overflow-hidden border border-gray-700 hover:border-ocean-blue transition-colors"
                                     >
                                         <Image src={url} alt={`Quote photo ${idx + 1}`} fill className="object-cover" sizes="200px" />
                                     </button>
@@ -287,8 +287,8 @@ function QuoteDetailContent() {
                 <div className="lg:col-span-2 space-y-6">
                     {/* Already quoted */}
                     {quote.status !== 'pending' && (
-                        <div className="bg-white rounded-xl border border-gray-200 p-5">
-                            <h2 className="font-semibold text-gray-900 mb-3">Quote Status</h2>
+                        <div className="bg-gray-900 rounded-xl border border-gray-800 p-5">
+                            <h2 className="font-semibold text-white mb-3">Quote Status</h2>
                             <div className="space-y-3 text-sm">
                                 <div className="flex justify-between">
                                     <span className="text-gray-500">Status</span>
@@ -297,17 +297,17 @@ function QuoteDetailContent() {
                                 {quote.quotedAmount !== null && (
                                     <div className="flex justify-between">
                                         <span className="text-gray-500">Quoted Amount</span>
-                                        <span className="font-semibold text-gray-900">{formatCurrency(quote.quotedAmount)}</span>
+                                        <span className="font-semibold text-white">{formatCurrency(quote.quotedAmount)}</span>
                                     </div>
                                 )}
                                 {quote.acceptedAt && (
                                     <div className="flex justify-between">
                                         <span className="text-gray-500">Accepted</span>
-                                        <span className="text-gray-900">{formatDate(quote.acceptedAt)}</span>
+                                        <span className="text-white">{formatDate(quote.acceptedAt)}</span>
                                     </div>
                                 )}
                                 {quote.status === 'accepted' && (
-                                    <div className="pt-2 border-t border-gray-100">
+                                    <div className="pt-2 border-t border-gray-800">
                                         <p className="text-xs text-gray-500 mb-2">Ready to schedule this project?</p>
                                         <Link href="/admin/projects">
                                             <Button variant="primary" size="sm" className="w-full">Create Project</Button>
@@ -320,14 +320,14 @@ function QuoteDetailContent() {
 
                     {/* Send Quote form */}
                     {quote.status === 'pending' && (
-                        <form onSubmit={handleSendQuote} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                        <form onSubmit={handleSendQuote} className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
                             <div className="px-5 py-3 bg-forest-green border-b">
                                 <h2 className="font-semibold text-white text-sm">Send Quote to Customer</h2>
                             </div>
                             <div className="p-5 space-y-4">
                                 {/* Amount */}
                                 <div>
-                                    <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label htmlFor="amount" className="block text-sm font-medium text-gray-300 mb-1">
                                         Quoted Amount <span className="text-red-500">*</span>
                                     </label>
                                     <div className="relative">
@@ -341,8 +341,8 @@ function QuoteDetailContent() {
                                             placeholder="0.00"
                                             value={quotedAmount}
                                             onChange={(e) => { setQuotedAmount(e.target.value); setFormErrors({}) }}
-                                            className={`w-full pl-8 pr-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent ${
-                                                formErrors.quotedAmount ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                                            className={`w-full pl-8 pr-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent bg-gray-800 text-white placeholder-gray-500 ${
+                                                formErrors.quotedAmount ? 'border-red-300 bg-red-50' : 'border-gray-700'
                                             }`}
                                         />
                                     </div>
@@ -353,7 +353,7 @@ function QuoteDetailContent() {
 
                                 {/* Notes */}
                                 <div>
-                                    <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label htmlFor="notes" className="block text-sm font-medium text-gray-300 mb-1">
                                         Notes for Customer
                                     </label>
                                     <textarea
@@ -362,13 +362,13 @@ function QuoteDetailContent() {
                                         placeholder="Describe what's included, any conditions..."
                                         value={notes}
                                         onChange={(e) => setNotes(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent resize-none"
+                                        className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent resize-none"
                                     />
                                 </div>
 
                                 {/* Timeline */}
                                 <div>
-                                    <label htmlFor="timeline" className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label htmlFor="timeline" className="block text-sm font-medium text-gray-300 mb-1">
                                         Estimated Timeline
                                     </label>
                                     <input
@@ -377,13 +377,13 @@ function QuoteDetailContent() {
                                         placeholder='e.g., "2-3 hours" or "1 full day"'
                                         value={timeline}
                                         onChange={(e) => setTimeline(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
                                     />
                                 </div>
 
                                 {/* Terms */}
                                 <div>
-                                    <label htmlFor="terms" className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label htmlFor="terms" className="block text-sm font-medium text-gray-300 mb-1">
                                         Special Terms
                                     </label>
                                     <input
@@ -392,12 +392,12 @@ function QuoteDetailContent() {
                                         placeholder="e.g., 50% deposit required"
                                         value={terms}
                                         onChange={(e) => setTerms(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
                                     />
                                 </div>
 
                                 {/* Info */}
-                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs text-blue-700">
+                                <div className="bg-ocean-blue/10 border border-ocean-blue/30 rounded-lg p-3 text-xs text-ocean-blue">
                                     <p className="font-medium mb-1">What happens when you send:</p>
                                     <ul className="list-disc list-inside space-y-0.5">
                                         <li>Customer receives an email with pricing details</li>
@@ -421,8 +421,8 @@ function QuoteDetailContent() {
                     )}
 
                     {/* Quick contact */}
-                    <div className="bg-white rounded-xl border border-gray-200 p-5">
-                        <h3 className="font-semibold text-gray-900 text-sm mb-3">Quick Contact</h3>
+                    <div className="bg-gray-900 rounded-xl border border-gray-800 p-5">
+                        <h3 className="font-semibold text-white text-sm mb-3">Quick Contact</h3>
                         <div className="space-y-2">
                             {quote.customerPhone && (
                                 <a href={`tel:${quote.customerPhone}`} className="flex items-center gap-2 text-sm text-ocean-blue hover:underline">
@@ -452,8 +452,8 @@ export default function AdminQuoteDetailPage() {
     return (
         <Suspense fallback={
             <div className="space-y-6">
-                <div className="h-6 bg-gray-200 rounded w-32 animate-pulse" />
-                <div className="h-64 bg-white rounded-xl border animate-pulse" />
+                <div className="h-6 bg-gray-800 rounded w-32 animate-pulse" />
+                <div className="h-64 bg-gray-900 rounded-xl border border-gray-800 animate-pulse" />
             </div>
         }>
             <QuoteDetailContent />
