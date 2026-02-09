@@ -286,6 +286,20 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
             );
         }
 
+        // Validate customer email BEFORE updating database
+        const customerEmail = normalizeEmail(quote.contact_email || quote.customer_email);
+        if (!customerEmail) {
+            console.error('[Send Quote] Cannot send quote without customer email:', quoteId);
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    error: 'Cannot send quote: Customer email address is required',
+                }),
+                { status: 400, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+        console.log('[Send Quote] Customer email validated:', customerEmail);
+
         const acceptanceToken = generateToken();
         const tokenKey = `${QUOTE_TOKEN_PREFIX}${quoteId}`;
 
@@ -342,68 +356,53 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
 
         const acceptanceUrl = `${ACCEPT_QUOTE_URL}?token=${encodeURIComponent(acceptanceToken)}`;
 
-        const customerEmail = normalizeEmail(quote.contact_email || quote.customer_email);
         const customerName = normalizeName(quote.contact_name || quote.customer_name);
         const serviceTypeLabel = getServiceTypeLabel(quote.service_type);
         const validUntilDisplay = formatDateDisplay(
             new Date(Date.now() + QUOTE_TOKEN_TTL_SECONDS * 1000)
         );
 
-        // Validate that customer has an email address
-        if (!customerEmail) {
-            console.error('[Send Quote] Cannot send quote without customer email:', quoteId);
-            return new Response(
-                JSON.stringify({
-                    success: false,
-                    error: 'Cannot send quote: Customer email address is required',
-                }),
-                { status: 400, headers: { 'Content-Type': 'application/json' } }
-            );
-        }
-
         console.log('[Send Quote] Proceeding with email send to:', customerEmail);
 
-        let emailSent = false;
-        if (customerEmail) {
-            const emailHtml = getQuoteEmail({
-                customerName,
-                serviceType: serviceTypeLabel,
-                description: quote.description,
-                quotedAmount: amountValue,
-                notes: notesResult.value,
-                timeline: timelineResult.value,
-                terms: termsResult.value,
-                acceptanceUrl,
-                validUntilDisplay,
-                requiresDeposit: DEPOSIT_REQUIRED_SERVICES.has(quote.service_type),
-                termsUrl: TERMS_URL,
-            });
+        const emailHtml = getQuoteEmail({
+            customerName,
+            serviceType: serviceTypeLabel,
+            description: quote.description,
+            quotedAmount: amountValue,
+            notes: notesResult.value,
+            timeline: timelineResult.value,
+            terms: termsResult.value,
+            acceptanceUrl,
+            validUntilDisplay,
+            requiresDeposit: DEPOSIT_REQUIRED_SERVICES.has(quote.service_type),
+            termsUrl: TERMS_URL,
+        });
 
-            const emailResult = await sendEmail(env, {
-                to: customerEmail,
-                subject: 'Your Landscaping Quote from Evergrow',
+        const emailResult = await sendEmail(env, {
+            to: customerEmail,
+            subject: 'Your Landscaping Quote from Evergrow',
+            html: emailHtml,
+        });
+
+        let emailSent = false;
+        if (!emailResult.success) {
+            console.error('[Send Quote] Quote email send failed:', emailResult.error);
+        } else {
+            emailSent = true;
+            console.log('[Send Quote] Email sent successfully');
+        }
+
+        // Send copy to owner if configured
+        if (env.NOTIFICATION_EMAIL) {
+            const ownerResult = await sendEmail(env, {
+                to: env.NOTIFICATION_EMAIL,
+                subject: `Copy: Quote sent to ${customerName}`,
                 html: emailHtml,
             });
 
-            if (!emailResult.success) {
-                console.error('Quote email send failed:', emailResult.error);
-            } else {
-                emailSent = true;
+            if (!ownerResult.success) {
+                console.error('[Send Quote] Quote owner copy failed:', ownerResult.error);
             }
-
-            if (env.NOTIFICATION_EMAIL) {
-                const ownerResult = await sendEmail(env, {
-                    to: env.NOTIFICATION_EMAIL,
-                    subject: `Copy: Quote sent to ${customerName}`,
-                    html: emailHtml,
-                });
-
-                if (!ownerResult.success) {
-                    console.error('Quote owner copy failed:', ownerResult.error);
-                }
-            }
-        } else {
-            console.warn('Quote email missing customer email:', quoteId);
         }
 
         console.info('Quote sent to customer', {
@@ -430,11 +429,12 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
             { status: 200, headers: { 'Content-Type': 'application/json' } }
         );
     } catch (error) {
-        console.error('Admin quote update error:', error);
+        console.error('[Send Quote] Fatal error:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         return new Response(
             JSON.stringify({
                 success: false,
-                error: 'Failed to update quote',
+                error: `Failed to update quote: ${errorMessage}`,
             }),
             { status: 500, headers: { 'Content-Type': 'application/json' } }
         );
