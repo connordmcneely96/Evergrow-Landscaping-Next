@@ -50,11 +50,11 @@ export default function AdminProjectsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
+                <h1 className="text-2xl font-bold text-white">Projects</h1>
                 <p className="text-sm text-gray-500 mt-1">Track active and completed projects</p>
             </div>
 
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
                 {loading ? (
                     <div className="p-8 flex justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-forest-green" />
@@ -65,21 +65,21 @@ export default function AdminProjectsPage() {
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
-                                <tr className="border-b border-gray-100 bg-gray-50">
-                                    <th className="text-left px-4 py-3 font-medium text-gray-600">Customer</th>
-                                    <th className="text-left px-4 py-3 font-medium text-gray-600">Service</th>
-                                    <th className="text-left px-4 py-3 font-medium text-gray-600">Amount</th>
-                                    <th className="text-left px-4 py-3 font-medium text-gray-600">Scheduled</th>
-                                    <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
+                                <tr className="border-b border-gray-700 bg-gray-800">
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Customer</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Service</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Amount</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Scheduled</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Status</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-50">
+                            <tbody className="divide-y divide-gray-800">
                                 {projects.map((p) => (
-                                    <tr key={p.id} className="hover:bg-gray-50">
-                                        <td className="px-4 py-3 font-medium text-gray-900">{p.customerName || '—'}</td>
-                                        <td className="px-4 py-3 text-gray-700">{p.serviceName}</td>
-                                        <td className="px-4 py-3 text-gray-900 font-medium">{formatCurrency(p.totalAmount)}</td>
-                                        <td className="px-4 py-3 text-gray-700">{p.scheduledDate ? formatDate(p.scheduledDate) : '—'}</td>
+                                    <tr key={p.id} className="hover:bg-gray-800/50">
+                                        <td className="px-4 py-3 font-medium text-white">{p.customerName || '—'}</td>
+                                        <td className="px-4 py-3 text-gray-300">{p.serviceName}</td>
+                                        <td className="px-4 py-3 text-white font-medium">{formatCurrency(p.totalAmount)}</td>
+                                        <td className="px-4 py-3 text-gray-300">{p.scheduledDate ? formatDate(p.scheduledDate) : '—'}</td>
                                         <td className="px-4 py-3"><Badge variant={STATUS_BADGE[p.status] || 'secondary'}>{p.statusDisplay}</Badge></td>
                                     </tr>
                                 ))}

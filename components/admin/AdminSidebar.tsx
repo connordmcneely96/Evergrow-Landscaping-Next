@@ -32,10 +32,10 @@ export function AdminSidebar({ userName, onLogout }: AdminSidebarProps) {
             {/* Mobile hamburger */}
             <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-md border border-gray-200"
+                className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-900 rounded-lg shadow-md border border-gray-700"
                 aria-label="Toggle menu"
             >
-                <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     {mobileOpen ? (
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     ) : (
@@ -47,24 +47,24 @@ export function AdminSidebar({ userName, onLogout }: AdminSidebarProps) {
             {/* Overlay */}
             {mobileOpen && (
                 <div
-                    className="lg:hidden fixed inset-0 bg-black/30 z-40"
+                    className="lg:hidden fixed inset-0 bg-black/50 z-40"
                     onClick={() => setMobileOpen(false)}
                 />
             )}
 
             {/* Sidebar */}
             <aside className={cn(
-                'fixed top-0 left-0 h-full w-60 bg-white border-r border-gray-200 z-40 flex flex-col transition-transform duration-200',
+                'fixed top-0 left-0 h-full w-60 bg-gray-900 border-r border-gray-800 z-40 flex flex-col transition-transform duration-200',
                 mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
             )}>
                 {/* Brand */}
-                <div className="p-5 border-b border-gray-100">
+                <div className="p-5 border-b border-gray-800">
                     <Link href="/admin" className="flex items-center gap-2" onClick={() => setMobileOpen(false)}>
                         <div className="w-8 h-8 bg-forest-green rounded-lg flex items-center justify-center">
                             <span className="text-white font-bold text-sm">EG</span>
                         </div>
                         <div>
-                            <p className="font-bold text-forest-green text-sm leading-tight">Evergrow</p>
+                            <p className="font-bold text-white text-sm leading-tight">Evergrow</p>
                             <p className="text-[10px] text-gray-500 leading-tight">Admin Panel</p>
                         </div>
                     </Link>
@@ -81,7 +81,7 @@ export function AdminSidebar({ userName, onLogout }: AdminSidebarProps) {
                                 'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
                                 isActive(item.href)
                                     ? 'bg-forest-green text-white'
-                                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                    : 'text-gray-400 hover:bg-gray-800 hover:text-white'
                             )}
                         >
                             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
@@ -93,13 +93,13 @@ export function AdminSidebar({ userName, onLogout }: AdminSidebarProps) {
                 </nav>
 
                 {/* User info & logout */}
-                <div className="p-3 border-t border-gray-100">
+                <div className="p-3 border-t border-gray-800">
                     {userName && (
                         <p className="px-3 py-1 text-xs text-gray-500 truncate">{userName}</p>
                     )}
                     <button
                         onClick={onLogout}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors"
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
                     >
                         <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
@@ -108,7 +108,7 @@ export function AdminSidebar({ userName, onLogout }: AdminSidebarProps) {
                     </button>
                     <Link
                         href="/"
-                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
                     >
                         <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />

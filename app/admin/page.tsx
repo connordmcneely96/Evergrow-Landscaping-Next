@@ -89,13 +89,13 @@ export default function AdminDashboard() {
     if (loading) {
         return (
             <div className="space-y-6">
-                <div className="h-8 bg-gray-200 rounded w-48 animate-pulse" />
+                <div className="h-8 bg-gray-800 rounded w-48 animate-pulse" />
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {[...Array(4)].map((_, i) => (
-                        <div key={i} className="h-28 bg-white rounded-xl border animate-pulse" />
+                        <div key={i} className="h-28 bg-gray-900 rounded-xl border border-gray-700 animate-pulse" />
                     ))}
                 </div>
-                <div className="h-64 bg-white rounded-xl border animate-pulse" />
+                <div className="h-64 bg-gray-900 rounded-xl border border-gray-700 animate-pulse" />
             </div>
         )
     }
@@ -104,8 +104,8 @@ export default function AdminDashboard() {
         <div className="space-y-6">
             {/* Header */}
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-                <p className="text-sm text-gray-500 mt-1">Overview of your business activity</p>
+                <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+                <p className="text-sm text-gray-400 mt-1">Overview of your business activity</p>
             </div>
 
             {/* Stats Cards */}
@@ -139,16 +139,16 @@ export default function AdminDashboard() {
 
             {/* Urgent Attention Banner */}
             {summary.pending > 0 && (
-                <Link href="/admin/quotes?status=pending" className="block bg-yellow-50 border border-yellow-200 rounded-xl p-4 hover:bg-yellow-100 transition-colors">
+                <Link href="/admin/quotes?status=pending" className="block bg-yellow-500/10 border border-yellow-600/30 rounded-xl p-4 hover:bg-yellow-500/20 transition-colors">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-vibrant-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <svg className="w-5 h-5 text-yellow-700" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                        <div className="w-10 h-10 bg-yellow-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <svg className="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                             </svg>
                         </div>
                         <div>
-                            <p className="font-semibold text-yellow-800">{summary.pending} quote{summary.pending !== 1 ? 's' : ''} awaiting your response</p>
-                            <p className="text-sm text-yellow-700">Click to view and respond to pending quotes</p>
+                            <p className="font-semibold text-yellow-300">{summary.pending} quote{summary.pending !== 1 ? 's' : ''} awaiting your response</p>
+                            <p className="text-sm text-yellow-400/70">Click to view and respond to pending quotes</p>
                         </div>
                     </div>
                 </Link>
@@ -157,20 +157,20 @@ export default function AdminDashboard() {
             {/* Two-column layout */}
             <div className="grid lg:grid-cols-2 gap-6">
                 {/* Recent Quotes */}
-                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-                        <h2 className="font-semibold text-gray-900">Recent Quotes</h2>
-                        <Link href="/admin/quotes" className="text-sm text-ocean-blue hover:underline">View all</Link>
+                <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                    <div className="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
+                        <h2 className="font-semibold text-white">Recent Quotes</h2>
+                        <Link href="/admin/quotes" className="text-sm text-forest-green hover:underline">View all</Link>
                     </div>
                     {recentQuotes.length === 0 ? (
                         <p className="p-5 text-sm text-gray-500 text-center">No quotes yet</p>
                     ) : (
-                        <div className="divide-y divide-gray-50">
+                        <div className="divide-y divide-gray-800">
                             {recentQuotes.map((quote) => (
-                                <Link key={quote.id} href={`/admin/quotes/detail?id=${quote.id}`} className="block px-5 py-3 hover:bg-gray-50 transition-colors">
+                                <Link key={quote.id} href={`/admin/quotes/detail?id=${quote.id}`} className="block px-5 py-3 hover:bg-gray-800/50 transition-colors">
                                     <div className="flex items-center justify-between">
                                         <div className="min-w-0">
-                                            <p className="text-sm font-medium text-gray-900 truncate">{quote.customerName || 'Unknown'}</p>
+                                            <p className="text-sm font-medium text-white truncate">{quote.customerName || 'Unknown'}</p>
                                             <p className="text-xs text-gray-500">{quote.serviceName}</p>
                                         </div>
                                         <div className="flex items-center gap-2 flex-shrink-0 ml-3">
@@ -187,27 +187,27 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Active Projects */}
-                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-                        <h2 className="font-semibold text-gray-900">Active Projects</h2>
-                        <Link href="/admin/projects" className="text-sm text-ocean-blue hover:underline">View all</Link>
+                <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                    <div className="px-5 py-4 border-b border-gray-800 flex items-center justify-between">
+                        <h2 className="font-semibold text-white">Active Projects</h2>
+                        <Link href="/admin/projects" className="text-sm text-forest-green hover:underline">View all</Link>
                     </div>
                     {projects.length === 0 ? (
                         <p className="p-5 text-sm text-gray-500 text-center">No projects yet</p>
                     ) : (
-                        <div className="divide-y divide-gray-50">
+                        <div className="divide-y divide-gray-800">
                             {projects.map((project) => (
                                 <div key={project.id} className="px-5 py-3">
                                     <div className="flex items-center justify-between">
                                         <div className="min-w-0">
-                                            <p className="text-sm font-medium text-gray-900 truncate">{project.customerName || 'Unknown'}</p>
+                                            <p className="text-sm font-medium text-white truncate">{project.customerName || 'Unknown'}</p>
                                             <p className="text-xs text-gray-500">
                                                 {project.serviceName}
                                                 {project.scheduledDate && ` — ${formatDate(project.scheduledDate)}`}
                                             </p>
                                         </div>
                                         <div className="flex items-center gap-2 flex-shrink-0 ml-3">
-                                            <span className="text-sm font-medium text-gray-900">{formatCurrency(project.totalAmount)}</span>
+                                            <span className="text-sm font-medium text-white">{formatCurrency(project.totalAmount)}</span>
                                             <Badge variant={STATUS_BADGE[project.status] || 'secondary'}>{project.statusDisplay}</Badge>
                                         </div>
                                     </div>

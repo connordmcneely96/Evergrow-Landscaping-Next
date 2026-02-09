@@ -10,17 +10,17 @@ interface StatsCardProps {
 }
 
 const VARIANT_STYLES = {
-    default: 'border-gray-200',
-    warning: 'border-vibrant-gold bg-yellow-50',
-    success: 'border-green-300 bg-green-50',
-    info: 'border-ocean-blue bg-blue-50',
+    default: 'border-gray-700',
+    warning: 'border-yellow-600/40 bg-yellow-500/10',
+    success: 'border-green-600/40 bg-green-500/10',
+    info: 'border-ocean-blue/40 bg-ocean-blue/10',
 }
 
 const ICON_BG = {
-    default: 'bg-gray-100 text-gray-600',
-    warning: 'bg-vibrant-gold/20 text-yellow-700',
-    success: 'bg-green-100 text-green-700',
-    info: 'bg-ocean-blue/10 text-ocean-blue',
+    default: 'bg-gray-700 text-gray-300',
+    warning: 'bg-yellow-500/20 text-yellow-400',
+    success: 'bg-green-500/20 text-green-400',
+    info: 'bg-ocean-blue/20 text-ocean-blue',
 }
 
 export function StatsCard({ label, value, icon, trend, variant = 'default', onClick }: StatsCardProps) {
@@ -29,15 +29,15 @@ export function StatsCard({ label, value, icon, trend, variant = 'default', onCl
         <Wrapper
             onClick={onClick}
             className={cn(
-                'bg-white rounded-xl border p-5 text-left transition-shadow',
+                'bg-gray-900 rounded-xl border p-5 text-left transition-shadow',
                 VARIANT_STYLES[variant],
-                onClick && 'hover:shadow-md cursor-pointer'
+                onClick && 'hover:shadow-lg hover:shadow-black/20 cursor-pointer'
             )}
         >
             <div className="flex items-start justify-between">
                 <div>
-                    <p className="text-sm text-gray-500 font-medium">{label}</p>
-                    <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
+                    <p className="text-sm text-gray-400 font-medium">{label}</p>
+                    <p className="text-2xl font-bold text-white mt-1">{value}</p>
                     {trend && <p className="text-xs text-gray-500 mt-1">{trend}</p>}
                 </div>
                 {icon && (
