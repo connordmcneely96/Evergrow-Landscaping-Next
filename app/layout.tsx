@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import MainLayout from "@/components/layout/MainLayout";
+import LayoutShell from "@/components/layout/LayoutShell";
 import { ToastProvider } from "@/components/ui/Toast";
 import { AuthProvider } from "@/contexts/AuthContext";
 
@@ -32,11 +30,9 @@ export default function RootLayout({
       <body className="antialiased flex flex-col min-h-screen">
         <ToastProvider>
           <AuthProvider>
-            <Header />
-            <MainLayout>
+            <LayoutShell>
               {children}
-            </MainLayout>
-            <Footer />
+            </LayoutShell>
           </AuthProvider>
         </ToastProvider>
       </body>
