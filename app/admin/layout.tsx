@@ -29,7 +29,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const [authorized, setAuthorized] = useState(false)
     const [userName, setUserName] = useState<string | undefined>()
 
-    const isLoginPage = pathname === '/admin/login'
+    const isLoginPage = pathname?.startsWith('/admin/login') ||
+        (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin/login'))
 
     useEffect(() => {
         // On login page, redirect to dashboard if already authenticated as admin
