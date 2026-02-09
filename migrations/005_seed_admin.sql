@@ -1,8 +1,13 @@
--- Migration: Seed demo admin account
+-- Migration: Add role column and seed demo admin account
 -- Date: 2026-02-09
--- Description: Inserts a demo admin user for development/testing
+-- Description: Adds role column to customers table (if missing) and inserts admin user
 -- Credentials: admin@evergrowlandscaping.com / admin123
 
+-- Add role column to existing customers table
+-- (SQLite will error if column already exists, so run this separately)
+ALTER TABLE customers ADD COLUMN role TEXT NOT NULL DEFAULT 'customer';
+
+-- Insert demo admin account
 INSERT OR IGNORE INTO customers (
   email,
   name,
