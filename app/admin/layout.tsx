@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import { getAuthToken, removeAuthToken } from '@/lib/auth'
 
@@ -25,20 +25,35 @@ function decodeToken(token: string): JwtPayload | null {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter()
+    const pathname = usePathname()
     const [authorized, setAuthorized] = useState(false)
     const [userName, setUserName] = useState<string | undefined>()
 
+    const isLoginPage = pathname === '/admin/login'
+
     useEffect(() => {
+        // On login page, redirect to dashboard if already authenticated as admin
+        if (isLoginPage) {
+            const token = getAuthToken()
+            if (token) {
+                const decoded = decodeToken(token)
+                if (decoded?.role === 'admin') {
+                    router.replace('/admin')
+                }
+            }
+            return
+        }
+
         const token = getAuthToken()
         if (!token) {
-            router.replace('/login')
+            router.replace('/admin/login')
             return
         }
 
         const decoded = decodeToken(token)
         if (!decoded) {
             removeAuthToken()
-            router.replace('/login')
+            router.replace('/admin/login')
             return
         }
 
@@ -50,11 +65,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         setUserName(decoded.user?.name || decoded.user?.email)
         setAuthorized(true)
-    }, [router])
+    }, [router, isLoginPage])
 
     const handleLogout = () => {
         removeAuthToken()
-        router.replace('/login')
+        router.replace('/admin/login')
+    }
+
+    // Login page renders without the sidebar/auth gate
+    if (isLoginPage) {
+        return <>{children}</>
     }
 
     if (!authorized) {
