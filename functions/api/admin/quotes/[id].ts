@@ -271,8 +271,9 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
             });
         }
 
-        if (quote.status !== 'pending') {
-            console.error('[Send Quote] Quote not in pending status:', {
+        // Allow resending quotes that are in 'quoted' status in case email failed
+        if (quote.status !== 'pending' && quote.status !== 'quoted') {
+            console.error('[Send Quote] Quote not in valid status for sending:', {
                 quoteId,
                 status: quote.status
             });
@@ -315,10 +316,10 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
         SET
           quoted_amount = ?,
           status = 'quoted',
-          quoted_at = datetime('now'),
+          quoted_at = COALESCE(quoted_at, datetime('now')),
           quote_notes = COALESCE(?, quote_notes),
           quote_valid_until = datetime('now', '+30 day')
-        WHERE id = ? AND status = 'pending'
+        WHERE id = ? AND (status = 'pending' OR status = 'quoted')
       `
         )
             .bind(amountValue, storedNotes, quoteId)
