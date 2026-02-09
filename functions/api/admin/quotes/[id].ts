@@ -152,13 +152,23 @@ function generateToken(): string {
 export const onRequestPut: PagesFunction<Env> = async (context) => {
     const { request, env, params } = context;
 
+    console.log('[Send Quote] Request received:', {
+        url: request.url,
+        params,
+        paramId: params.id,
+    });
+
     const authResult = await requireAdmin(request, env);
     if (authResult instanceof Response) {
+        console.log('[Send Quote] Auth failed');
         return authResult;
     }
 
     const quoteId = parseQuoteId(params.id);
+    console.log('[Send Quote] Parsed quote ID:', quoteId);
+
     if (!quoteId) {
+        console.error('[Send Quote] Invalid quote ID from params:', params.id);
         return new Response(JSON.stringify({ success: false, error: 'Invalid quote ID' }), {
             status: 400,
             headers: { 'Content-Type': 'application/json' },
@@ -321,6 +331,18 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
         const validUntilDisplay = formatDateDisplay(
             new Date(Date.now() + QUOTE_TOKEN_TTL_SECONDS * 1000)
         );
+
+        // Validate that customer has an email address
+        if (!customerEmail) {
+            console.error('Cannot send quote without customer email:', quoteId);
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    error: 'Cannot send quote: Customer email address is required',
+                }),
+                { status: 400, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
 
         let emailSent = false;
         if (customerEmail) {
