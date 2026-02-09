@@ -51,7 +51,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const existing = await env.DB.prepare(
             `
         SELECT id, status, unsubscribed_at
-        FROM newsletters
+        FROM newsletter_subscribers
         WHERE email = ?
         LIMIT 1
       `
@@ -69,7 +69,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         if (existing) {
             const updateResult = await env.DB.prepare(
                 `
-          UPDATE newsletters
+          UPDATE newsletter_subscribers
           SET name = COALESCE(?, name),
           source = COALESCE(?, source),
           subscribed_at = CURRENT_TIMESTAMP,
@@ -87,7 +87,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         } else {
             const insertResult = await env.DB.prepare(
                 `
-          INSERT INTO newsletters (email, name, source, status)
+          INSERT INTO newsletter_subscribers (email, name, source, status)
           VALUES (?, ?, ?, 'active')
         `
             )
