@@ -3,6 +3,7 @@ import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
+import { ServiceGallery } from '@/components/services/ServiceGallery'
 
 const features = [
   {
@@ -161,6 +162,19 @@ export default function PressureWashingPage() {
       <ServiceFeatures features={features} />
       <ServiceProcess steps={process} />
       <ServiceFAQ faqs={faqs} />
+      <ServiceGallery
+        title="Pressure Washing Results"
+        images={[
+          {
+            src: '/api/assets/PressureWashing_image1.png',
+            alt: 'Professional pressure washing service'
+          },
+          {
+            src: '/api/assets/PressureWashing_image2.png',
+            alt: 'Clean driveway after pressure washing'
+          }
+        ]}
+      />
       <ServiceCTA
         title="See the Difference Pressure Washing Makes"
         description="Get a free quote and before/after photos. You'll be amazed at the transformation."

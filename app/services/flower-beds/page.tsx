@@ -3,6 +3,7 @@ import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
+import { ServiceGallery } from '@/components/services/ServiceGallery'
 
 const features = [
   {
@@ -169,6 +170,19 @@ export default function FlowerBedsPage() {
       <ServiceFeatures features={features} />
       <ServiceProcess steps={process} />
       <ServiceFAQ faqs={faqs} />
+      <ServiceGallery
+        title="Flower Bed Installations"
+        images={[
+          {
+            src: '/api/assets/FlowerBedInstall_image1.png',
+            alt: 'Beautiful flower bed installation'
+          },
+          {
+            src: '/api/assets/FlowerBedInstall_image2.png',
+            alt: 'Custom landscape design with flowers'
+          }
+        ]}
+      />
       <ServiceCTA
         title="Ready to Add Color to Your Landscape?"
         description="Get a free consultation and custom flower bed design. No obligation, just ideas and a detailed quote."
