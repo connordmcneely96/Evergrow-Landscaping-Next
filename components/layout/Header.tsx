@@ -54,11 +54,11 @@ export default function Header() {
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2 group">
                         <Image
-                            src="/api/assets/Logo-%20Transparent%20%26%20No%20Buffer.png"
+                            src="/api/assets/LawnCareAndMaintenance_image1.png"
                             alt="Evergrow Landscaping"
                             width={180}
                             height={60}
-                            className="h-12 w-auto"
+                            className="h-12 w-auto object-contain"
                             priority
                         />
                     </Link>
