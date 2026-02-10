@@ -33,17 +33,25 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const { request, env, params } = context;
 
     try {
-        const path = Array.isArray(params.path) ? params.path.join('/') : params.path;
+        let path = Array.isArray(params.path) ? params.path.join('/') : params.path;
 
         if (!path) {
             return new Response('Not found', { status: 404 });
         }
 
+        // Decode the path to handle URL-encoded filenames
+        path = decodeURIComponent(path);
+
+        console.log('[Assets] Fetching from R2:', path);
+
         const object = await env.R2_BUCKET.get(path);
 
         if (!object) {
+            console.error('[Assets] File not found in R2:', path);
             return new Response('Not found', { status: 404 });
         }
+
+        console.log('[Assets] File found, serving:', path);
 
         const headers = new Headers();
         object.writeHttpMetadata(headers);
