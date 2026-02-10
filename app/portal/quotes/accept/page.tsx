@@ -68,7 +68,7 @@ function QuoteAcceptContent() {
                 body: JSON.stringify({ token }),
             })
 
-            const data = await res.json()
+            const data = await res.json() as any
 
             if (!res.ok || !data.success) {
                 throw new Error(data.error || 'Failed to accept quote')
