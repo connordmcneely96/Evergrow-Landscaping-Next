@@ -36,9 +36,18 @@ export async function sendEmail(
   env: Env,
   params: SendEmailParams
 ): Promise<{ success: boolean; id?: string; error?: string }> {
-  const resend = getResendClient(env);
+  // Check if Resend is configured
+  if (!env.RESEND_API_KEY) {
+    console.warn('Resend API key not configured - email will not be sent');
+    return {
+      success: false,
+      error: 'Email service not configured (RESEND_API_KEY missing)'
+    };
+  }
 
   try {
+    const resend = new Resend(env.RESEND_API_KEY);
+
     const { data, error } = await resend.emails.send({
       from: params.from || 'Evergrow Landscaping <noreply@evergrowlandscaping.com>',
       to: params.to,
