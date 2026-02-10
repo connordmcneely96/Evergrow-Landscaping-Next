@@ -37,9 +37,9 @@ function QuoteAcceptContent() {
         }
 
         // Load quote details
-        async function loadQuote() {
+        async function loadQuote(validToken: string) {
             try {
-                const res = await fetch(`/api/quotes/accept?token=${encodeURIComponent(token)}`)
+                const res = await fetch(`/api/quotes/accept?token=${encodeURIComponent(validToken)}`)
                 const data = await res.json()
 
                 if (!res.ok || !data.success) {
@@ -54,7 +54,7 @@ function QuoteAcceptContent() {
             }
         }
 
-        loadQuote()
+        loadQuote(token)
     }, [token])
 
     const handleAccept = async () => {
