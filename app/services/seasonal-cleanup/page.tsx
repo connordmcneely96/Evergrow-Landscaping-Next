@@ -108,7 +108,7 @@ export default function SeasonalCleanupPage() {
       <ServiceHero
         title="Spring & Fall Cleanup Services"
         description="Start each season with a fresh, clean yard. Professional leaf removal, bed maintenance, and debris cleanup."
-        imageSrc="/images/services/cleanup-hero.jpg"
+        imageSrc="/api/assets/SpringAndFallCleanup_image2.png"
         imageAlt="Fall leaf cleanup service in El Dorado"
       />
 

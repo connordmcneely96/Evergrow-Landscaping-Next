@@ -121,7 +121,7 @@ export default function LawnCarePage() {
       <ServiceHero
         title="Lawn Care & Maintenance"
         description="Keep your lawn looking pristine year-round with our professional mowing, edging, and trimming services."
-        imageSrc="/images/services/lawn-care-hero.jpg"
+        imageSrc="/api/assets/LawnCareAndMaintenance_image2.png"
         imageAlt="Beautifully maintained lawn in El Dorado"
       />
 

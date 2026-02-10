@@ -108,7 +108,7 @@ export default function PressureWashingPage() {
       <ServiceHero
         title="Professional Pressure Washing"
         description="Restore your home's curb appeal with professional pressure washing. Driveways, decks, patios, and more."
-        imageSrc="/images/services/pressure-washing-hero.jpg"
+        imageSrc="/api/assets/PressureWashing_image2.png"
         imageAlt="Before and after pressure washing in Oklahoma City"
       />
 
