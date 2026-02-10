@@ -108,7 +108,7 @@ export default function FlowerBedsPage() {
       <ServiceHero
         title="Flower Bed Installation & Design"
         description="Transform your landscape with beautiful, custom-designed flower beds that add color and curb appeal year-round."
-        imageSrc="/images/services/flower-beds-hero.jpg"
+        imageSrc="/api/assets/FlowerBedInstall_image2.png"
         imageAlt="Beautiful flower bed installation in Oklahoma"
       />
 

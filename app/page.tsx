@@ -65,9 +65,13 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-100 transform rotate-1 hover:rotate-0 transition-transform duration-500">
-                <div className="bg-gray-200 h-[400px] w-full flex items-center justify-center text-gray-400">
-                  <span className="text-lg">About Us Image Placeholder</span>
-                </div>
+                <Image
+                  src="/api/assets/LawnCareAndMaintenance_image1.png"
+                  alt="Professional lawn care services"
+                  width={600}
+                  height={400}
+                  className="w-full h-[400px] object-cover"
+                />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-forest-green text-white p-6 rounded-xl shadow-xl hidden md:block">
                 <p className="text-3xl font-bold font-heading">Since</p>
@@ -126,10 +130,13 @@ export default function HomePage() {
             {/* Service 1 */}
             <Link href="/services/lawn-care" className="group h-full">
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold/50 h-full flex flex-col">
-                <div className="h-48 bg-gray-200 relative">
-                  <div className="absolute inset-0 bg-forest-green-100 flex items-center justify-center text-forest-green/20">
-                    <span className="font-bold text-xl">Lawn Care</span>
-                  </div>
+                <div className="h-48 relative">
+                  <Image
+                    src="/api/assets/LawnCareAndMaintenance_image2.png"
+                    alt="Lawn Care & Maintenance"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
@@ -148,10 +155,13 @@ export default function HomePage() {
             {/* Service 2 */}
             <Link href="/services/flower-beds" className="group h-full">
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold/50 h-full flex flex-col">
-                <div className="h-48 bg-gray-200 relative">
-                  <div className="absolute inset-0 bg-forest-green-100 flex items-center justify-center text-forest-green/20">
-                    <span className="font-bold text-xl">Landscaping</span>
-                  </div>
+                <div className="h-48 relative">
+                  <Image
+                    src="/api/assets/FlowerBedInstall_image1.png"
+                    alt="Flower Bed Installation"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
@@ -170,10 +180,13 @@ export default function HomePage() {
             {/* Service 3 */}
             <Link href="/services/seasonal-cleanup" className="group h-full">
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold/50 h-full flex flex-col">
-                <div className="h-48 bg-gray-200 relative">
-                  <div className="absolute inset-0 bg-forest-green-100 flex items-center justify-center text-forest-green/20">
-                    <span className="font-bold text-xl">Seasonal</span>
-                  </div>
+                <div className="h-48 relative">
+                  <Image
+                    src="/api/assets/SpringAndFallCleanup_image1.png"
+                    alt="Seasonal Cleanup"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
@@ -192,10 +205,13 @@ export default function HomePage() {
             {/* Service 4 */}
             <Link href="/services/pressure-washing" className="group h-full">
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold/50 h-full flex flex-col">
-                <div className="h-48 bg-gray-200 relative">
-                  <div className="absolute inset-0 bg-forest-green-100 flex items-center justify-center text-forest-green/20">
-                    <span className="font-bold text-xl">Power Wash</span>
-                  </div>
+                <div className="h-48 relative">
+                  <Image
+                    src="/api/assets/PressureWashing_image1.png"
+                    alt="Pressure Washing Services"
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">

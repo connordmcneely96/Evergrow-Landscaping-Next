@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone, Shield } from 'lucide-react';
@@ -52,9 +53,14 @@ export default function Header() {
                 <div className="flex items-center justify-start">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2 group">
-                        <span className={`font-heading font-bold text-2xl tracking-tight ${textColor}`}>
-                            EVER<span className="text-vibrant-gold">GROW</span>
-                        </span>
+                        <Image
+                            src="/api/assets/Logo- Transparent & No Buffer .png"
+                            alt="Evergrow Landscaping"
+                            width={180}
+                            height={60}
+                            className="h-12 w-auto"
+                            priority
+                        />
                     </Link>
 
                     {/* Desktop Navigation */}
