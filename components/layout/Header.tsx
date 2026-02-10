@@ -54,7 +54,7 @@ export default function Header() {
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2 group">
                         <Image
-                            src="/api/assets/Logo- Transparent & No Buffer .png"
+                            src="/api/assets/Logo-%20Transparent%20%26%20No%20Buffer%20.png"
                             alt="Evergrow Landscaping"
                             width={180}
                             height={60}

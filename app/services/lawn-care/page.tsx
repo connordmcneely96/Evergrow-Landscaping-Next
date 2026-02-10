@@ -3,6 +3,7 @@ import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
+import { ServiceGallery } from '@/components/services/ServiceGallery'
 
 const features = [
   {
@@ -182,6 +183,19 @@ export default function LawnCarePage() {
       <ServiceFeatures features={features} />
       <ServiceProcess steps={process} />
       <ServiceFAQ faqs={faqs} />
+      <ServiceGallery
+        title="Our Lawn Care Work"
+        images={[
+          {
+            src: '/api/assets/LawnCareAndMaintenance_image1.png',
+            alt: 'Professional lawn mowing and maintenance'
+          },
+          {
+            src: '/api/assets/LawnCareAndMaintenance_image2.png',
+            alt: 'Beautiful manicured lawn'
+          }
+        ]}
+      />
       <ServiceCTA />
     </main>
   )

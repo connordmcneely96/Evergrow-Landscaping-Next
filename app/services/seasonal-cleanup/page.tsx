@@ -3,6 +3,7 @@ import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
+import { ServiceGallery } from '@/components/services/ServiceGallery'
 
 const features = [
   {
@@ -169,6 +170,19 @@ export default function SeasonalCleanupPage() {
       <ServiceFeatures features={features} />
       <ServiceProcess steps={process} />
       <ServiceFAQ faqs={faqs} />
+      <ServiceGallery
+        title="Seasonal Cleanup Projects"
+        images={[
+          {
+            src: '/api/assets/SpringAndFallCleanup_image1.png',
+            alt: 'Spring and fall cleanup service'
+          },
+          {
+            src: '/api/assets/SpringAndFallCleanup_image2.png',
+            alt: 'Professional leaf removal and yard cleanup'
+          }
+        ]}
+      />
       <ServiceCTA
         title="Ready for a Fresh Start This Season?"
         description="Book your spring or fall cleanup today. Early booking gets priority scheduling."
