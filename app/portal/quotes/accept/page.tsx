@@ -40,7 +40,7 @@ function QuoteAcceptContent() {
         async function loadQuote(validToken: string) {
             try {
                 const res = await fetch(`/api/quotes/accept?token=${encodeURIComponent(validToken)}`)
-                const data = await res.json()
+                const data = await res.json() as any
 
                 if (!res.ok || !data.success) {
                     throw new Error(data.error || 'Failed to load quote')
