@@ -130,7 +130,9 @@ function QuoteDetailContent() {
             }
 
             addToast({ type: 'success', message: data.emailSent ? 'Quote sent to customer via email!' : 'Quote saved (email could not be sent)' })
-            router.push('/admin/quotes')
+
+            // Force a full page refresh to ensure data is updated
+            window.location.href = '/admin/quotes'
         } catch (err) {
             addToast({ type: 'error', message: err instanceof Error ? err.message : 'Failed to send quote' })
         } finally {
