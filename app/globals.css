@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Brand Colors - White & Green */
-  --color-forest-green: #24663B;
-  --color-forest-green-50: #E6F0EA;
-  --color-forest-green-100: #C3DBC9;
-  --color-forest-green-200: #9EC4A9;
-  --color-forest-green-300: #7AAC8A;
-  --color-forest-green-400: #56946C;
-  --color-forest-green-500: #24663B;
-  --color-forest-green-600: #1D522F;
-  --color-forest-green-700: #163D23;
-  --color-forest-green-800: #0E2918;
-  --color-forest-green-900: #07140C;
+  /* Brand Colors - matched to Evergrow logo */
+  --color-forest-green: #1A5422;
+  --color-forest-green-50: #E8F3EB;
+  --color-forest-green-100: #C5DECA;
+  --color-forest-green-200: #9EC6A8;
+  --color-forest-green-300: #76AE86;
+  --color-forest-green-400: #4E9664;
+  --color-forest-green-500: #1A5422;
+  --color-forest-green-600: #16441B;
+  --color-forest-green-700: #113415;
+  --color-forest-green-800: #0B240E;
+  --color-forest-green-900: #061407;
 
   --color-vibrant-gold: #4DB87A;
   --color-vibrant-gold-50: #EDF8F4;
