@@ -125,11 +125,11 @@ export function BlogPostContent({ slug }: BlogPostContentProps) {
                         <nav className="mb-6">
                             <ol className="flex items-center gap-2 text-sm text-gray-500">
                                 <li>
-                                    <Link href="/" className="hover:text-vibrant-gold transition-colors">Home</Link>
+                                    <Link href="/" className="hover:text-forest-green transition-colors">Home</Link>
                                 </li>
                                 <li>&rarr;</li>
                                 <li>
-                                    <Link href="/blog" className="hover:text-vibrant-gold transition-colors">Blog</Link>
+                                    <Link href="/blog" className="hover:text-forest-green transition-colors">Blog</Link>
                                 </li>
                                 <li>&rarr;</li>
                                 <li className="text-gray-900 font-medium truncate">{post.title}</li>
@@ -176,7 +176,7 @@ export function BlogPostContent({ slug }: BlogPostContentProps) {
 
                         {/* Article Content */}
                         <div
-                            className="prose prose-lg prose-headings:text-forest-green prose-a:text-forest-green prose-a:font-semibold hover:prose-a:text-vibrant-gold prose-img:rounded-lg max-w-none mb-12"
+                            className="prose prose-lg prose-headings:text-forest-green prose-a:text-forest-green prose-a:font-semibold hover:prose-a:text-forest-green-400 prose-img:rounded-lg max-w-none mb-12"
                             dangerouslySetInnerHTML={{ __html: post.content }}
                         />
 
@@ -203,7 +203,7 @@ export function BlogPostContent({ slug }: BlogPostContentProps) {
                                 </p>
                             </div>
                             <Link href="/quote-request" className="flex-shrink-0">
-                                <Button variant="primary" size="lg" className="bg-vibrant-gold text-deep-charcoal hover:bg-yellow-400 border-none shadow-md">
+                                <Button variant="primary" size="lg" className="bg-vibrant-gold text-white hover:bg-forest-green-400 border-none shadow-md">
                                     Get Your Free Quote
                                 </Button>
                             </Link>

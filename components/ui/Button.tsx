@@ -22,7 +22,7 @@ export function Button({
 
   const variants = {
     primary:
-      'bg-vibrant-gold text-deep-charcoal hover:bg-yellow-400 focus:ring-vibrant-gold',
+      'bg-vibrant-gold text-white hover:bg-forest-green-400 focus:ring-vibrant-gold',
     secondary:
       'bg-forest-green text-white hover:bg-forest-green-400 focus:ring-forest-green',
     outline:

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Brand Colors - Premium Green & Gold */
+  /* Brand Colors - White & Green */
   --color-forest-green: #24663B;
   --color-forest-green-50: #E6F0EA;
   --color-forest-green-100: #C3DBC9;
@@ -14,17 +14,17 @@
   --color-forest-green-800: #0E2918;
   --color-forest-green-900: #07140C;
 
-  --color-vibrant-gold: #FBB017;
-  --color-vibrant-gold-50: #FFF9E6;
-  --color-vibrant-gold-100: #FEF0C2;
-  --color-vibrant-gold-200: #FDE69E;
-  --color-vibrant-gold-300: #FDDC79;
-  --color-vibrant-gold-400: #FCD255;
-  --color-vibrant-gold-500: #FBB017;
-  --color-vibrant-gold-600: #C98D12;
-  --color-vibrant-gold-700: #976A0E;
-  --color-vibrant-gold-800: #644609;
-  --color-vibrant-gold-900: #322305;
+  --color-vibrant-gold: #4DB87A;
+  --color-vibrant-gold-50: #EDF8F4;
+  --color-vibrant-gold-100: #CEE9DB;
+  --color-vibrant-gold-200: #9ED3B7;
+  --color-vibrant-gold-300: #6FBD93;
+  --color-vibrant-gold-400: #4DB87A;
+  --color-vibrant-gold-500: #4DB87A;
+  --color-vibrant-gold-600: #3A9262;
+  --color-vibrant-gold-700: #2C704A;
+  --color-vibrant-gold-800: #1E4E33;
+  --color-vibrant-gold-900: #0F2C1B;
 
   --color-deep-charcoal: #1F1F1F;
   --color-deep-charcoal-50: #F5F5F5;
@@ -167,6 +167,6 @@
   .card:hover {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
-    border-color: var(--color-vibrant-gold);
+    border-color: var(--color-forest-green-300);
   }
 }
