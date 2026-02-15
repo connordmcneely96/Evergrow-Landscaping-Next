@@ -13,7 +13,16 @@ database_id = "7777252d-9fc2-4828-b5eb-16b2ea93ecfe"
 binding = "R2_BUCKET"
 bucket_name = "evergrow-landscaping-assets"
 
-# Environment variables
+# Environment variables (non-sensitive only)
+# Sensitive keys must be added via: wrangler secret put <KEY_NAME>
+# -----------------------------------------------------------------------
+# Required secrets (set via wrangler secret put or Cloudflare dashboard):
+#   wrangler secret put STRIPE_SECRET_KEY        # sk_test_... or sk_live_...
+#   wrangler secret put STRIPE_WEBHOOK_SECRET    # whsec_...
+#   wrangler secret put RESEND_API_KEY           # re_...
+#   wrangler secret put SESSION_SECRET           # random 64-char string
+#   wrangler secret put JWT_SECRET               # random 64-char string
+# -----------------------------------------------------------------------
 [vars]
 ENVIRONMENT = "production"
 
