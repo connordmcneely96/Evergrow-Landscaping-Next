@@ -44,23 +44,25 @@ export default function Header() {
     }, [pathname]);
 
     const isTransparent = !isScrolled && (pathname === '/' || pathname === '/commercial');
-    const headerBg = !isTransparent ? 'bg-forest-green shadow-lg py-2' : 'bg-transparent py-4';
-    const textColor = 'text-white'; // Always white
+    const headerBg = !isTransparent ? 'bg-white shadow-md py-2' : 'bg-transparent py-4';
+    const textColor = !isTransparent ? 'text-forest-green' : 'text-white';
 
     return (
         <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerBg}`}>
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-start">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center space-x-2 group">
-                        <Image
-                            src="/images/logo.svg"
-                            alt="Evergrow Landscaping"
-                            width={315}
-                            height={120}
-                            className="h-14 w-auto"
-                            priority
-                        />
+                    <Link href="/" className="flex items-center group">
+                        <div className={isTransparent ? 'bg-white/95 backdrop-blur-sm rounded-xl px-3 py-1.5 shadow-sm' : ''}>
+                            <Image
+                                src="/images/Logo- Transparent & No Buffer .png"
+                                alt="Evergrow Landscaping"
+                                width={200}
+                                height={80}
+                                className="h-14 w-auto"
+                                priority
+                            />
+                        </div>
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -124,7 +126,7 @@ export default function Header() {
                         </Link>
                         <Link
                             href="/quote-request"
-                            className="bg-vibrant-gold text-white px-6 py-2.5 rounded-md font-bold uppercase text-sm tracking-wide hover:bg-forest-green-400 transition-colors shadow-md"
+                            className="bg-forest-green text-white px-6 py-2.5 rounded-md font-bold uppercase text-sm tracking-wide hover:bg-forest-green-600 transition-colors shadow-md"
                         >
                             Get a Quote
                         </Link>
