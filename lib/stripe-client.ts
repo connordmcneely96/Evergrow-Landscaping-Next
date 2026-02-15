@@ -1,6 +1,7 @@
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 
-let stripePromise: Promise<Stripe | null> | null = null;
+// Cached instance for the lazy getter
+let _stripeInstance: Promise<Stripe | null> | null = null;
 
 /**
  * Returns a singleton Stripe.js instance for use in frontend components.
@@ -11,15 +12,15 @@ let stripePromise: Promise<Stripe | null> | null = null;
  *   const stripe = await getStripeClient()
  */
 export function getStripeClient(): Promise<Stripe | null> {
-    if (!stripePromise) {
+    if (!_stripeInstance) {
         const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
         if (!key) {
             console.error('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set');
             return Promise.resolve(null);
         }
-        stripePromise = loadStripe(key);
+        _stripeInstance = loadStripe(key);
     }
-    return stripePromise;
+    return _stripeInstance;
 }
 
 /**
