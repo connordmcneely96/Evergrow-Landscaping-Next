@@ -110,7 +110,7 @@ export default function InvoicesPage() {
                                             )}
 
                                             {invoice.status === 'paid' && (
-                                                <span className="flex items-center text-xs text-green-600 font-medium">
+                                                <span className="flex items-center text-xs text-forest-green font-medium">
                                                     <CheckCircle className="h-3 w-3 mr-1" />
                                                     Paid {invoice.paidAt ? new Date(invoice.paidAt).toLocaleDateString() : ''}
                                                 </span>

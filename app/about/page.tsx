@@ -12,7 +12,7 @@ export default function AboutPage() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-green-50 to-green-100 py-20">
+            <section className="bg-forest-green-50 py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-4xl mx-auto text-center">
                         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -111,7 +111,7 @@ export default function AboutPage() {
                         </h2>
                         <div className="grid md:grid-cols-2 gap-8">
                             {/* Craftsmanship */}
-                            <div className="bg-green-50 p-8 rounded-lg">
+                            <div className="bg-forest-green-50 p-8 rounded-lg">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                     Craftsmanship
                                 </h3>
@@ -126,7 +126,7 @@ export default function AboutPage() {
                             </div>
 
                             {/* Customer-Centric */}
-                            <div className="bg-green-50 p-8 rounded-lg">
+                            <div className="bg-forest-green-50 p-8 rounded-lg">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                     Customer-Centric
                                 </h3>
@@ -140,7 +140,7 @@ export default function AboutPage() {
                             </div>
 
                             {/* Passion */}
-                            <div className="bg-green-50 p-8 rounded-lg">
+                            <div className="bg-forest-green-50 p-8 rounded-lg">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                     Passion
                                 </h3>
@@ -155,7 +155,7 @@ export default function AboutPage() {
                             </div>
 
                             {/* Professionalism */}
-                            <div className="bg-green-50 p-8 rounded-lg">
+                            <div className="bg-forest-green-50 p-8 rounded-lg">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                     Professionalism
                                 </h3>
@@ -182,7 +182,7 @@ export default function AboutPage() {
                         </h2>
                         <div className="grid md:grid-cols-2 gap-6">
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                                <CheckCircle2 className="w-6 h-6 text-forest-green flex-shrink-0 mt-1" />
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-1">
                                         Family-owned and operated
@@ -196,7 +196,7 @@ export default function AboutPage() {
                             </div>
 
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                                <CheckCircle2 className="w-6 h-6 text-forest-green flex-shrink-0 mt-1" />
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-1">
                                         Serving Oklahoma Since 2023
@@ -210,7 +210,7 @@ export default function AboutPage() {
                             </div>
 
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                                <CheckCircle2 className="w-6 h-6 text-forest-green flex-shrink-0 mt-1" />
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-1">
                                         Licensed and insured
@@ -223,7 +223,7 @@ export default function AboutPage() {
                             </div>
 
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                                <CheckCircle2 className="w-6 h-6 text-forest-green flex-shrink-0 mt-1" />
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-1">
                                         Background-checked crew
@@ -236,7 +236,7 @@ export default function AboutPage() {
                             </div>
 
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                                <CheckCircle2 className="w-6 h-6 text-forest-green flex-shrink-0 mt-1" />
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-1">
                                         Transparent pricing
@@ -249,7 +249,7 @@ export default function AboutPage() {
                             </div>
 
                             <div className="flex items-start gap-3">
-                                <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                                <CheckCircle2 className="w-6 h-6 text-forest-green flex-shrink-0 mt-1" />
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-1">
                                         24-hour response time
@@ -263,7 +263,7 @@ export default function AboutPage() {
                             </div>
 
                             <div className="flex items-start gap-3 md:col-span-2">
-                                <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                                <CheckCircle2 className="w-6 h-6 text-forest-green flex-shrink-0 mt-1" />
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-1">
                                         Quality guarantee
@@ -280,13 +280,13 @@ export default function AboutPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 bg-gradient-to-br from-green-600 to-green-700 text-white">
+            <section className="py-20 bg-forest-green text-white">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center">
                         <h2 className="text-3xl md:text-4xl font-bold mb-6">
                             Let&apos;s Work Together
                         </h2>
-                        <p className="text-xl mb-8 text-green-50">
+                        <p className="text-xl mb-8 text-forest-green-50">
                             Ready to experience landscaping done right? We&apos;d love to hear
                             about your project and show you what sets Evergrow apart. Whether
                             you need weekly lawn care, a seasonal cleanup, or a complete
@@ -295,18 +295,18 @@ export default function AboutPage() {
                         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                             <Link
                                 href="/quote-request"
-                                className="bg-white text-green-700 px-8 py-4 rounded-lg font-semibold hover:bg-green-50 transition-colors inline-block"
+                                className="bg-white text-forest-green px-8 py-4 rounded-lg font-semibold hover:bg-forest-green-50 transition-colors inline-block"
                             >
                                 Get Your Free Quote
                             </Link>
                             <a
                                 href="tel:+14054795794"
-                                className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-green-700 transition-colors inline-block"
+                                className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-forest-green transition-colors inline-block"
                             >
                                 Call Us: 405-479-5794
                             </a>
                         </div>
-                        <p className="mt-8 text-green-100">
+                        <p className="mt-8 text-forest-green-100">
                             Join the homeowners in El Dorado and Oklahoma City who trust
                             Evergrow for their landscaping needs. We&apos;ve been keeping our
                             promises since day one—let us prove it to you.

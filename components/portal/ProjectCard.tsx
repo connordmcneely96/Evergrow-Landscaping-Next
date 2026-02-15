@@ -73,7 +73,7 @@ export function ProjectCard({ project, onUpdate }: ProjectCardProps) {
                         <p className="text-sm text-gray-600">
                             Deposit: ${project.deposit_amount.toFixed(2)}
                             {project.deposit_paid ? (
-                                <span className="text-green-600 ml-1">✓ Paid</span>
+                                <span className="text-forest-green ml-1">✓ Paid</span>
                             ) : (
                                 <span className="text-orange-600 ml-1">Pending</span>
                             )}

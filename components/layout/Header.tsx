@@ -56,9 +56,9 @@ export default function Header() {
                         <Image
                             src="/images/logo.svg"
                             alt="Evergrow Landscaping"
-                            width={220}
-                            height={60}
-                            className="h-12 w-auto"
+                            width={315}
+                            height={120}
+                            className="h-14 w-auto"
                             priority
                         />
                     </Link>
