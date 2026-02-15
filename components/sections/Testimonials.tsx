@@ -71,7 +71,7 @@ export default function Testimonials() {
                     <h2 className="text-h2 font-heading font-bold text-4xl text-deep-charcoal mb-4">
                         Hear from Your Neighbors
                     </h2>
-                    <div className="w-24 h-1 bg-vibrant-gold mx-auto mb-6"></div>
+                    <div className="w-24 h-1 bg-forest-green-300 mx-auto mb-6"></div>
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                         We are proud to serve the El Dorado and OKC community. Here's what they have to say about our work.
                     </p>

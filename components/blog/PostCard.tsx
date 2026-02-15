@@ -50,7 +50,7 @@ export function PostCard({ post, featured = false }: PostCardProps) {
                             {post.category}
                         </Badge>
 
-                        <h2 className="text-3xl font-heading font-bold text-forest-green mb-4 group-hover:text-vibrant-gold transition-colors">
+                        <h2 className="text-3xl font-heading font-bold text-forest-green mb-4 group-hover:text-forest-green-400 transition-colors">
                             {post.title}
                         </h2>
 
@@ -65,7 +65,7 @@ export function PostCard({ post, featured = false }: PostCardProps) {
                         </div>
 
                         <div>
-                            <span className="text-forest-green font-semibold group-hover:text-vibrant-gold group-hover:underline transition-colors">
+                            <span className="text-forest-green font-semibold group-hover:text-forest-green-400 group-hover:underline transition-colors">
                                 Read Article →
                             </span>
                         </div>
@@ -95,7 +95,7 @@ export function PostCard({ post, featured = false }: PostCardProps) {
                         {post.category}
                     </Badge>
 
-                    <h3 className="text-xl font-heading font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
+                    <h3 className="text-xl font-heading font-bold text-forest-green mb-3 group-hover:text-forest-green-400 transition-colors">
                         {post.title}
                     </h3>
 

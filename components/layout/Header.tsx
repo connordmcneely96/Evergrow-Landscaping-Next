@@ -54,9 +54,9 @@ export default function Header() {
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2 group">
                         <Image
-                            src="/api/assets/Logo-%20Transparent%20%26%20No%20Buffer.png"
+                            src="/images/logo.svg"
                             alt="Evergrow Landscaping"
-                            width={180}
+                            width={220}
                             height={60}
                             className="h-12 w-auto"
                             priority
@@ -124,7 +124,7 @@ export default function Header() {
                         </Link>
                         <Link
                             href="/quote-request"
-                            className="bg-vibrant-gold text-deep-charcoal px-6 py-2.5 rounded-md font-bold uppercase text-sm tracking-wide hover:bg-yellow-400 transition-colors shadow-md"
+                            className="bg-vibrant-gold text-white px-6 py-2.5 rounded-md font-bold uppercase text-sm tracking-wide hover:bg-forest-green-400 transition-colors shadow-md"
                         >
                             Get a Quote
                         </Link>
@@ -201,7 +201,7 @@ export default function Header() {
                                 </a>
                                 <Link
                                     href="/quote-request"
-                                    className="bg-vibrant-gold text-deep-charcoal py-3 rounded-lg font-bold uppercase text-center tracking-wide shadow-md"
+                                    className="bg-vibrant-gold text-white py-3 rounded-lg font-bold uppercase text-center tracking-wide shadow-md"
                                 >
                                     Get a Free Quote
                                 </Link>
