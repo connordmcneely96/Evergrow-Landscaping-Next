@@ -21,7 +21,7 @@ interface CustomerRow {
 }
 
 const MAX_FEEDBACK_LENGTH = 1000;
-const OWNER_EMAIL_FALLBACK = 'contact@evergrowlandscaping.com';
+const OWNER_EMAIL_FALLBACK = 'karson@evergrowlandscaping.com';
 
 function parsePositiveInt(value: unknown): number | null {
     if (typeof value === 'number' && Number.isInteger(value) && value > 0) {
