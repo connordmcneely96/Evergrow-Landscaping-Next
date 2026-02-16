@@ -22,6 +22,7 @@ bucket_name = "evergrow-landscaping-assets"
 #   wrangler secret put RESEND_API_KEY           # re_...
 #   wrangler secret put SESSION_SECRET           # random 64-char string
 #   wrangler secret put JWT_SECRET               # random 64-char string
+#   wrangler secret put NOTIFICATION_EMAIL       # karson@evergrowlandscaping.com
 # -----------------------------------------------------------------------
 [vars]
 ENVIRONMENT = "production"

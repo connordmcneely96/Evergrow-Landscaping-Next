@@ -92,7 +92,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const applicationId = result.meta.last_row_id;
 
         // Send notification email to business
-        const notificationEmail = env.NOTIFICATION_EMAIL || 'contact@evergrowlandscaping.com';
+        const notificationEmail = env.NOTIFICATION_EMAIL || 'karson@evergrowlandscaping.com';
 
         try {
             await sendEmail(env, {
