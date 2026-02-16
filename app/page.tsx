@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle, Star, Phone, Calendar, MapPin, Shield, Clock, 
 import Image from 'next/image';
 import { MotionDiv } from '@/components/ui/MotionDiv';
 import Testimonials from '@/components/sections/Testimonials';
+import { ServiceAreaMap } from '@/components/ServiceAreaMap';
 
 export default function HomePage() {
   return (
@@ -317,15 +318,7 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="relative h-[400px] bg-gray-200 rounded-2xl overflow-hidden shadow-xl">
-              {/* Map Area Placeholder */}
-              <div className="absolute inset-0 bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-500 font-bold text-xl">Map / Service Area Visual</span>
-              </div>
-              <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur px-4 py-2 rounded-lg shadow-lg">
-                <p className="font-bold text-deep-charcoal text-sm">Service area updated weekly</p>
-              </div>
-            </div>
+            <ServiceAreaMap height={400} showBadge />
           </div>
         </div>
       </section>
