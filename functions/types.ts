@@ -9,9 +9,11 @@ export interface Env {
     SESSIONS: KVNamespace;
     CACHE: KVNamespace;
 
-    // Secrets (required for production)
-    STRIPE_SECRET_KEY: string;
-    STRIPE_WEBHOOK_SECRET: string;
+    // Stripe Secrets — separate test/live keys (select via ENVIRONMENT)
+    EVERGROW_STRIPE_SECRET_KEY_TEST: string;
+    EVERGROW_STRIPE_SECRET_KEY_LIVE: string;
+    EVERGROW_STRIPE_WEBHOOK_SECRET_TEST: string;
+    EVERGROW_STRIPE_WEBHOOK_SECRET_LIVE: string;
     RESEND_API_KEY: string;
     SESSION_SECRET: string;
     JWT_SECRET: string;
