@@ -1,30 +1,30 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Brand Colors - Premium Green & Gold */
-  --color-forest-green: #24663B;
-  --color-forest-green-50: #E6F0EA;
-  --color-forest-green-100: #C3DBC9;
-  --color-forest-green-200: #9EC4A9;
-  --color-forest-green-300: #7AAC8A;
-  --color-forest-green-400: #56946C;
-  --color-forest-green-500: #24663B;
-  --color-forest-green-600: #1D522F;
-  --color-forest-green-700: #163D23;
-  --color-forest-green-800: #0E2918;
-  --color-forest-green-900: #07140C;
+  /* Brand Colors - matched to Evergrow logo */
+  --color-forest-green: #1A5422;
+  --color-forest-green-50: #E8F3EB;
+  --color-forest-green-100: #C5DECA;
+  --color-forest-green-200: #9EC6A8;
+  --color-forest-green-300: #76AE86;
+  --color-forest-green-400: #4E9664;
+  --color-forest-green-500: #1A5422;
+  --color-forest-green-600: #16441B;
+  --color-forest-green-700: #113415;
+  --color-forest-green-800: #0B240E;
+  --color-forest-green-900: #061407;
 
-  --color-vibrant-gold: #FBB017;
-  --color-vibrant-gold-50: #FFF9E6;
-  --color-vibrant-gold-100: #FEF0C2;
-  --color-vibrant-gold-200: #FDE69E;
-  --color-vibrant-gold-300: #FDDC79;
-  --color-vibrant-gold-400: #FCD255;
-  --color-vibrant-gold-500: #FBB017;
-  --color-vibrant-gold-600: #C98D12;
-  --color-vibrant-gold-700: #976A0E;
-  --color-vibrant-gold-800: #644609;
-  --color-vibrant-gold-900: #322305;
+  --color-vibrant-gold: #4DB87A;
+  --color-vibrant-gold-50: #EDF8F4;
+  --color-vibrant-gold-100: #CEE9DB;
+  --color-vibrant-gold-200: #9ED3B7;
+  --color-vibrant-gold-300: #6FBD93;
+  --color-vibrant-gold-400: #4DB87A;
+  --color-vibrant-gold-500: #4DB87A;
+  --color-vibrant-gold-600: #3A9262;
+  --color-vibrant-gold-700: #2C704A;
+  --color-vibrant-gold-800: #1E4E33;
+  --color-vibrant-gold-900: #0F2C1B;
 
   --color-deep-charcoal: #1F1F1F;
   --color-deep-charcoal-50: #F5F5F5;
@@ -167,6 +167,6 @@
   .card:hover {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
-    border-color: var(--color-vibrant-gold);
+    border-color: var(--color-forest-green-300);
   }
 }

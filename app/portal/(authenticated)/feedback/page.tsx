@@ -83,8 +83,8 @@ export default function FeedbackPage() {
     if (submitSuccess) {
         return (
             <div className="max-w-xl mx-auto py-12 px-4 text-center">
-                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                    <Star className="h-6 w-6 text-green-600" />
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-forest-green-100 mb-4">
+                    <Star className="h-6 w-6 text-forest-green" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank you!</h2>
                 <p className="text-gray-500 mb-6">Your feedback helps us grow and improve our services.</p>
@@ -136,7 +136,7 @@ export default function FeedbackPage() {
                                     className="focus:outline-none"
                                 >
                                     <Star
-                                        className={`h-8 w-8 ${star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                                        className={`h-8 w-8 ${star <= rating ? 'text-vibrant-gold fill-current' : 'text-gray-300'}`}
                                     />
                                 </button>
                             ))}

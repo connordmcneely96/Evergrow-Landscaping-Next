@@ -177,7 +177,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         try {
             if (uploaderType === 'customer') {
                 // Notify business when customer uploads
-                const notificationEmail = env.NOTIFICATION_EMAIL || 'contact@evergrowlandscaping.com';
+                const notificationEmail = env.NOTIFICATION_EMAIL || 'karson@evergrowlandscaping.com';
                 await sendEmail(env, {
                     to: notificationEmail,
                     subject: `New Photos Added - Project #${projectId}`,

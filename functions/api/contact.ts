@@ -127,7 +127,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         // Send email notification to business owner
-        const notificationEmail = env.NOTIFICATION_EMAIL || 'contact@evergrowlandscaping.com';
+        const notificationEmail = env.NOTIFICATION_EMAIL || 'karson@evergrowlandscaping.com';
         try {
             await sendEmail(env as any, {
                 to: notificationEmail,

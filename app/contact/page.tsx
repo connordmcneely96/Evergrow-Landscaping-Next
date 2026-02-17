@@ -1,5 +1,6 @@
 import { ContactForm } from '@/components/contact/ContactForm'
 import { ContactInfo } from '@/components/contact/ContactInfo'
+import { ServiceAreaMap } from '@/components/ServiceAreaMap'
 
 export default function ContactPage() {
     return (
@@ -48,10 +49,7 @@ export default function ContactPage() {
                         Our Service Areas
                     </h2>
                     <div className="max-w-4xl mx-auto">
-                        {/* Placeholder for Google Maps embed or service area visualization */}
-                        <div className="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
-                            <p className="text-gray-500">Service Area Map Placeholder</p>
-                        </div>
+                        <ServiceAreaMap height={384} showBadge={false} />
                     </div>
                 </div>
             </section>

@@ -145,7 +145,7 @@ export default function GuestPaymentPage() {
 
                                 {invoices.length === 0 ? (
                                     <div className="p-8 text-center">
-                                        <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
+                                        <CheckCircle className="h-12 w-12 text-forest-green mx-auto mb-4" />
                                         <h3 className="text-lg font-semibold text-gray-900 mb-2">All Caught Up!</h3>
                                         <p className="text-gray-600">
                                             No pending invoices found for this email address. If you believe this is an error, please contact us.

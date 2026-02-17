@@ -144,7 +144,7 @@ export default function JobApplicationForm() {
         return (
             <div className="max-w-2xl mx-auto text-center py-12">
                 <div className="flex justify-center mb-6">
-                    <CheckCircle className="w-16 h-16 text-green-500" />
+                    <CheckCircle className="w-16 h-16 text-forest-green" />
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Application Submitted!</h2>
                 <p className="text-lg text-gray-600 mb-4">
@@ -395,7 +395,7 @@ export default function JobApplicationForm() {
                     </label>
                     <p className="text-sm text-gray-500 mt-2">PDF only, max 5MB</p>
                     {resume && (
-                        <p className="mt-4 text-sm text-green-600 font-medium">
+                        <p className="mt-4 text-sm text-forest-green font-medium">
                             ✓ {resume.name}
                         </p>
                     )}

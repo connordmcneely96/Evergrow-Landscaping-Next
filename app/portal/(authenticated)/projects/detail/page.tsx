@@ -163,13 +163,13 @@ function ProjectDetailContent() {
                                 <div className="space-y-1 text-sm">
                                     <div className="flex justify-between">
                                         <span className="text-gray-600">Deposit:</span>
-                                        <span className={project.depositPaid ? 'text-green-600 font-medium' : 'text-gray-900'}>
+                                        <span className={project.depositPaid ? 'text-forest-green font-medium' : 'text-gray-900'}>
                                             {project.depositPaid ? 'Paid' : `$${(project.depositAmount || 0).toFixed(2)}`}
                                         </span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-gray-600">Balance:</span>
-                                        <span className={project.balancePaid ? 'text-green-600 font-medium' : 'text-gray-900'}>
+                                        <span className={project.balancePaid ? 'text-forest-green font-medium' : 'text-gray-900'}>
                                             {project.balancePaid ? 'Paid' : `$${(project.totalAmount - (project.depositAmount || 0)).toFixed(2)}`}
                                         </span>
                                     </div>

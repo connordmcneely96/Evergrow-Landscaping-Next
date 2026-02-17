@@ -121,7 +121,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         // Send notification emails (don't fail the request if emails fail)
         try {
-            const notificationEmail = env.NOTIFICATION_EMAIL || 'contact@evergrowlandscaping.com';
+            const notificationEmail = env.NOTIFICATION_EMAIL || 'karson@evergrowlandscaping.com';
 
             // Send notification email to business owner
             await sendEmail(env, {

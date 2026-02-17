@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 160" fill="none">
+  <defs>
+    <radialGradient id="skyGrad" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#FFFDE7" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#C8E6C9" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1A5C2A" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="circleClip">
+      <circle cx="80" cy="80" r="72"/>
+    </clipPath>
+    <radialGradient id="sunGlow" cx="50%" cy="10%" r="80%">
+      <stop offset="0%" stop-color="#FFFDE7" stop-opacity="0.95"/>
+      <stop offset="60%" stop-color="#FFF9C4" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FFF9C4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Outer dark green ring -->
+  <circle cx="80" cy="80" r="76" fill="#1A5422"/>
+  <!-- Inner circle background -->
+  <circle cx="80" cy="80" r="72" fill="#1E6830"/>
+
+  <g clip-path="url(#circleClip)">
+    <!-- Sky background -->
+    <rect x="8" y="8" width="144" height="144" fill="#226634"/>
+
+    <!-- Sun glow (soft radial) -->
+    <circle cx="80" cy="54" r="34" fill="url(#sunGlow)"/>
+
+    <!-- Golden sun semicircle -->
+    <path d="M56 62 A24 24 0 0 1 104 62 Z" fill="#F5C518"/>
+    <!-- Sun rays -->
+    <line x1="80" y1="26" x2="80" y2="19" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="98" y1="31" x2="102" y2="25" stroke="#F5C518" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="62" y1="31" x2="58" y2="25" stroke="#F5C518" stroke-width="2.2" stroke-linecap="round"/>
+    <line x1="108" y1="45" x2="114" y2="42" stroke="#F5C518" stroke-width="2" stroke-linecap="round"/>
+    <line x1="52" y1="45" x2="46" y2="42" stroke="#F5C518" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Far hills -->
+    <path d="M8 122 Q28 96 54 107 Q68 113 80 100 Q92 89 108 102 Q130 115 152 107 L152 152 L8 152 Z" fill="#1C6130"/>
+
+    <!-- Near hills -->
+    <path d="M8 138 Q22 120 44 128 Q58 134 70 125 Q82 117 96 126 Q115 136 135 128 Q146 124 152 130 L152 152 L8 152 Z" fill="#207035"/>
+
+    <!-- Winding path -->
+    <path d="M66 152 Q69 142 73 134 Q77 126 80 119 Q83 113 85 105 Q86 98 85 90" stroke="#E8DFA0" stroke-width="9" stroke-linecap="round" fill="none" opacity="0.8"/>
+    <path d="M66 152 Q69 142 73 134 Q77 126 80 119 Q83 113 85 105 Q86 98 85 90" stroke="#F5F0C8" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+
+    <!-- Tree trunk -->
+    <rect x="77.5" y="88" width="5" height="28" rx="1.5" fill="#4A3728"/>
+    <!-- Roots -->
+    <path d="M77.5 112 Q73 118 69 122" stroke="#4A3728" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M82.5 114 Q87 120 91 124" stroke="#4A3728" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Tree canopy - outermost dark -->
+    <ellipse cx="80" cy="76" rx="27" ry="22" fill="#1B5E20"/>
+    <ellipse cx="61" cy="86" rx="17" ry="13" fill="#1B5E20"/>
+    <ellipse cx="99" cy="86" rx="17" ry="13" fill="#1B5E20"/>
+
+    <!-- Tree canopy - mid layer -->
+    <ellipse cx="80" cy="71" rx="23" ry="18" fill="#2E7D32"/>
+    <ellipse cx="64" cy="79" rx="14" ry="11" fill="#2E7D32"/>
+    <ellipse cx="96" cy="79" rx="14" ry="11" fill="#2E7D32"/>
+
+    <!-- Tree canopy - lighter highlight layer -->
+    <ellipse cx="74" cy="64" rx="14" ry="11" fill="#388E3C"/>
+    <ellipse cx="88" cy="66" rx="12" ry="10" fill="#388E3C"/>
+    <ellipse cx="80" cy="59" rx="11" ry="9" fill="#43A047"/>
+
+    <!-- Bright top highlight -->
+    <ellipse cx="80" cy="55" rx="8" ry="7" fill="#66BB6A"/>
+    <ellipse cx="77" cy="52" rx="5" ry="4" fill="#81C784"/>
+
+    <!-- Ground bushes -->
+    <ellipse cx="56" cy="128" rx="10" ry="6" fill="#2E7D32"/>
+    <ellipse cx="106" cy="126" rx="10" ry="6" fill="#2E7D32"/>
+    <ellipse cx="46" cy="134" rx="7" ry="4" fill="#388E3C"/>
+    <ellipse cx="116" cy="132" rx="7" ry="4" fill="#388E3C"/>
+
+    <!-- Ground strip -->
+    <rect x="8" y="143" width="144" height="9" fill="#163D1F"/>
+  </g>
+
+  <!-- Badge border rings -->
+  <circle cx="80" cy="80" r="76" fill="none" stroke="#0E3316" stroke-width="2.5"/>
+  <circle cx="80" cy="80" r="70" fill="none" stroke="#2E7D32" stroke-width="0.75" opacity="0.5"/>
+
+  <!-- EVERGROW text (white for dark header background) -->
+  <text x="168" y="80" font-family="'Open Sans', Arial Black, sans-serif" font-weight="900" font-size="48" letter-spacing="-1" fill="#FFFFFF">EVERGROW</text>
+  <!-- Divider rule -->
+  <line x1="168" y1="90" x2="416" y2="90" stroke="#FFFFFF" stroke-width="1" opacity="0.3"/>
+  <!-- LANDSCAPING subtext -->
+  <text x="170" y="110" font-family="'Open Sans', Arial, sans-serif" font-weight="500" font-size="15" letter-spacing="7" fill="#FFFFFF" opacity="0.88">LANDSCAPING</text>
+</svg>

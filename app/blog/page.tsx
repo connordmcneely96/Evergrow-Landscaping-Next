@@ -127,7 +127,7 @@ export default function BlogPage() {
                                 className="flex-1 px-4 py-3 rounded-lg text-gray-900 border-none focus:ring-2 focus:ring-vibrant-gold outline-none"
                                 required
                             />
-                            <Button variant="primary" size="lg" type="submit" className="bg-vibrant-gold text-deep-charcoal hover:bg-yellow-400 border-none">
+                            <Button variant="primary" size="lg" type="submit" className="bg-vibrant-gold text-white hover:bg-forest-green-400 border-none">
                                 Subscribe
                             </Button>
                         </form>

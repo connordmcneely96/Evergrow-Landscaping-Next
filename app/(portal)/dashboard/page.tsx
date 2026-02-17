@@ -103,7 +103,7 @@ export default function DashboardPage() {
                         <h3 className="text-sm font-semibold text-gray-600">Completed</h3>
                         <span className="text-2xl">✅</span>
                     </div>
-                    <p className="text-3xl font-heading font-bold text-green-600">
+                    <p className="text-3xl font-heading font-bold text-forest-green">
                         {stats.completedProjects}
                     </p>
                 </div>

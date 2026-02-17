@@ -7,7 +7,7 @@ import {
 import { requireAdmin } from '../../../lib/session';
 import { Env } from '../../../types';
 
-const OWNER_EMAIL_FALLBACK = 'contact@evergrowlandscaping.com';
+const OWNER_EMAIL_FALLBACK = 'karson@evergrowlandscaping.com';
 const SITE_BASE_URL = 'https://evergrowlandscaping.com';
 const PORTAL_BASE_URL = `${SITE_BASE_URL}/portal`;
 const FEEDBACK_FORM_URL = `${PORTAL_BASE_URL}/feedback`;
