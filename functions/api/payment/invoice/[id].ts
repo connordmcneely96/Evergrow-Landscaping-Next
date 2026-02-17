@@ -1,6 +1,6 @@
 import { requireAuth } from '../../../lib/session';
 import { Env } from '../../../types';
-import Stripe from 'stripe';
+import { getStripeClient } from '../../../lib/stripe';
 
 interface InvoiceRow {
     id: number;
@@ -105,10 +105,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             });
         }
 
-        // Initialize Stripe
-        const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-            apiVersion: '2024-12-18.acacia',
-        });
+        const stripe = getStripeClient(env);
 
         // Get or create Stripe customer
         let stripeCustomerId = customer.stripe_customer_id;
