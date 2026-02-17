@@ -24,8 +24,23 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         // Normalize field names (support both camelCase and snake_case)
         const normalizedZipCode = zipCode || zip_code;
-        const normalizedServiceType = serviceType || service_type;
-        const normalizedPropertySize = propertySize || property_size;
+        const rawServiceType = serviceType || service_type;
+        const rawPropertySize = propertySize || property_size;
+
+        // Map form values to DB-allowed values
+        // service_type: DB allows lawn-care | flower-beds | seasonal-cleanup | pressure-washing | other
+        const SERVICE_TYPE_MAP: Record<string, string> = { multiple: 'other' };
+        const normalizedServiceType = SERVICE_TYPE_MAP[rawServiceType] ?? rawServiceType;
+
+        // property_size: DB allows small | medium | large | commercial
+        // 'unsure' → null (column is nullable), 'xlarge' → 'commercial'
+        const PROPERTY_SIZE_MAP: Record<string, string | null> = {
+            xlarge: 'commercial',
+            unsure: null,
+        };
+        const normalizedPropertySize = rawPropertySize in (PROPERTY_SIZE_MAP as object)
+            ? PROPERTY_SIZE_MAP[rawPropertySize]
+            : (rawPropertySize || null);
 
         // Validate required fields
         if (!name || !email || !normalizedServiceType) {
