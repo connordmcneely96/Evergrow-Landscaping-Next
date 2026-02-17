@@ -46,7 +46,8 @@ export default function InvoicesPage() {
                 // Redirect to Stripe Checkout
                 window.location.href = data.url
             } else {
-                alert('Failed to create payment session: ' + (data.error || 'Unknown error'))
+                const reason = data.details || data.error || 'Unknown error'
+                alert('Payment failed: ' + reason)
                 setPayingInvoiceId(null)
             }
         } catch (error) {

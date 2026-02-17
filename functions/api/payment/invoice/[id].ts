@@ -176,7 +176,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
-        console.error('Create checkout session error:', error);
+        const message = error instanceof Error ? error.message : String(error);
+        console.error('Create checkout session error:', message);
         return new Response(JSON.stringify({
             success: false,
             error: 'Failed to create payment session',
