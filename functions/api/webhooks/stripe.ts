@@ -1,5 +1,6 @@
 import { Env } from '../../types';
 import Stripe from 'stripe';
+import { verifyWebhookSignature } from '../../lib/stripe';
 import { sendEmail, getPaymentReceiptEmail } from '../../lib/email';
 
 interface InvoiceRow {
@@ -32,19 +33,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             });
         }
 
-        // Initialize Stripe
-        const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-            apiVersion: '2024-12-18.acacia',
-        });
-
-        // Verify webhook signature
+        // Verify webhook signature (uses env-aware key selection)
         let event: Stripe.Event;
         try {
-            event = stripe.webhooks.constructEvent(
-                body,
-                signature,
-                env.STRIPE_WEBHOOK_SECRET
-            );
+            event = await verifyWebhookSignature(env, body, signature);
         } catch (err) {
             console.error('Webhook signature verification failed:', err);
             return new Response(JSON.stringify({ error: 'Invalid signature' }), {
