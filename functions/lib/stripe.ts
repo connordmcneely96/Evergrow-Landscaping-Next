@@ -58,16 +58,31 @@ export async function createPaymentIntentWithRetry(
 }
 
 /**
- * Get configured Stripe client instance
- * @param env - Worker environment with STRIPE_SECRET_KEY
+ * Resolve the Stripe secret key for the current environment.
+ * Uses the live key when ENVIRONMENT === 'production', test key otherwise.
+ */
+function resolveStripeSecretKey(env: Env): string {
+    if (env.ENVIRONMENT === 'production') {
+        if (!env.EVERGROW_STRIPE_SECRET_KEY_LIVE) {
+            throw new Error('EVERGROW_STRIPE_SECRET_KEY_LIVE not configured');
+        }
+        return env.EVERGROW_STRIPE_SECRET_KEY_LIVE;
+    }
+    if (!env.EVERGROW_STRIPE_SECRET_KEY_TEST) {
+        throw new Error('EVERGROW_STRIPE_SECRET_KEY_TEST not configured');
+    }
+    return env.EVERGROW_STRIPE_SECRET_KEY_TEST;
+}
+
+/**
+ * Get configured Stripe client instance.
+ * Automatically selects test or live key based on ENVIRONMENT.
+ * @param env - Worker environment
  * @returns Stripe client
  */
 export function getStripeClient(env: Env): Stripe {
-    if (!env.STRIPE_SECRET_KEY) {
-        throw new Error('STRIPE_SECRET_KEY not configured');
-    }
-
-    return new Stripe(env.STRIPE_SECRET_KEY, {
+    return new Stripe(resolveStripeSecretKey(env), {
+        apiVersion: '2024-12-18.acacia',
         typescript: true,
     });
 }
@@ -235,20 +250,20 @@ export async function verifyWebhookSignature(
 ): Promise<Stripe.Event> {
     const stripe = getStripeClient(env);
 
-    if (!env.STRIPE_WEBHOOK_SECRET) {
-        throw new Error('STRIPE_WEBHOOK_SECRET not configured');
+    const webhookSecret =
+        env.ENVIRONMENT === 'production'
+            ? env.EVERGROW_STRIPE_WEBHOOK_SECRET_LIVE
+            : env.EVERGROW_STRIPE_WEBHOOK_SECRET_TEST;
+
+    if (!webhookSecret) {
+        const keyName =
+            env.ENVIRONMENT === 'production'
+                ? 'EVERGROW_STRIPE_WEBHOOK_SECRET_LIVE'
+                : 'EVERGROW_STRIPE_WEBHOOK_SECRET_TEST';
+        throw new Error(`${keyName} not configured`);
     }
 
-    // Note: constructEvent is synchronous, but we mark async for compatibility
-    // In Cloudflare Workers verify logic, we might need specific crypto handling if not using Node
-    // But standard stripe package should work with Node compat turned on (which Pages likely has or shims)
-    // Or we use web-compatible verification if needed.
-    // Assuming Node compat for now as 'stripe' package is Node-first.
-    return stripe.webhooks.constructEvent(
-        payload,
-        signature,
-        env.STRIPE_WEBHOOK_SECRET
-    );
+    return stripe.webhooks.constructEvent(payload, signature, webhookSecret);
 }
 
 /**

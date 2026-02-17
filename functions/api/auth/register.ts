@@ -1,6 +1,7 @@
 import { Env } from '../../types';
 import { createSession } from '../../lib/session';
 import { hashPassword } from './login';
+import { createCustomer as createStripeCustomer } from '../../lib/stripe';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
@@ -82,8 +83,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         // Fetch the full customer record
         const customer = await env.DB.prepare(
-            'SELECT id, name, email FROM customers WHERE id = ?'
-        ).bind(customerId).first<{ id: number; name: string; email: string }>();
+            'SELECT id, name, email, stripe_customer_id FROM customers WHERE id = ?'
+        ).bind(customerId).first<{ id: number; name: string; email: string; stripe_customer_id: string | null }>();
 
         if (!customer) {
             return new Response(JSON.stringify({
@@ -93,6 +94,20 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 status: 500,
                 headers: { 'Content-Type': 'application/json' },
             });
+        }
+
+        // Create Stripe customer if not already set (existing customers from quotes may already have one)
+        if (!customer.stripe_customer_id) {
+            try {
+                const stripeCustomer = await createStripeCustomer(env, customer.email, customer.name);
+                await env.DB.prepare(
+                    'UPDATE customers SET stripe_customer_id = ? WHERE id = ?'
+                ).bind(stripeCustomer.id, customer.id).run();
+            } catch (stripeError) {
+                // Non-fatal: log and continue. The invoice/[id].ts endpoint creates the customer on-the-fly
+                // if stripe_customer_id is still missing when a payment is first attempted.
+                console.error('Failed to create Stripe customer during registration:', stripeError);
+            }
         }
 
         // Create a real JWT session

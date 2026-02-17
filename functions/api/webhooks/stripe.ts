@@ -9,6 +9,7 @@ interface InvoiceRow {
     amount: number;
     invoice_type: string;
     service_type: string | null;
+    status: string;
 }
 
 interface CustomerRow {
@@ -138,6 +139,83 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 }
 
                 console.log('Payment processed successfully for invoice:', invoiceId);
+                break;
+            }
+
+            case 'payment_intent.succeeded': {
+                // Handles the Elements-based payment flow (PaymentModal → create-deposit/create-balance).
+                // The hosted Checkout flow (invoice/[id].ts) fires checkout.session.completed instead.
+                const paymentIntent = event.data.object as Stripe.PaymentIntent;
+
+                // Look up invoice by stripe_payment_intent_id (stored when PI is created)
+                const piInvoice = await env.DB.prepare(`
+                    SELECT
+                        i.id,
+                        i.project_id,
+                        i.customer_id,
+                        i.amount,
+                        i.invoice_type,
+                        i.status,
+                        p.service_type
+                    FROM invoices i
+                    JOIN projects p ON i.project_id = p.id
+                    WHERE i.stripe_payment_intent_id = ?
+                `).bind(paymentIntent.id).first<InvoiceRow>();
+
+                if (!piInvoice) {
+                    // PI not linked to one of our invoices — skip silently
+                    console.log('No invoice found for payment_intent.succeeded:', paymentIntent.id);
+                    break;
+                }
+
+                // Idempotency: skip if already marked paid (e.g. duplicate delivery)
+                if (piInvoice.status === 'paid') {
+                    console.log('Invoice already paid, skipping:', piInvoice.id);
+                    break;
+                }
+
+                // Mark invoice paid
+                await env.DB.prepare(`
+                    UPDATE invoices
+                    SET status = 'paid', paid_at = CURRENT_TIMESTAMP
+                    WHERE id = ?
+                `).bind(piInvoice.id).run();
+
+                // Update project payment flags
+                if (piInvoice.invoice_type === 'deposit') {
+                    await env.DB.prepare(`
+                        UPDATE projects SET deposit_paid = 1 WHERE id = ?
+                    `).bind(piInvoice.project_id).run();
+                } else if (piInvoice.invoice_type === 'balance') {
+                    await env.DB.prepare(`
+                        UPDATE projects SET balance_paid = 1 WHERE id = ?
+                    `).bind(piInvoice.project_id).run();
+                }
+
+                // Send receipt email
+                const piCustomer = await env.DB.prepare(`
+                    SELECT email, name FROM customers WHERE id = ?
+                `).bind(piInvoice.customer_id).first<CustomerRow>();
+
+                if (piCustomer) {
+                    try {
+                        await sendEmail(env, {
+                            to: piCustomer.email,
+                            subject: `Payment Receipt - Invoice #${piInvoice.id}`,
+                            html: getPaymentReceiptEmail({
+                                name: piCustomer.name,
+                                amount: piInvoice.amount,
+                                invoiceType: piInvoice.invoice_type,
+                                projectId: piInvoice.project_id,
+                                paidAt: new Date(),
+                            }),
+                        });
+                    } catch (emailError) {
+                        console.error('Failed to send receipt email:', emailError);
+                    }
+                }
+
+                console.log('Payment Intent succeeded, invoice marked paid:', piInvoice.id);
                 break;
             }
 
