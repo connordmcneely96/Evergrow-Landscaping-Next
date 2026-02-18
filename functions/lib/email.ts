@@ -7,23 +7,23 @@ import { Env } from '../types';
  * @returns Resend client
  */
 export function getResendClient(env: Env): Resend {
-  if (!env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured');
-  }
+    if (!env.RESEND_API_KEY) {
+        throw new Error('RESEND_API_KEY not configured');
+    }
 
-  return new Resend(env.RESEND_API_KEY);
+    return new Resend(env.RESEND_API_KEY);
 }
 
 interface SendEmailParams {
-  to: string | string[];
-  subject: string;
-  html: string;
-  from?: string;
-  replyTo?: string;
-  attachments?: Array<{
-    filename: string;
-    content: string | Buffer;
-  }>;
+    to: string | string[];
+    subject: string;
+    html: string;
+    from?: string;
+    replyTo?: string;
+    attachments?: Array<{
+        filename: string;
+        content: string | Buffer;
+    }>;
 }
 
 /**
@@ -33,47 +33,47 @@ interface SendEmailParams {
  * @returns Result with success status and email ID
  */
 export async function sendEmail(
-  env: Env,
-  params: SendEmailParams
+    env: Env,
+    params: SendEmailParams
 ): Promise<{ success: boolean; id?: string; error?: string }> {
-  // Check if Resend is configured
-  if (!env.RESEND_API_KEY) {
-    console.error('[Email] RESEND_API_KEY not found in environment');
-    return {
-      success: false,
-      error: 'Email service not configured (RESEND_API_KEY missing)'
-    };
-  }
-
-  console.log('[Email] Resend API key found, attempting to send email to:', params.to);
-  console.log('[Email] Email subject:', params.subject);
-
-  try {
-    const resend = new Resend(env.RESEND_API_KEY);
-
-    const { data, error } = await resend.emails.send({
-      from: params.from || 'Evergrow Landscaping <noreply@evergrowlandscaping.com>',
-      to: params.to,
-      subject: params.subject,
-      html: params.html,
-      replyTo: params.replyTo || 'contact@evergrowlandscaping.com',
-      attachments: params.attachments,
-    });
-
-    if (error) {
-      console.error('[Email] Resend API error:', JSON.stringify(error, null, 2));
-      return { success: false, error: error.message };
+    // Check if Resend is configured
+    if (!env.RESEND_API_KEY) {
+        console.error('[Email] RESEND_API_KEY not found in environment');
+        return {
+            success: false,
+            error: 'Email service not configured (RESEND_API_KEY missing)'
+        };
     }
 
-    console.log('[Email] Email sent successfully! ID:', data?.id);
-    return { success: true, id: data?.id };
-  } catch (error) {
-    console.error('[Email] Exception while sending email:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    };
-  }
+    console.log('[Email] Resend API key found, attempting to send email to:', params.to);
+    console.log('[Email] Email subject:', params.subject);
+
+    try {
+        const resend = new Resend(env.RESEND_API_KEY);
+
+        const { data, error } = await resend.emails.send({
+            from: params.from || 'Evergrow Landscaping <noreply@evergrowlandscaping.com>',
+            to: params.to,
+            subject: params.subject,
+            html: params.html,
+            replyTo: params.replyTo || 'contact@evergrowlandscaping.com',
+            attachments: params.attachments,
+        });
+
+        if (error) {
+            console.error('[Email] Resend API error:', JSON.stringify(error, null, 2));
+            return { success: false, error: error.message };
+        }
+
+        console.log('[Email] Email sent successfully! ID:', data?.id);
+        return { success: true, id: data?.id };
+    } catch (error) {
+        console.error('[Email] Exception while sending email:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+        };
+    }
 }
 
 // ============================================================================
@@ -81,59 +81,59 @@ export async function sendEmail(
 // ============================================================================
 
 const PAYMENT_INVOICE_TYPE_LABELS: Record<string, string> = {
-  deposit: 'Deposit Payment',
-  balance: 'Balance Payment',
-  full: 'Payment',
-  additional: 'Additional Charge',
+    deposit: 'Deposit Payment',
+    balance: 'Balance Payment',
+    full: 'Payment',
+    additional: 'Additional Charge',
 };
 
 function getInvoiceTypeLabel(value?: string | null): string {
-  if (!value) {
-    return 'Payment';
-  }
-  const normalized = value.trim().toLowerCase();
-  return PAYMENT_INVOICE_TYPE_LABELS[normalized] || toTitleCase(normalized);
+    if (!value) {
+        return 'Payment';
+    }
+    const normalized = value.trim().toLowerCase();
+    return PAYMENT_INVOICE_TYPE_LABELS[normalized] || toTitleCase(normalized);
 }
 
 function formatCurrency(amount: number): string {
-  const safeAmount = Number.isFinite(amount) ? amount : 0;
-  return `$${safeAmount.toFixed(2)}`;
+    const safeAmount = Number.isFinite(amount) ? amount : 0;
+    return `$${safeAmount.toFixed(2)}`;
 }
 
 function formatEmailDate(value?: Date | string): string | null {
-  if (!value) {
-    return null;
-  }
-  const date = value instanceof Date ? value : new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return null;
-  }
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+    if (!value) {
+        return null;
+    }
+    const date = value instanceof Date ? value : new Date(value);
+    if (Number.isNaN(date.getTime())) {
+        return null;
+    }
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 }
 
 function toTitleCase(value: string): string {
-  return value
-    .replace(/[_-]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+    return value
+        .replace(/[_-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 function formatEmailText(value: string): string {
-  return escapeHtml(value).replace(/\n/g, '<br>');
+    return escapeHtml(value).replace(/\n/g, '<br>');
 }
 
 function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 // ============================================================================
@@ -144,12 +144,12 @@ function escapeHtml(value: string): string {
  * Newsletter welcome email (to subscriber)
  */
 export function getNewsletterWelcomeEmail(data: {
-  name?: string;
-  unsubscribeUrl: string;
+    name?: string;
+    unsubscribeUrl: string;
 }): string {
-  const greetingName = data.name ? data.name : 'there';
+    const greetingName = data.name ? data.name : 'there';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -210,18 +210,18 @@ export function getNewsletterWelcomeEmail(data: {
  * Quote request notification email (to business owner)
  */
 export function getQuoteRequestNotificationEmail(data: {
-  name: string;
-  email: string;
-  phone?: string;
-  address?: string;
-  city?: string;
-  zipCode?: string;
-  serviceType: string;
-  propertySize?: string;
-  description?: string;
-  photoUrls?: string[];
+    name: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    city?: string;
+    zipCode?: string;
+    serviceType: string;
+    propertySize?: string;
+    description?: string;
+    photoUrls?: string[];
 }): string {
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -325,7 +325,7 @@ export function getQuoteRequestNotificationEmail(data: {
  * Quote request confirmation email (to customer)
  */
 export function getQuoteRequestConfirmationEmail(name: string, serviceType: string): string {
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -404,21 +404,21 @@ export function getQuoteRequestConfirmationEmail(name: string, serviceType: stri
 }
 
 export function getPaymentReceiptEmail(data: {
-  name?: string | null;
-  amount: number;
-  invoiceType?: string | null;
-  projectId?: number | string | null;
-  paidAt?: Date | string;
+    name?: string | null;
+    amount: number;
+    invoiceType?: string | null;
+    projectId?: number | string | null;
+    paidAt?: Date | string;
 }): string {
-  const customerName = escapeHtml(data.name || 'there');
-  const amount = formatCurrency(data.amount);
-  const invoiceLabel = getInvoiceTypeLabel(data.invoiceType);
-  const paidAt = formatEmailDate(data.paidAt) || formatEmailDate(new Date());
-  const projectLine = data.projectId
-    ? `<p><strong>Project ID:</strong> ${escapeHtml(String(data.projectId))}</p>`
-    : '';
+    const customerName = escapeHtml(data.name || 'there');
+    const amount = formatCurrency(data.amount);
+    const invoiceLabel = getInvoiceTypeLabel(data.invoiceType);
+    const paidAt = formatEmailDate(data.paidAt) || formatEmailDate(new Date());
+    const projectLine = data.projectId
+        ? `<p><strong>Project ID:</strong> ${escapeHtml(String(data.projectId))}</p>`
+        : '';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -461,21 +461,21 @@ export function getPaymentReceiptEmail(data: {
 }
 
 export function getPaymentFailureEmail(data: {
-  name?: string;
-  amount: number;
-  reason?: string;
-  retryUrl?: string;
+    name?: string;
+    amount: number;
+    reason?: string;
+    retryUrl?: string;
 }): string {
-  const customerName = escapeHtml(data.name || 'there');
-  const amount = formatCurrency(data.amount);
-  const reasonLine = data.reason
-    ? `<p><strong>Reason:</strong> ${escapeHtml(data.reason)}</p>`
-    : '';
-  const retryLink = data.retryUrl
-    ? `<a href="${escapeHtml(data.retryUrl)}" style="background: #4DB8AC; color: white; padding: 12px 22px; text-decoration: none; border-radius: 4px; display: inline-block;">Retry Payment</a>`
-    : '';
+    const customerName = escapeHtml(data.name || 'there');
+    const amount = formatCurrency(data.amount);
+    const reasonLine = data.reason
+        ? `<p><strong>Reason:</strong> ${escapeHtml(data.reason)}</p>`
+        : '';
+    const retryLink = data.retryUrl
+        ? `<a href="${escapeHtml(data.retryUrl)}" style="background: #4DB8AC; color: white; padding: 12px 22px; text-decoration: none; border-radius: 4px; display: inline-block;">Retry Payment</a>`
+        : '';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -518,19 +518,19 @@ export function getPaymentFailureEmail(data: {
 }
 
 export function getPaymentFailureAlertEmail(data: {
-  customerName: string;
-  customerEmail?: string;
-  amount: number;
-  projectId?: number | string | null;
-  paymentIntentId: string;
-  reason?: string;
+    customerName: string;
+    customerEmail?: string;
+    amount: number;
+    projectId?: number | string | null;
+    paymentIntentId: string;
+    reason?: string;
 }): string {
-  const amount = formatCurrency(data.amount);
-  const projectLine = data.projectId ? `<p><strong>Project ID:</strong> ${escapeHtml(String(data.projectId))}</p>` : '';
-  const reasonLine = data.reason ? `<p><strong>Failure reason:</strong> ${escapeHtml(data.reason)}</p>` : '';
-  const customerEmail = data.customerEmail ? escapeHtml(data.customerEmail) : 'Unavailable';
+    const amount = formatCurrency(data.amount);
+    const projectLine = data.projectId ? `<p><strong>Project ID:</strong> ${escapeHtml(String(data.projectId))}</p>` : '';
+    const reasonLine = data.reason ? `<p><strong>Failure reason:</strong> ${escapeHtml(data.reason)}</p>` : '';
+    const customerEmail = data.customerEmail ? escapeHtml(data.customerEmail) : 'Unavailable';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -572,17 +572,17 @@ export function getPaymentFailureAlertEmail(data: {
 }
 
 export function getRefundConfirmationEmail(data: {
-  name?: string | null;
-  amount: number;
-  reason?: string | null;
+    name?: string | null;
+    amount: number;
+    reason?: string | null;
 }): string {
-  const customerName = escapeHtml(data.name || 'there');
-  const amount = formatCurrency(data.amount);
-  const reasonLine = data.reason
-    ? `<p><strong>Reason:</strong> ${escapeHtml(data.reason)}</p>`
-    : '';
+    const customerName = escapeHtml(data.name || 'there');
+    const amount = formatCurrency(data.amount);
+    const reasonLine = data.reason
+        ? `<p><strong>Reason:</strong> ${escapeHtml(data.reason)}</p>`
+        : '';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -623,33 +623,33 @@ export function getRefundConfirmationEmail(data: {
 }
 
 export function getQuoteEmail(data: {
-  customerName: string;
-  serviceType: string;
-  description?: string | null;
-  quotedAmount: number;
-  notes?: string | null;
-  timeline?: string | null;
-  terms?: string | null;
-  acceptanceUrl: string;
-  validUntilDisplay: string;
-  requiresDeposit: boolean;
-  termsUrl: string;
+    customerName: string;
+    serviceType: string;
+    description?: string | null;
+    quotedAmount: number;
+    notes?: string | null;
+    timeline?: string | null;
+    terms?: string | null;
+    acceptanceUrl: string;
+    validUntilDisplay: string;
+    requiresDeposit: boolean;
+    termsUrl: string;
 }): string {
-  const amount = formatCurrency(data.quotedAmount);
-  const descriptionBlock = data.description
-    ? `<div class="section"><div class="label">Project Description</div><div class="value">${formatEmailText(data.description)}</div></div>`
-    : '';
-  const notesBlock = data.notes
-    ? `<div class="section"><div class="label">Notes</div><div class="value">${formatEmailText(data.notes)}</div></div>`
-    : '';
-  const timelineBlock = data.timeline
-    ? `<div class="section"><div class="label">Estimated Timeline</div><div class="value">${formatEmailText(data.timeline)}</div></div>`
-    : '';
-  const depositNote = data.requiresDeposit
-    ? '<div class="alert"><strong>Note:</strong> A 50% deposit will be required to schedule this project upon acceptance.</div>'
-    : '';
+    const amount = formatCurrency(data.quotedAmount);
+    const descriptionBlock = data.description
+        ? `<div class="section"><div class="label">Project Description</div><div class="value">${formatEmailText(data.description)}</div></div>`
+        : '';
+    const notesBlock = data.notes
+        ? `<div class="section"><div class="label">Notes</div><div class="value">${formatEmailText(data.notes)}</div></div>`
+        : '';
+    const timelineBlock = data.timeline
+        ? `<div class="section"><div class="label">Estimated Timeline</div><div class="value">${formatEmailText(data.timeline)}</div></div>`
+        : '';
+    const depositNote = data.requiresDeposit
+        ? '<div class="alert"><strong>Note:</strong> A 50% deposit will be required to schedule this project upon acceptance.</div>'
+        : '';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -714,11 +714,11 @@ export function getQuoteEmail(data: {
 }
 
 export function getProjectCancellationEmail(data: {
-  name: string;
-  serviceType: string;
-  reason?: string;
+    name: string;
+    serviceType: string;
+    reason?: string;
 }): string {
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -748,37 +748,36 @@ export function getProjectCancellationEmail(data: {
     </html>
     `;
 }
-
 export function getProjectCompletionEmail(data: {
-  name: string;
-  serviceType: string;
-  summary?: string;
-  completionNotes?: string;
-  completionPhotos?: string[];
-  balanceAmount?: number | null;
-  paymentUrl?: string | null;
-  dueDate?: string | null;
-  feedbackUrl: string;
-  reviewUrl: string;
+    name: string;
+    serviceType: string;
+    summary?: string;
+    completionNotes?: string;
+    completionPhotos?: string[];
+    balanceAmount?: number | null;
+    paymentUrl?: string | null;
+    dueDate?: string | null;
+    feedbackUrl: string;
+    reviewUrl: string;
 }): string {
-  const photosBlock = data.completionPhotos && data.completionPhotos.length > 0
-    ? `
+    const photosBlock = data.completionPhotos && data.completionPhotos.length > 0
+        ? `
         <div style="margin: 20px 0;">
           <strong>Project Photos:</strong><br>
           ${data.completionPhotos.map(url => `<img src="${url}" style="max-width: 200px; margin: 5px; border-radius: 4px;" />`).join('')}
         </div>`
-    : '';
+        : '';
 
-  const paymentBlock = data.balanceAmount && data.balanceAmount > 0 && data.paymentUrl
-    ? `
+    const paymentBlock = data.balanceAmount && data.balanceAmount > 0 && data.paymentUrl
+        ? `
         <div style="background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 20px 0; border-left: 4px solid #FBB017;">
             <p style="margin-top: 0;"><strong>Remaining Balance Due:</strong> ${formatCurrency(data.balanceAmount)}</p>
             <p>Due Date: ${data.dueDate || 'Upon Receipt'}</p>
             <a href="${data.paymentUrl}" style="display: inline-block; background: #24663B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">Pay Balance</a>
         </div>`
-    : '';
+        : '';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -797,81 +796,6 @@ export function getProjectCompletionEmail(data: {
           <h1>Project Completed! 🌿</h1>
         </div>
         <div class="content">
-// ... (previous content)
-
-export function getDepositInvoiceEmail(data: {
-  customerName: string;
-  projectName: string;
-  depositAmount: number;
-  totalAmount: number;
-  invoiceUrl: string;
-  dueDate: string;
-}): string {
-  const depositAmount = formatCurrency(data.depositAmount);
-  const totalAmount = formatCurrency(data.totalAmount);
-
-  return `
-    <!DOCTYPE html>
-      <html>
-      <head>
-      <meta charset="UTF-8" >
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" >
-          <style>
-          body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f4f4f4; }
-          .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
-          .header { background: #24663B; color: white; padding: 32px 20px; text-align: center; }
-          .header h1 { margin: 0; font-size: 24px; font-weight: 600; }
-          .content { padding: 32px 24px; }
-          .greeting { font-size: 18px; margin-bottom: 24px; }
-          .invoice-box { background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px; padding: 24px; margin-bottom: 24px; }
-          .amount-large { font-size: 36px; font-weight: bold; color: #24663B; margin: 8px 0; }
-          .label { text-transform: uppercase; font-size: 12px; color: #6B7280; letter-spacing: 0.05em; font-weight: 600; }
-          .row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
-          .cta-button { display: inline-block; background: #FBB017; color: #1F1F1F; text-decoration: none; padding: 16px 32px; border-radius: 6px; font-weight: bold; font-size: 16px; text-align: center; width: 100%; box-sizing: border-box; }
-        .cta-button:hover { background: #F59E0B; }
-        .footer { background: #F9FAFB; padding: 24px; text-align: center; font-size: 12px; color: #6B7280; border - top: 1px solid #E5E7EB; }
-  </style>
-    </head>
-    < body >
-    <div class="container" >
-      <div class="header" >
-        <h1>Deposit Invoice </h1>
-          </div>
-          < div class="content" >
-            <p class="greeting" > Hi ${ escapeHtml(data.customerName) }, </p>
-              < p > Thank you for accepting the quote! To secure your spot on our schedule, please make the deposit payment for <strong>${ escapeHtml(data.projectName) } < /strong>.</p >
-
-                <div class= "invoice-box" >
-                <div class= "label" > Deposit Due </div>
-                  < div class="amount-large" > ${ depositAmount } </div>
-
-                    < div style = "margin-top: 16px; padding-top: 16px; border-top: 1px solid #E5E7EB;" >
-                      <div class="row" >
-                        <span style="color: #6B7280;" > Project Total </span>
-                          < span > ${ totalAmount } </span>
-                            </div>
-                            < div class="row" >
-                              <span style="color: #6B7280;" > Due Date </span>
-                                < span > ${ data.dueDate } </span>
-                                  </div>
-                                  </div>
-                                  </div>
-
-                                  < a href = "${data.invoiceUrl}" class="cta-button" > Pay Deposit Securely </a>
-
-                                    < p style = "margin-top: 24px; font-size: 14px; color: #6B7280;" >
-                                      Once we receive your deposit, we will contact you to confirm the start date.
-          </p>
-                                        </div>
-                                        < div class="footer" >
-                                          <p>& copy; ${ new Date().getFullYear() } Evergrow Landscaping </p>
-                                            < p > Questions ? Reply to this email or call us at(405) 479 - 5794 </p>
-                                              </div>
-                                              </div>
-                                              </body>
-                                              </html>
-                                                `;
-}
           <p>We are happy to let you know that your <strong>${escapeHtml(data.serviceType)}</strong> project has been completed.</p>
           
           ${data.summary ? `<p><strong>Summary:</strong> ${escapeHtml(data.summary)}</p>` : ''}
@@ -893,13 +817,87 @@ export function getDepositInvoiceEmail(data: {
     `;
 }
 
-export function getProjectFeedbackRequestEmail(data: {
-  name: string;
-  serviceType: string;
-  feedbackUrl: string;
-  reviewUrl: string;
+export function getDepositInvoiceEmail(data: {
+    customerName: string;
+    projectName: string;
+    depositAmount: number;
+    totalAmount: number;
+    invoiceUrl: string;
+    dueDate: string;
 }): string {
-  return `
+    const depositAmount = formatCurrency(data.depositAmount);
+    const totalAmount = formatCurrency(data.totalAmount);
+
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .header { background: #24663B; color: white; padding: 32px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 600; }
+        .content { padding: 32px 24px; }
+        .greeting { font-size: 18px; margin-bottom: 24px; }
+        .invoice-box { background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px; padding: 24px; margin-bottom: 24px; }
+        .amount-large { font-size: 36px; font-weight: bold; color: #24663B; margin: 8px 0; }
+        .label { text-transform: uppercase; font-size: 12px; color: #6B7280; letter-spacing: 0.05em; font-weight: 600; }
+        .row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .cta-button { display: inline-block; background: #FBB017; color: #1F1F1F; text-decoration: none; padding: 16px 32px; border-radius: 6px; font-weight: bold; font-size: 16px; text-align: center; width: 100%; box-sizing: border-box; }
+        .cta-button:hover { background: #F59E0B; }
+        .footer { background: #F9FAFB; padding: 24px; text-align: center; font-size: 12px; color: #6B7280; border-top: 1px solid #E5E7EB; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>Deposit Invoice</h1>
+        </div>
+        <div class="content">
+          <p class="greeting">Hi ${escapeHtml(data.customerName)},</p>
+          <p>Thank you for accepting the quote! To secure your spot on our schedule, please make the deposit payment for <strong>${escapeHtml(data.projectName)}</strong>.</p>
+          
+          <div class="invoice-box">
+            <div class="label">Deposit Due</div>
+            <div class="amount-large">${depositAmount}</div>
+            
+            <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #E5E7EB;">
+              <div class="row">
+                <span style="color: #6B7280;">Project Total</span>
+                <span>${totalAmount}</span>
+              </div>
+              <div class="row">
+                <span style="color: #6B7280;">Due Date</span>
+                <span>${data.dueDate}</span>
+              </div>
+            </div>
+          </div>
+
+          <a href="${data.invoiceUrl}" class="cta-button">Pay Deposit Securely</a>
+
+          <p style="margin-top: 24px; font-size: 14px; color: #6B7280;">
+            Once we receive your deposit, we will contact you to confirm the start date.
+          </p>
+        </div>
+        <div class="footer">
+          <p>&copy; ${new Date().getFullYear()} Evergrow Landscaping</p>
+          <p>Questions? Reply to this email or call us at (405) 479-5794</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+export function getProjectFeedbackRequestEmail(data: {
+    name: string;
+    serviceType: string;
+    feedbackUrl: string;
+    reviewUrl: string;
+}): string {
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -939,28 +937,28 @@ export function getProjectFeedbackRequestEmail(data: {
 }
 
 export function getProjectScheduledEmail(data: {
-  name: string;
-  serviceType: string;
-  scheduledDate: string;
-  scheduledTime?: string;
-  serviceDetails?: string;
-  depositAmount?: number | null;
-  depositDueDate?: string;
-  paymentLink?: string;
+    name: string;
+    serviceType: string;
+    scheduledDate: string;
+    scheduledTime?: string;
+    serviceDetails?: string;
+    depositAmount?: number | null;
+    depositDueDate?: string;
+    paymentLink?: string;
 }): string {
-  const timeInfo = data.scheduledTime ? ` at ${data.scheduledTime}` : '';
-  const dateFormatted = new Date(data.scheduledDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    const timeInfo = data.scheduledTime ? ` at ${data.scheduledTime}` : '';
+    const dateFormatted = new Date(data.scheduledDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
-  const depositBlock = data.depositAmount && data.depositAmount > 0 && data.paymentLink
-    ? `
+    const depositBlock = data.depositAmount && data.depositAmount > 0 && data.paymentLink
+        ? `
         <div style="background: #f8f9fa; padding: 15px; border-radius: 4px; margin: 20px 0; border-left: 4px solid #FBB017;">
             <p style="margin-top: 0;"><strong>Deposit Required:</strong> ${formatCurrency(data.depositAmount)}</p>
             <p>Due By: ${data.depositDueDate ? new Date(data.depositDueDate).toLocaleDateString() : 'Upon Receipt'}</p>
             <a href="${data.paymentLink}" style="display: inline-block; background: #24663B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px;">Pay Deposit</a>
         </div>`
-    : '';
+        : '';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -1002,7 +1000,7 @@ export function getProjectScheduledEmail(data: {
 }
 
 export function getCustomerFeedbackThankYouEmail(name: string): string {
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -1034,18 +1032,18 @@ export function getCustomerFeedbackThankYouEmail(name: string): string {
 }
 
 export function getFeedbackOwnerAlertEmail(data: {
-  customerName: string;
-  customerEmail?: string;
-  customerPhone?: string | null;
-  rating: number;
-  feedback: string;
-  projectId?: number | null;
+    customerName: string;
+    customerEmail?: string;
+    customerPhone?: string | null;
+    rating: number;
+    feedback: string;
+    projectId?: number | null;
 }): string {
-  const projectLine = data.projectId ? `<p><strong>Project ID:</strong> ${data.projectId}</p>` : '';
-  const emailLine = data.customerEmail ? `<p><strong>Email:</strong> ${escapeHtml(data.customerEmail)}</p>` : '';
-  const phoneLine = data.customerPhone ? `<p><strong>Phone:</strong> ${escapeHtml(data.customerPhone)}</p>` : '';
+    const projectLine = data.projectId ? `<p><strong>Project ID:</strong> ${data.projectId}</p>` : '';
+    const emailLine = data.customerEmail ? `<p><strong>Email:</strong> ${escapeHtml(data.customerEmail)}</p>` : '';
+    const phoneLine = data.customerPhone ? `<p><strong>Phone:</strong> ${escapeHtml(data.customerPhone)}</p>` : '';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -1088,37 +1086,37 @@ export function getFeedbackOwnerAlertEmail(data: {
 }
 
 export function getFeedbackOwnerReviewEmail(data: {
-  customerName: string;
-  customerEmail?: string;
-  customerPhone?: string | null;
-  rating: number;
-  feedback: string;
-  projectId?: number | null;
+    customerName: string;
+    customerEmail?: string;
+    customerPhone?: string | null;
+    rating: number;
+    feedback: string;
+    projectId?: number | null;
 }): string {
-  return getFeedbackOwnerAlertEmail({
-    customerName: data.customerName,
-    customerEmail: data.customerEmail,
-    customerPhone: data.customerPhone,
-    rating: data.rating,
-    feedback: data.feedback,
-    projectId: data.projectId
-  });
+    return getFeedbackOwnerAlertEmail({
+        customerName: data.customerName,
+        customerEmail: data.customerEmail,
+        customerPhone: data.customerPhone,
+        rating: data.rating,
+        feedback: data.feedback,
+        projectId: data.projectId
+    });
 }
 
 /**
  * Project photo notification email
  */
 export function getProjectPhotoNotificationEmail(data: {
-  projectId: number;
-  uploaderName: string;
-  uploaderType: 'customer' | 'business';
-  photoUrl: string;
-  caption?: string;
+    projectId: number;
+    uploaderName: string;
+    uploaderType: 'customer' | 'business';
+    photoUrl: string;
+    caption?: string;
 }): string {
-  const isCustomerUpload = data.uploaderType === 'customer';
-  const recipient = isCustomerUpload ? 'team' : 'customer';
+    const isCustomerUpload = data.uploaderType === 'customer';
+    // const recipient = isCustomerUpload ? 'team' : 'customer'; // unused
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -1188,46 +1186,46 @@ export function getProjectPhotoNotificationEmail(data: {
  * Job application notification email (to business)
  */
 export function getJobApplicationNotificationEmail(data: {
-  applicationId: number;
-  name: string;
-  email: string;
-  phone: string;
-  cityState: string;
-  position: string;
-  willingToTravel: boolean;
-  hasLicense: boolean;
-  yearsExperience: number;
-  equipmentSkills: string[];
-  resumeUrl?: string;
-  coverLetter?: string;
-  availabilityDate?: string;
+    applicationId: number;
+    name: string;
+    email: string;
+    phone: string;
+    cityState: string;
+    position: string;
+    willingToTravel: boolean;
+    hasLicense: boolean;
+    yearsExperience: number;
+    equipmentSkills: string[];
+    resumeUrl?: string;
+    coverLetter?: string;
+    availabilityDate?: string;
 }): string {
-  const skillsList = data.equipmentSkills && data.equipmentSkills.length > 0
-    ? `<ul style="margin: 10px 0; padding-left: 25px;">${data.equipmentSkills.map(skill => `<li>${escapeHtml(skill)}</li>`).join('')}</ul>`
-    : '<p style="color: #666;">No equipment skills selected</p>';
+    const skillsList = data.equipmentSkills && data.equipmentSkills.length > 0
+        ? `<ul style="margin: 10px 0; padding-left: 25px;">${data.equipmentSkills.map(skill => `<li>${escapeHtml(skill)}</li>`).join('')}</ul>`
+        : '<p style="color: #666;">No equipment skills selected</p>';
 
-  const resumeSection = data.resumeUrl
-    ? `<div class="field">
+    const resumeSection = data.resumeUrl
+        ? `<div class="field">
          <span class="label">📎 Resume</span>
          <span class="value"><a href="${escapeHtml(data.resumeUrl)}" target="_blank" style="color: #4DB8AC; text-decoration: underline;">Download Resume (PDF)</a></span>
        </div>`
-    : '<div class="field"><span class="label">📎 Resume</span><span class="value" style="color: #666;">No resume uploaded</span></div>';
+        : '<div class="field"><span class="label">📎 Resume</span><span class="value" style="color: #666;">No resume uploaded</span></div>';
 
-  const coverLetterSection = data.coverLetter
-    ? `<div class="field">
+    const coverLetterSection = data.coverLetter
+        ? `<div class="field">
          <span class="label">✍️ Why Join Evergrow?</span>
          <span class="value">${escapeHtml(data.coverLetter).replace(/\n/g, '<br>')}</span>
        </div>`
-    : '';
+        : '';
 
-  const availabilitySection = data.availabilityDate
-    ? `<div class="field">
+    const availabilitySection = data.availabilityDate
+        ? `<div class="field">
          <span class="label">📅 Availability Start Date</span>
          <span class="value">${escapeHtml(data.availabilityDate)}</span>
        </div>`
-    : '';
+        : '';
 
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
@@ -1322,10 +1320,10 @@ export function getJobApplicationNotificationEmail(data: {
  * Job application confirmation email (to applicant)
  */
 export function getJobApplicationConfirmationEmail(data: {
-  name: string;
-  position: string;
+    name: string;
+    position: string;
 }): string {
-  return `
+    return `
     <!DOCTYPE html>
     <html>
     <head>
