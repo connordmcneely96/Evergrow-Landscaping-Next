@@ -281,6 +281,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             );
         }
 
+        if (quote.status === 'accepted') {
+            return new Response(
+                JSON.stringify({
+                    success: true,
+                    message: 'Quote already accepted',
+                    quoteId,
+                    projectId: null, // We might want to look this up if needed, but for now just success
+                    invoiceId: null
+                }),
+                { status: 200, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
         if (quote.status !== 'quoted') {
             return new Response(
                 JSON.stringify({
