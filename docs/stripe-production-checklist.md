@@ -69,8 +69,8 @@ Switch from test keys to live keys only after Stripe verification is complete.
 
 ```bash
 # Remove test keys (overwrite with live values)
-wrangler secret put STRIPE_SECRET_KEY         # sk_live_...
-wrangler secret put STRIPE_WEBHOOK_SECRET     # whsec_... (live webhook secret)
+wrangler secret put EVERGROW_STRIPE_SECRET_KEY_LIVE         # sk_live_...
+wrangler secret put EVERGROW_STRIPE_WEBHOOK_SECRET_LIVE     # whsec_... (live webhook secret)
 wrangler secret put RESEND_API_KEY            # re_... (already set if email works)
 wrangler secret put SESSION_SECRET            # keep existing value
 wrangler secret put JWT_SECRET               # keep existing value
@@ -81,7 +81,7 @@ wrangler secret put JWT_SECRET               # keep existing value
 In Cloudflare Dashboard → Pages → evergrow-landscaping → Settings → Environment Variables:
 
 ```
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = pk_live_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_EVERGROW_LIVE = pk_live_...
 ```
 
 Set this for "Production" environment only. Keep `pk_test_...` for "Preview" environment.
