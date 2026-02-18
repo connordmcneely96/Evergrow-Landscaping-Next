@@ -282,19 +282,28 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         if (quote.status === 'accepted') {
-            return new Response(
-                JSON.stringify({
-                    success: true,
-                    message: 'Quote already accepted',
-                    quoteId,
-                    projectId: null, // We might want to look this up if needed, but for now just success
-                    invoiceId: null
-                }),
-                { status: 200, headers: { 'Content-Type': 'application/json' } }
-            );
-        }
+            // Check if project already exists to ensure idempotency
+            const existingProject = await env.DB.prepare('SELECT id FROM projects WHERE quote_id = ?')
+                .bind(quoteId)
+                .first() as { id: number } | null;
 
-        if (quote.status !== 'quoted') {
+            if (existingProject) {
+                // Fully completed, return success
+                return new Response(
+                    JSON.stringify({
+                        success: true,
+                        message: 'Quote already accepted',
+                        quoteId,
+                        projectId: existingProject.id,
+                        invoiceId: null // We could fetch this too, but not strictly needed for the response
+                    }),
+                    { status: 200, headers: { 'Content-Type': 'application/json' } }
+                );
+            }
+
+            // If status is accepted but project missing, allow it to proceed to creation (Fallthrough)
+            console.log(`Quote ${quoteId} is accepted but missing project. Retrying creation...`);
+        } else if (quote.status !== 'quoted') {
             return new Response(
                 JSON.stringify({
                     success: false,
