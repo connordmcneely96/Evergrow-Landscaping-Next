@@ -264,6 +264,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 q.contact_email
             FROM quotes q
             LEFT JOIN customers c ON q.customer_id = c.id
+            WHERE q.id = ?
             `
         )
             .bind(quoteId)
