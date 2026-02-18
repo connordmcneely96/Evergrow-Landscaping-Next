@@ -261,7 +261,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 c.name as customer_name,
                 c.email as customer_email,
                 q.contact_name,
-                q.contact_email
+                q.contact_email,
+                q.status
             FROM quotes q
             LEFT JOIN customers c ON q.customer_id = c.id
             WHERE q.id = ?
