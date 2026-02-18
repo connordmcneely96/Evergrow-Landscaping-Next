@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         hostname: 'evergrowlandscaping.com',
         pathname: '/api/assets/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/api/assets/**',
+      },
     ],
   },
   trailingSlash: true, // Better routing for static sites

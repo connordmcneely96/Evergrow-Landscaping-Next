@@ -797,7 +797,81 @@ export function getProjectCompletionEmail(data: {
           <h1>Project Completed! 🌿</h1>
         </div>
         <div class="content">
-          <p>Hi ${escapeHtml(data.name)},</p>
+// ... (previous content)
+
+export function getDepositInvoiceEmail(data: {
+  customerName: string;
+  projectName: string;
+  depositAmount: number;
+  totalAmount: number;
+  invoiceUrl: string;
+  dueDate: string;
+}): string {
+  const depositAmount = formatCurrency(data.depositAmount);
+  const totalAmount = formatCurrency(data.totalAmount);
+
+  return `
+    < !DOCTYPE html >
+      <html>
+      <head>
+      <meta charset="UTF-8" >
+        <meta name="viewport" content = "width=device-width, initial-scale=1.0" >
+          <style>
+          body { font - family: 'Helvetica Neue', Arial, sans - serif; line - height: 1.6; color: #333; margin: 0; padding: 0; background - color: #f4f4f4; }
+        .container { max - width: 600px; margin: 0 auto; background: white; border - radius: 8px; overflow: hidden; box - shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
+        .header { background: #24663B; color: white; padding: 32px 20px; text - align: center; }
+        .header h1 { margin: 0; font - size: 24px; font - weight: 600; }
+        .content { padding: 32px 24px; }
+        .greeting { font - size: 18px; margin - bottom: 24px; }
+        .invoice - box { background: #F9FAFB; border: 1px solid #E5E7EB; border - radius: 8px; padding: 24px; margin - bottom: 24px; }
+        .amount - large { font - size: 36px; font - weight: bold; color: #24663B; margin: 8px 0; }
+        .label { text - transform: uppercase; font - size: 12px; color: #6B7280; letter - spacing: 0.05em; font - weight: 600; }
+        .row { display: flex; justify - content: space - between; margin - bottom: 8px; font - size: 14px; }
+        .cta - button { display: inline - block; background: #FBB017; color: #1F1F1F; text - decoration: none; padding: 16px 32px; border - radius: 6px; font - weight: bold; font - size: 16px; text - align: center; width: 100 %; box - sizing: border - box; }
+        .cta - button:hover { background: #F59E0B; }
+        .footer { background: #F9FAFB; padding: 24px; text - align: center; font - size: 12px; color: #6B7280; border - top: 1px solid #E5E7EB; }
+  </style>
+    </head>
+    < body >
+    <div class="container" >
+      <div class="header" >
+        <h1>Deposit Invoice </h1>
+          </div>
+          < div class="content" >
+            <p class="greeting" > Hi ${ escapeHtml(data.customerName) }, </p>
+              < p > Thank you for accepting the quote! To secure your spot on our schedule, please make the deposit payment for <strong>${ escapeHtml(data.projectName) } < /strong>.</p >
+
+                <div class= "invoice-box" >
+                <div class= "label" > Deposit Due </div>
+                  < div class="amount-large" > ${ depositAmount } </div>
+
+                    < div style = "margin-top: 16px; padding-top: 16px; border-top: 1px solid #E5E7EB;" >
+                      <div class="row" >
+                        <span style="color: #6B7280;" > Project Total </span>
+                          < span > ${ totalAmount } </span>
+                            </div>
+                            < div class="row" >
+                              <span style="color: #6B7280;" > Due Date </span>
+                                < span > ${ data.dueDate } </span>
+                                  </div>
+                                  </div>
+                                  </div>
+
+                                  < a href = "${data.invoiceUrl}" class="cta-button" > Pay Deposit Securely </a>
+
+                                    < p style = "margin-top: 24px; font-size: 14px; color: #6B7280;" >
+                                      Once we receive your deposit, we will contact you to confirm the start date.
+          </p>
+                                        </div>
+                                        < div class="footer" >
+                                          <p>& copy; ${ new Date().getFullYear() } Evergrow Landscaping </p>
+                                            < p > Questions ? Reply to this email or call us at(405) 479 - 5794 </p>
+                                              </div>
+                                              </div>
+                                              </body>
+                                              </html>
+                                                `;
+}
           <p>We are happy to let you know that your <strong>${escapeHtml(data.serviceType)}</strong> project has been completed.</p>
           
           ${data.summary ? `<p><strong>Summary:</strong> ${escapeHtml(data.summary)}</p>` : ''}

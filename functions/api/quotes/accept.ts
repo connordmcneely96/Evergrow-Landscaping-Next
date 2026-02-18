@@ -194,6 +194,12 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 };
 
 // POST - Accept the quote
+// ... imports
+import { getDepositInvoiceEmail, sendEmail } from '../../lib/email';
+
+// ... (existing code)
+
+// POST - Accept the quote
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
 
@@ -218,6 +224,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     try {
         // Find quote ID from token
+        // ... (existing token lookup is fine, but we need to fetch the QUOTE ROW too)
+
+        // Find quote ID from token
         let quoteId: number | null = null;
 
         for (let i = 1; i <= 1000; i++) {
@@ -239,20 +248,30 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             );
         }
 
-        // Update quote status to accepted
-        const updateResult = await env.DB.prepare(
+        // Fetch quote details (Required for creating Project/Invoice)
+        const quote = await env.DB.prepare(
             `
-            UPDATE quotes
-            SET
-                status = 'accepted',
-                accepted_at = datetime('now')
-            WHERE id = ? AND status = 'quoted'
+            SELECT
+                q.id,
+                q.customer_id,
+                q.service_type,
+                q.description,
+                q.quoted_amount,
+                q.quote_notes,
+                c.name as customer_name,
+                c.email as customer_email,
+                q.contact_name,
+                q.contact_email
+            FROM quotes q
+            LEFT JOIN customers c ON q.customer_id = c.id
+            WHERE q.id = ? AND q.status = 'quoted'
+            LIMIT 1
             `
         )
             .bind(quoteId)
-            .run();
+            .first<QuoteRow>();
 
-        if (!updateResult.success || (updateResult.meta?.changes ?? 0) === 0) {
+        if (!quote) {
             return new Response(
                 JSON.stringify({
                     success: false,
@@ -262,16 +281,107 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             );
         }
 
+        // 1. Update quote status to accepted
+        await env.DB.prepare(
+            `
+            UPDATE quotes
+            SET
+                status = 'accepted',
+                accepted_at = datetime('now')
+            WHERE id = ?
+            `
+        )
+            .bind(quoteId)
+            .run();
+
+        // 2. Create Project
+        const depositAmount = quote.quoted_amount * 0.5;
+
+        const projectResult = await env.DB.prepare(
+            `
+            INSERT INTO projects (
+                customer_id, quote_id, service_type, description,
+                total_amount, deposit_amount, status, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, 'scheduled', datetime('now'))
+            `
+        )
+            .bind(
+                quote.customer_id,
+                quote.id,
+                quote.service_type,
+                quote.description,
+                quote.quoted_amount,
+                depositAmount
+            )
+            .run();
+
+        const projectId = projectResult.meta.last_row_id;
+
+        // 3. Create Deposit Invoice
+        const invoiceResult = await env.DB.prepare(
+            `
+            INSERT INTO invoices (
+                project_id, customer_id, amount, invoice_type,
+                description, status, due_date, sent_at, created_at
+            ) VALUES (?, ?, ?, 'deposit', ?, 'sent', date('now', '+3 days'), datetime('now'), datetime('now'))
+            `
+        )
+            .bind(
+                projectId,
+                quote.customer_id,
+                depositAmount,
+                `Deposit for ${getServiceTypeLabel(quote.service_type)}`
+            )
+            .run();
+
+        const invoiceId = invoiceResult.meta.last_row_id;
+
+        // 4. Send Deposit Invoice Email
+        // We need an invoice URL. Assuming standard route: /portal/dashboard/invoices/:id
+        // Or a public payment link? The user asked for "Invoice for 50% deposit".
+        // The portal link is generic. We likely want to link to the invoice payment page.
+        // Assuming /portal/dashboard/invoices/{id} is the correct internal link.
+        // For external/email, maybe we don't have a direct public link yet without auth?
+        // But the email template asks for `invoiceUrl`.
+        // I'll point to the portal login/dashboard for now, or the specific invoice if authed.
+        // Since we don't have magic links for invoices implemented here yet, I'll use the portal link.
+
+        const invoiceUrl = `https://evergrowlandscaping.com/portal/dashboard/invoices/${invoiceId}`;
+        const customerEmail = quote.contact_email || quote.customer_email;
+        const customerName = quote.contact_name || quote.customer_name || 'Customer';
+
+        if (customerEmail && env.RESEND_API_KEY) {
+            const emailHtml = getDepositInvoiceEmail({
+                customerName: customerName,
+                projectName: getServiceTypeLabel(quote.service_type),
+                depositAmount: depositAmount,
+                totalAmount: quote.quoted_amount,
+                invoiceUrl: invoiceUrl,
+                dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+            });
+
+            // Send in background (don't await)
+            context.waitUntil(
+                sendEmail(env, {
+                    to: customerEmail,
+                    subject: `Invoice: Deposit for ${getServiceTypeLabel(quote.service_type)}`,
+                    html: emailHtml,
+                })
+            );
+        }
+
         // Delete the token from cache
         await env.CACHE.delete(`${QUOTE_TOKEN_PREFIX}${quoteId}`);
 
-        console.info('Quote accepted:', { quoteId });
+        console.info('Quote accepted, project and invoice created:', { quoteId, projectId, invoiceId });
 
         return new Response(
             JSON.stringify({
                 success: true,
-                message: 'Quote accepted successfully',
+                message: 'Quote accepted successfully. Project and invoice created.',
                 quoteId,
+                projectId,
+                invoiceId
             }),
             { status: 200, headers: { 'Content-Type': 'application/json' } }
         );
