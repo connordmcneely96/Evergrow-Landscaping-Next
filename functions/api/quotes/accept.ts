@@ -264,8 +264,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 q.contact_email
             FROM quotes q
             LEFT JOIN customers c ON q.customer_id = c.id
-            WHERE q.id = ? AND q.status = 'quoted'
-            LIMIT 1
             `
         )
             .bind(quoteId)
@@ -275,11 +273,22 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             return new Response(
                 JSON.stringify({
                     success: false,
-                    error: 'Quote cannot be accepted (may have been already accepted or expired)',
+                    error: 'Quote not found',
+                }),
+                { status: 404, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
+        if (quote.status !== 'quoted') {
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    error: `Quote cannot be accepted. Current status: ${quote.status}`,
                 }),
                 { status: 400, headers: { 'Content-Type': 'application/json' } }
             );
         }
+
 
         // 1. Update quote status to accepted
         await env.DB.prepare(
