@@ -399,7 +399,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         return new Response(
             JSON.stringify({
                 success: false,
-                error: 'Failed to accept quote',
+                error: error instanceof Error ? error.message : 'Failed to accept quote',
             }),
             { status: 500, headers: { 'Content-Type': 'application/json' } }
         );
