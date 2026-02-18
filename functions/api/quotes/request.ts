@@ -25,7 +25,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         // Normalize field names (support both camelCase and snake_case)
         const normalizedZipCode = zipCode || zip_code;
         const normalizedServiceType = serviceType || service_type;
-        const normalizedPropertySize = propertySize || property_size;
+        let normalizedPropertySize = propertySize || property_size;
+
+        // Map frontend property sizes to database allowed values
+        // DB Constraint: CHECK(property_size IN ('small', 'medium', 'large', 'commercial'))
+        const validPropertySizes = ['small', 'medium', 'large', 'commercial'];
+
+        if (normalizedPropertySize === 'xlarge') {
+            normalizedPropertySize = 'commercial';
+        } else if (normalizedPropertySize === 'unsure' || !validPropertySizes.includes(normalizedPropertySize)) {
+            normalizedPropertySize = null;
+        }
 
         // Validate required fields
         if (!name || !email || !normalizedServiceType) {
@@ -116,7 +126,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         // Format service type for display
         const serviceTypeDisplay = normalizedServiceType
             .split('-')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
             .join(' ');
 
         // Send notification emails (don't fail the request if emails fail)
