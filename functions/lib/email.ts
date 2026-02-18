@@ -811,25 +811,25 @@ export function getDepositInvoiceEmail(data: {
   const totalAmount = formatCurrency(data.totalAmount);
 
   return `
-    < !DOCTYPE html >
+    <!DOCTYPE html>
       <html>
       <head>
       <meta charset="UTF-8" >
-        <meta name="viewport" content = "width=device-width, initial-scale=1.0" >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" >
           <style>
-          body { font - family: 'Helvetica Neue', Arial, sans - serif; line - height: 1.6; color: #333; margin: 0; padding: 0; background - color: #f4f4f4; }
-        .container { max - width: 600px; margin: 0 auto; background: white; border - radius: 8px; overflow: hidden; box - shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
-        .header { background: #24663B; color: white; padding: 32px 20px; text - align: center; }
-        .header h1 { margin: 0; font - size: 24px; font - weight: 600; }
-        .content { padding: 32px 24px; }
-        .greeting { font - size: 18px; margin - bottom: 24px; }
-        .invoice - box { background: #F9FAFB; border: 1px solid #E5E7EB; border - radius: 8px; padding: 24px; margin - bottom: 24px; }
-        .amount - large { font - size: 36px; font - weight: bold; color: #24663B; margin: 8px 0; }
-        .label { text - transform: uppercase; font - size: 12px; color: #6B7280; letter - spacing: 0.05em; font - weight: 600; }
-        .row { display: flex; justify - content: space - between; margin - bottom: 8px; font - size: 14px; }
-        .cta - button { display: inline - block; background: #FBB017; color: #1F1F1F; text - decoration: none; padding: 16px 32px; border - radius: 6px; font - weight: bold; font - size: 16px; text - align: center; width: 100 %; box - sizing: border - box; }
-        .cta - button:hover { background: #F59E0B; }
-        .footer { background: #F9FAFB; padding: 24px; text - align: center; font - size: 12px; color: #6B7280; border - top: 1px solid #E5E7EB; }
+          body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f4f4f4; }
+          .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
+          .header { background: #24663B; color: white; padding: 32px 20px; text-align: center; }
+          .header h1 { margin: 0; font-size: 24px; font-weight: 600; }
+          .content { padding: 32px 24px; }
+          .greeting { font-size: 18px; margin-bottom: 24px; }
+          .invoice-box { background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px; padding: 24px; margin-bottom: 24px; }
+          .amount-large { font-size: 36px; font-weight: bold; color: #24663B; margin: 8px 0; }
+          .label { text-transform: uppercase; font-size: 12px; color: #6B7280; letter-spacing: 0.05em; font-weight: 600; }
+          .row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+          .cta-button { display: inline-block; background: #FBB017; color: #1F1F1F; text-decoration: none; padding: 16px 32px; border-radius: 6px; font-weight: bold; font-size: 16px; text-align: center; width: 100%; box-sizing: border-box; }
+        .cta-button:hover { background: #F59E0B; }
+        .footer { background: #F9FAFB; padding: 24px; text-align: center; font-size: 12px; color: #6B7280; border - top: 1px solid #E5E7EB; }
   </style>
     </head>
     < body >
