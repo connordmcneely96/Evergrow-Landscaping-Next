@@ -2,13 +2,14 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FolderKanban, FileText, Settings, LogOut, PieChart } from 'lucide-react'
+import { LayoutDashboard, FolderKanban, FileText, Settings, LogOut, PieChart, ClipboardList } from 'lucide-react'
 import { cn } from '@/lib/utils' // Assuming standard shadcn/tailwind utils, or I can use clsx/tailwind-merge directly if unavailable
 import { useAuth } from './AuthContext'
 
 const navigation = [
     { name: 'Dashboard', href: '/portal', icon: LayoutDashboard },
     { name: 'Projects', href: '/portal/projects', icon: FolderKanban },
+    { name: 'Quotes', href: '/portal/quotes', icon: ClipboardList },
     { name: 'Invoices', href: '/portal/invoices', icon: FileText },
     { name: 'Feedback', href: '/portal/feedback', icon: PieChart },
     { name: 'Settings', href: '/portal/settings', icon: Settings },

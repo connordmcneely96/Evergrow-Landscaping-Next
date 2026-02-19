@@ -1,5 +1,6 @@
 import { requireAuth } from '../../lib/session';
 import { Env } from '../../types';
+import { getStripeClient } from '../../lib/stripe';
 
 const SERVICE_TYPE_LABELS: Record<string, string> = {
     lawn_care: 'Lawn Care & Maintenance',
@@ -37,6 +38,13 @@ interface ProjectRow {
     project_description?: string | null;
 }
 
+interface PendingCheckoutInvoiceRow {
+    id: number;
+    project_id: number;
+    invoice_type: string;
+    stripe_invoice_id: string | null;
+}
+
 function normalizeServiceType(serviceType: string | null): string | null {
     if (!serviceType) return null;
     return serviceType.trim().toLowerCase().replace(/-/g, '_');
@@ -51,6 +59,10 @@ function formatTitle(value: string): string {
     return value
         .replace(/[_-]/g, ' ')
         .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function normalizeEmail(value: string): string {
+    return value.trim().toLowerCase();
 }
 
 function parsePositiveInt(value: string | undefined | null, fallback: number): number {
@@ -86,6 +98,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     try {
         const url = new URL(request.url);
+        const sessionEmail = normalizeEmail(authResult.email);
         const statusQuery = url.searchParams.get('status');
         const limitQuery = url.searchParams.get('limit');
         const pageQuery = url.searchParams.get('page');
@@ -135,10 +148,18 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                   q.description as quote_description
                 FROM projects p
                 LEFT JOIN quotes q ON p.quote_id = q.id
-                WHERE p.id = ? AND p.customer_id = ?
+                WHERE p.id = ?
+                  AND (
+                    p.customer_id = ?
+                    OR EXISTS (
+                        SELECT 1 FROM customers c2
+                        WHERE c2.id = p.customer_id
+                          AND LOWER(c2.email) = ?
+                    )
+                  )
               `
             )
-                .bind(projectId, authResult.userId)
+                .bind(projectId, authResult.userId, sessionEmail)
                 .first<ProjectRow>();
 
             if (!row) {
@@ -187,6 +208,75 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 description: row.quote_description ?? row.project_description ?? null,
             };
 
+            if (!project.deposit_paid || !project.balance_paid) {
+                const stripe = getStripeClient(env);
+                const pendingInvoices = await env.DB.prepare(
+                    `
+                    SELECT id, project_id, invoice_type, stripe_invoice_id
+                    FROM invoices
+                    WHERE project_id = ?
+                      AND status = 'pending'
+                      AND stripe_invoice_id LIKE 'cs_%'
+                    `
+                ).bind(project.id).all<PendingCheckoutInvoiceRow>();
+
+                for (const invoice of pendingInvoices.results ?? []) {
+                    if (!invoice.stripe_invoice_id) continue;
+                    try {
+                        const session = await stripe.checkout.sessions.retrieve(invoice.stripe_invoice_id);
+                        if (session.payment_status !== 'paid') continue;
+
+                        const paymentIntentId = typeof session.payment_intent === 'string'
+                            ? session.payment_intent
+                            : session.payment_intent?.id || null;
+
+                        await env.DB.prepare(
+                            `
+                            UPDATE invoices
+                            SET status = 'paid',
+                                paid_at = CURRENT_TIMESTAMP,
+                                stripe_payment_intent_id = COALESCE(?, stripe_payment_intent_id)
+                            WHERE id = ?
+                            `
+                        ).bind(paymentIntentId, invoice.id).run();
+
+                        if (invoice.invoice_type === 'deposit') {
+                            project.deposit_paid = true;
+                            project.depositPaid = true;
+                        } else if (invoice.invoice_type === 'balance') {
+                            project.balance_paid = true;
+                            project.balancePaid = true;
+                        } else if (invoice.invoice_type === 'full') {
+                            project.deposit_paid = true;
+                            project.balance_paid = true;
+                            project.depositPaid = true;
+                            project.balancePaid = true;
+                        }
+                    } catch {
+                        // ignore transient Stripe lookup failures for this self-heal path
+                    }
+                }
+
+                await env.DB.prepare(
+                    `
+                    UPDATE projects
+                    SET deposit_paid = ?, balance_paid = ?
+                    WHERE id = ?
+                    `
+                )
+                    .bind(project.deposit_paid ? 1 : 0, project.balance_paid ? 1 : 0, project.id)
+                    .run();
+
+                const recomputedBalance = getBalanceDue(
+                    project.total_amount,
+                    project.deposit_amount,
+                    project.deposit_paid,
+                    project.balance_paid
+                );
+                project.balance_due = recomputedBalance;
+                project.balanceDue = recomputedBalance;
+            }
+
             return new Response(
                 JSON.stringify({
                     success: true,
@@ -219,11 +309,18 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             `
             SELECT COUNT(*) as total
             FROM projects p
-            WHERE p.customer_id = ?
+            WHERE (
+                p.customer_id = ?
+                OR EXISTS (
+                    SELECT 1 FROM customers c2
+                    WHERE c2.id = p.customer_id
+                      AND LOWER(c2.email) = ?
+                )
+            )
               AND (? IS NULL OR p.status = ?)
           `
         )
-            .bind(authResult.userId, statusFilter, statusFilter)
+            .bind(authResult.userId, sessionEmail, statusFilter, statusFilter)
             .first<{ total: number }>();
 
         const totalProjects = Math.max(0, toNumber(countResult?.total, 0));
@@ -264,7 +361,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
               q.description as quote_description
             FROM projects p
             LEFT JOIN quotes q ON p.quote_id = q.id
-            WHERE p.customer_id = ?
+            WHERE (
+                p.customer_id = ?
+                OR EXISTS (
+                    SELECT 1 FROM customers c2
+                    WHERE c2.id = p.customer_id
+                      AND LOWER(c2.email) = ?
+                )
+            )
               AND (? IS NULL OR p.status = ?)
             ORDER BY 
               CASE p.status
@@ -279,7 +383,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             LIMIT ? OFFSET ?
           `
         )
-            .bind(authResult.userId, statusFilter, statusFilter, limit, offset)
+            .bind(authResult.userId, sessionEmail, statusFilter, statusFilter, limit, offset)
             .all<ProjectRow>();
 
         const projects = (projectResults.results ?? []).map((row) => {
@@ -322,6 +426,81 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 description: row.quote_description ?? row.project_description ?? null,
             };
         });
+
+        // Self-heal project payment flags when hosted checkout succeeded but webhook is delayed/missed.
+        const stripe = getStripeClient(env);
+        const checkoutPaidCache = new Map<string, { paid: boolean; paymentIntentId: string | null }>();
+
+        for (const project of projects) {
+            if (project.deposit_paid && project.balance_paid) continue;
+
+            const pendingInvoices = await env.DB.prepare(
+                `
+                SELECT id, project_id, invoice_type, stripe_invoice_id
+                FROM invoices
+                WHERE project_id = ?
+                  AND status = 'pending'
+                  AND stripe_invoice_id LIKE 'cs_%'
+                `
+            ).bind(project.id).all<PendingCheckoutInvoiceRow>();
+
+            for (const invoice of pendingInvoices.results ?? []) {
+                if (!invoice.stripe_invoice_id) continue;
+
+                let cached = checkoutPaidCache.get(invoice.stripe_invoice_id);
+                if (!cached) {
+                    try {
+                        const session = await stripe.checkout.sessions.retrieve(invoice.stripe_invoice_id);
+                        const paymentIntentId = typeof session.payment_intent === 'string'
+                            ? session.payment_intent
+                            : session.payment_intent?.id || null;
+                        cached = { paid: session.payment_status === 'paid', paymentIntentId };
+                    } catch {
+                        cached = { paid: false, paymentIntentId: null };
+                    }
+                    checkoutPaidCache.set(invoice.stripe_invoice_id, cached);
+                }
+
+                if (!cached.paid) continue;
+
+                await env.DB.prepare(
+                    `
+                    UPDATE invoices
+                    SET status = 'paid',
+                        paid_at = CURRENT_TIMESTAMP,
+                        stripe_payment_intent_id = COALESCE(?, stripe_payment_intent_id)
+                    WHERE id = ?
+                    `
+                ).bind(cached.paymentIntentId, invoice.id).run();
+
+                if (invoice.invoice_type === 'deposit') {
+                    project.deposit_paid = true;
+                } else if (invoice.invoice_type === 'balance') {
+                    project.balance_paid = true;
+                } else if (invoice.invoice_type === 'full') {
+                    project.deposit_paid = true;
+                    project.balance_paid = true;
+                }
+
+                await env.DB.prepare(
+                    `
+                    UPDATE projects
+                    SET deposit_paid = ?, balance_paid = ?
+                    WHERE id = ?
+                    `
+                )
+                    .bind(project.deposit_paid ? 1 : 0, project.balance_paid ? 1 : 0, project.id)
+                    .run();
+            }
+
+            project.balance_due = getBalanceDue(
+                project.total_amount,
+                project.deposit_amount,
+                project.deposit_paid,
+                project.balance_paid
+            );
+            project.balanceDue = project.balance_due;
+        }
 
         return new Response(
             JSON.stringify({

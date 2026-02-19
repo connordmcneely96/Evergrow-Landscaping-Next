@@ -120,6 +120,10 @@ function toTitleCase(value: string): string {
         .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function normalizeEmail(value: string): string {
+    return value.trim().toLowerCase();
+}
+
 export const onRequestGet: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
 
@@ -137,6 +141,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         }
 
         const customerId = authResult.userId;
+        const sessionEmail = normalizeEmail(authResult.email);
         const url = new URL(request.url);
         const statusParam = url.searchParams.get('status');
         const limitParam = url.searchParams.get('limit');
@@ -173,7 +178,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         p.scheduled_date
       FROM invoices i
       JOIN projects p ON i.project_id = p.id
-      WHERE i.customer_id = ?
+      WHERE (
+            i.customer_id = ?
+            OR EXISTS (
+                SELECT 1 FROM customers c2
+                WHERE c2.id = i.customer_id
+                  AND LOWER(c2.email) = ?
+            )
+        )
         AND (? IS NULL OR i.status = ?)
       ORDER BY 
         CASE i.status
@@ -186,7 +198,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     `;
 
         const invoiceResults = await env.DB.prepare(listQuery)
-            .bind(customerId, statusFilter, statusFilter, limit, offset)
+            .bind(customerId, sessionEmail, statusFilter, statusFilter, limit, offset)
             .all<InvoiceRow>();
 
         const rows = invoiceResults.results || [];
@@ -250,11 +262,18 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             `
       SELECT COUNT(*) as total
       FROM invoices i
-      WHERE i.customer_id = ?
+      WHERE (
+            i.customer_id = ?
+            OR EXISTS (
+                SELECT 1 FROM customers c2
+                WHERE c2.id = i.customer_id
+                  AND LOWER(c2.email) = ?
+            )
+        )
         AND (? IS NULL OR i.status = ?)
     `
         )
-            .bind(customerId, statusFilter, statusFilter)
+            .bind(customerId, sessionEmail, statusFilter, statusFilter)
             .first<{ total: number }>();
 
         const summaryResult = await env.DB.prepare(
@@ -263,10 +282,17 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         COALESCE(SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END), 0) as totalPending,
         COALESCE(SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END), 0) as totalPaid
       FROM invoices
-      WHERE customer_id = ?
+      WHERE (
+            customer_id = ?
+            OR EXISTS (
+                SELECT 1 FROM customers c2
+                WHERE c2.id = invoices.customer_id
+                  AND LOWER(c2.email) = ?
+            )
+        )
     `
         )
-            .bind(customerId)
+            .bind(customerId, sessionEmail)
             .first<{ totalPending: number; totalPaid: number }>();
 
         const invoices = rows.map((row) => {
