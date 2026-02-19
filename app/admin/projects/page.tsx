@@ -32,12 +32,8 @@ const CANCELLABLE = new Set(['scheduled', 'in_progress'])
 
 interface ProjectsResponse {
     success: boolean
-    projects?: unknown
+    projects?: Project[]
     error?: string
-}
-
-function getProjectsFromResponse(data: ProjectsResponse): Project[] {
-    return Array.isArray(data.projects) ? (data.projects as Project[]) : []
 }
 
 export default function AdminProjectsPage() {
@@ -52,7 +48,7 @@ export default function AdminProjectsPage() {
                 const res = await fetchWithAuth('/api/admin/projects?limit=50')
                 if (res.ok) {
                     const data = await res.json() as ProjectsResponse
-                    if (data.success) setProjects(getProjectsFromResponse(data))
+                    if (data.success) setProjects(data.projects)
                 }
             } catch (err) {
                 console.error('Failed to load projects:', err)
