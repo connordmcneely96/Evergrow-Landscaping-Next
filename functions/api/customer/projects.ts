@@ -109,8 +109,24 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                   p.description as project_description,
                   p.total_amount,
                   p.deposit_amount,
-                  p.deposit_paid,
-                  p.balance_paid,
+                  CASE
+                    WHEN EXISTS (
+                        SELECT 1 FROM invoices i
+                        WHERE i.project_id = p.id
+                          AND i.invoice_type = 'deposit'
+                          AND i.status = 'paid'
+                    ) THEN 1
+                    ELSE p.deposit_paid
+                  END as deposit_paid,
+                  CASE
+                    WHEN EXISTS (
+                        SELECT 1 FROM invoices i
+                        WHERE i.project_id = p.id
+                          AND i.invoice_type = 'balance'
+                          AND i.status = 'paid'
+                    ) THEN 1
+                    ELSE p.balance_paid
+                  END as balance_paid,
                   p.scheduled_date,
                   p.status,
                   p.completed_at,
@@ -222,8 +238,24 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
               p.description as project_description,
               p.total_amount,
               p.deposit_amount,
-              p.deposit_paid,
-              p.balance_paid,
+              CASE
+                WHEN EXISTS (
+                    SELECT 1 FROM invoices i
+                    WHERE i.project_id = p.id
+                      AND i.invoice_type = 'deposit'
+                      AND i.status = 'paid'
+                ) THEN 1
+                ELSE p.deposit_paid
+              END as deposit_paid,
+              CASE
+                WHEN EXISTS (
+                    SELECT 1 FROM invoices i
+                    WHERE i.project_id = p.id
+                      AND i.invoice_type = 'balance'
+                      AND i.status = 'paid'
+                ) THEN 1
+                ELSE p.balance_paid
+              END as balance_paid,
               p.scheduled_date,
               p.status,
               p.completed_at,
