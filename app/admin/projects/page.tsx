@@ -48,7 +48,7 @@ export default function AdminProjectsPage() {
                 const res = await fetchWithAuth('/api/admin/projects?limit=50')
                 if (res.ok) {
                     const data = await res.json() as ProjectsResponse
-                    if (data.success) setProjects(data.projects ?? [])
+                    if (data.success) setProjects(data.projects)
                 }
             } catch (err) {
                 console.error('Failed to load projects:', err)
