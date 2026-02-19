@@ -221,20 +221,28 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             const invoice: Record<string, unknown> = {
                 id: row.id,
                 projectId: row.project_id,
+                project_id: row.project_id,
                 amount: Number(row.amount),
                 invoiceType,
+                invoice_type: invoiceType,
                 invoiceTypeDisplay: INVOICE_TYPE_DISPLAY[invoiceType] || toTitleCase(invoiceType),
                 status,
                 statusDisplay: STATUS_DISPLAY[status] || toTitleCase(status),
                 stripePaymentIntentId: row.stripe_payment_intent_id || null,
+                stripe_payment_intent_id: row.stripe_payment_intent_id || null,
                 paidAt: row.paid_at || null,
+                paid_at: row.paid_at || null,
                 createdAt: createdAtFormatted,
+                created_at: createdAtFormatted,
                 dueDate,
+                due_date: dueDate,
                 serviceType,
+                service_type: serviceType,
                 serviceName: serviceType
                     ? SERVICE_NAME_DISPLAY[serviceType] || toTitleCase(serviceType)
                     : null,
                 scheduledDate: scheduledDateFormatted,
+                scheduled_date: scheduledDateFormatted,
                 canPay,
             };
 
@@ -254,6 +262,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             JSON.stringify({
                 success: true,
                 invoices,
+                data: invoices,
                 pagination: {
                     currentPage: page,
                     totalPages,

@@ -9,13 +9,43 @@ function SuccessContent() {
     const searchParams = useSearchParams()
     const sessionId = searchParams.get('session_id')
     const [loading, setLoading] = useState(true)
+    const [warning, setWarning] = useState('')
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false)
-        }, 2000)
-        return () => clearTimeout(timer)
-    }, [])
+        let isMounted = true
+
+        async function confirmSession() {
+            if (!sessionId) {
+                if (isMounted) setLoading(false)
+                return
+            }
+
+            try {
+                const res = await fetch('/api/payment/confirm-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId }),
+                })
+                const data = await res.json() as { success?: boolean; error?: string }
+
+                if (!data.success && isMounted) {
+                    setWarning(data.error || 'Payment confirmation is still processing. Please refresh your portal in a minute.')
+                }
+            } catch {
+                if (isMounted) {
+                    setWarning('Payment confirmation is still processing. Please refresh your portal in a minute.')
+                }
+            } finally {
+                if (isMounted) setLoading(false)
+            }
+        }
+
+        void confirmSession()
+
+        return () => {
+            isMounted = false
+        }
+    }, [sessionId])
 
     if (loading) {
         return (
@@ -44,6 +74,11 @@ function SuccessContent() {
                     {sessionId && (
                         <p className="text-xs text-gray-400 mb-6">
                             Transaction ID: {sessionId}
+                        </p>
+                    )}
+                    {warning && (
+                        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-md p-2 mb-6">
+                            {warning}
                         </p>
                     )}
                     <div className="space-y-3">
