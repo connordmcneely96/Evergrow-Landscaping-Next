@@ -30,10 +30,27 @@ const STATUS_BADGE: Record<string, 'warning' | 'info' | 'success' | 'destructive
 
 const CANCELLABLE = new Set(['scheduled', 'in_progress'])
 
-interface ProjectsResponse {
+type ProjectsResponse = {
     success: boolean
-    projects?: Project[]
+    projects?: unknown
     error?: string
+}
+
+function getProjectsFromResponse(data: ProjectsResponse): Project[] {
+    if (!Array.isArray(data.projects)) return []
+    return data.projects as Project[]
+}
+
+function parseProjectsResponse(payload: unknown): ProjectsResponse | null {
+    if (!payload || typeof payload !== 'object') return null
+    const maybe = payload as Record<string, unknown>
+    if (typeof maybe.success !== 'boolean') return null
+
+    return {
+        success: maybe.success,
+        projects: maybe.projects,
+        error: typeof maybe.error === 'string' ? maybe.error : undefined,
+    }
 }
 
 export default function AdminProjectsPage() {
@@ -47,8 +64,13 @@ export default function AdminProjectsPage() {
             try {
                 const res = await fetchWithAuth('/api/admin/projects?limit=50')
                 if (res.ok) {
-                    const data = await res.json() as ProjectsResponse
-                    if (data.success) setProjects(data.projects)
+                    const payload = await res.json() as unknown
+                    const data = parseProjectsResponse(payload)
+                    if (data?.success) {
+                        setProjects(getProjectsFromResponse(data))
+                    } else {
+                        setProjects([])
+                    }
                 }
             } catch (err) {
                 console.error('Failed to load projects:', err)
