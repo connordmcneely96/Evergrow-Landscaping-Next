@@ -19,6 +19,12 @@ interface QuoteRow {
     status: string;
 }
 
+interface CustomerLookupRow {
+    id: number;
+    email: string | null;
+    name: string | null;
+}
+
 const SERVICE_TYPE_LABELS: Record<string, string> = {
     'lawn-care': 'Lawn Care & Maintenance',
     'flower-beds': 'Flower Bed Installation',
@@ -30,6 +36,13 @@ const SERVICE_TYPE_LABELS: Record<string, string> = {
 function getServiceTypeLabel(serviceType: string): string {
     const normalized = serviceType.trim().toLowerCase();
     return SERVICE_TYPE_LABELS[normalized] || serviceType;
+}
+
+function normalizeEmail(value: string | null | undefined): string | null {
+    if (typeof value !== 'string') return null;
+    const normalized = value.trim().toLowerCase();
+    if (!normalized.includes('@')) return null;
+    return normalized;
 }
 
 function parseQuoteNotes(notes: string | null): {
@@ -263,14 +276,48 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             );
         }
 
-        // Resolve customer_id: use linked customer or look up by email
+        // Resolve customer record: linked customer, lookup by email, or create if missing.
         let resolvedCustomerId = quote.customer_id;
-        if (!resolvedCustomerId && (quote.contact_email || quote.customer_email)) {
-            const email = quote.contact_email || quote.customer_email;
+        let resolvedCustomerEmail = normalizeEmail(quote.contact_email || quote.customer_email);
+        let resolvedCustomerName = (quote.contact_name || quote.customer_name || 'Customer').trim() || 'Customer';
+
+        if (resolvedCustomerId) {
+            const existingCustomer = await env.DB.prepare(
+                'SELECT id, email, name FROM customers WHERE id = ? LIMIT 1'
+            ).bind(resolvedCustomerId).first<CustomerLookupRow>();
+
+            if (existingCustomer) {
+                resolvedCustomerEmail = normalizeEmail(existingCustomer.email) || resolvedCustomerEmail;
+                resolvedCustomerName = (existingCustomer.name || resolvedCustomerName).trim() || 'Customer';
+            }
+        }
+
+        if (!resolvedCustomerId && resolvedCustomerEmail) {
             const found = await env.DB.prepare(
-                'SELECT id FROM customers WHERE email = ? LIMIT 1'
-            ).bind(email).first<{ id: number }>();
-            resolvedCustomerId = found?.id ?? null;
+                'SELECT id, email, name FROM customers WHERE LOWER(email) = ? LIMIT 1'
+            ).bind(resolvedCustomerEmail).first<CustomerLookupRow>();
+
+            if (found) {
+                resolvedCustomerId = found.id;
+                resolvedCustomerEmail = normalizeEmail(found.email) || resolvedCustomerEmail;
+                resolvedCustomerName = (found.name || resolvedCustomerName).trim() || 'Customer';
+            } else {
+                const created = await env.DB.prepare(
+                    `
+                    INSERT INTO customers (email, name, role, created_at, updated_at)
+                    VALUES (?, ?, 'customer', datetime('now'), datetime('now'))
+                    `
+                ).bind(resolvedCustomerEmail, resolvedCustomerName).run();
+
+                resolvedCustomerId = created.meta.last_row_id;
+            }
+        }
+
+        if (!resolvedCustomerId) {
+            return new Response(
+                JSON.stringify({ success: false, error: 'Unable to resolve customer for accepted quote' }),
+                { status: 400, headers: { 'Content-Type': 'application/json' } }
+            );
         }
 
         // 1. Update quote status to accepted
@@ -335,10 +382,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const invoiceId = invoiceResult.meta.last_row_id;
 
         // 4. Send Deposit Invoice Email
-        const guestEmail = encodeURIComponent((quote.contact_email || quote.customer_email || '').trim());
+        const guestEmail = encodeURIComponent(resolvedCustomerEmail || '');
         const invoiceUrl = `https://evergrowlandscaping.com/pay?invoice=${invoiceId}&email=${guestEmail}`;
-        const customerEmail = quote.contact_email || quote.customer_email;
-        const customerName = quote.contact_name || quote.customer_name || 'Customer';
+        const customerEmail = resolvedCustomerEmail;
+        const customerName = resolvedCustomerName;
 
         if (customerEmail && env.RESEND_API_KEY) {
             const emailHtml = getDepositInvoiceEmail({
@@ -350,14 +397,47 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString(),
             });
 
-            // Send in background (don't await)
-            context.waitUntil(
-                sendEmail(env, {
-                    to: customerEmail,
-                    subject: `Invoice: Deposit for ${getServiceTypeLabel(quote.service_type)}`,
-                    html: emailHtml,
-                })
-            );
+            const customerEmailResult = await sendEmail(env, {
+                to: customerEmail,
+                subject: `Invoice: Deposit for ${getServiceTypeLabel(quote.service_type)}`,
+                html: emailHtml,
+            });
+
+            if (!customerEmailResult.success) {
+                console.error('Failed to send customer deposit invoice email:', customerEmailResult.error);
+            }
+
+            const ownerEmail = normalizeEmail(env.NOTIFICATION_EMAIL || 'karson@evergrowlandscaping.com');
+            if (ownerEmail) {
+                const ownerEmailHtml = `
+                    <h2>Quote Accepted</h2>
+                    <p>A customer accepted quote <strong>#${quoteId}</strong>.</p>
+                    <ul>
+                        <li><strong>Customer:</strong> ${customerName}</li>
+                        <li><strong>Email:</strong> ${customerEmail}</li>
+                        <li><strong>Service:</strong> ${getServiceTypeLabel(quote.service_type)}</li>
+                        <li><strong>Quoted Amount:</strong> $${quote.quoted_amount.toFixed(2)}</li>
+                        <li><strong>Deposit Invoice:</strong> #${invoiceId}</li>
+                        <li><strong>Payment Link:</strong> <a href="${invoiceUrl}">${invoiceUrl}</a></li>
+                    </ul>
+                `;
+
+                const ownerEmailResult = await sendEmail(env, {
+                    to: ownerEmail,
+                    subject: `Quote accepted by ${customerName}`,
+                    html: ownerEmailHtml,
+                });
+
+                if (!ownerEmailResult.success) {
+                    console.error('Failed to send quote acceptance notification email:', ownerEmailResult.error);
+                }
+            }
+        } else {
+            console.error('Skipped deposit email send: customer email or RESEND_API_KEY missing', {
+                hasCustomerEmail: Boolean(customerEmail),
+                hasResendKey: Boolean(env.RESEND_API_KEY),
+                quoteId,
+            });
         }
 
         // Delete both forward and reverse token entries from cache
