@@ -107,6 +107,32 @@ export default function AdminProjectsPage() {
         }
     }
 
+    const scheduledProjects = projects
+        .filter((p) => Boolean(p.scheduledDate))
+        .sort((a, b) => {
+            const aTime = a.scheduledDate ? new Date(a.scheduledDate).getTime() : Number.MAX_SAFE_INTEGER
+            const bTime = b.scheduledDate ? new Date(b.scheduledDate).getTime() : Number.MAX_SAFE_INTEGER
+            return aTime - bTime
+        })
+
+    const availabilityWindow = Array.from({ length: 14 }, (_, index) => {
+        const day = new Date()
+        day.setHours(0, 0, 0, 0)
+        day.setDate(day.getDate() + index)
+
+        const isoDate = day.toISOString().slice(0, 10)
+        const jobs = scheduledProjects.filter((project) => {
+            if (!project.scheduledDate) return false
+            return project.scheduledDate.slice(0, 10) === isoDate
+        })
+
+        return {
+            isoDate,
+            label: day.toLocaleDateString(),
+            jobs,
+        }
+    })
+
     return (
         <div className="space-y-6">
             <div>
@@ -180,6 +206,68 @@ export default function AdminProjectsPage() {
                                                     {cancellingId === p.id ? 'Cancelling…' : 'Cancel'}
                                                 </button>
                                             )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
+
+            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                <div className="px-4 py-3 border-b border-gray-800 bg-gray-800">
+                    <h2 className="text-sm font-semibold text-white">Schedule Calendar</h2>
+                    <p className="text-xs text-gray-400 mt-1">Match project numbers and customer details to scheduled date/time, and spot open days quickly.</p>
+                </div>
+
+                <div className="px-4 py-3 border-b border-gray-800 bg-gray-900/60">
+                    <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Next 14 days availability</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
+                        {availabilityWindow.map((day) => (
+                            <div key={day.isoDate} className="rounded-md border border-gray-800 p-2 bg-gray-900">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs text-gray-300">{day.label}</span>
+                                    <span className={`text-[11px] px-2 py-0.5 rounded-full ${day.jobs.length === 0 ? 'bg-green-900/40 text-green-300' : 'bg-yellow-900/40 text-yellow-300'}`}>
+                                        {day.jobs.length === 0 ? 'Available' : `${day.jobs.length} booked`}
+                                    </span>
+                                </div>
+                                {day.jobs.length > 0 && (
+                                    <p className="text-xs text-gray-400 mt-1">
+                                        Jobs: {day.jobs.map((job) => `#${job.id}`).join(', ')}
+                                    </p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {scheduledProjects.length === 0 ? (
+                    <div className="p-6 text-sm text-gray-500">No scheduled projects yet.</div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead>
+                                <tr className="border-b border-gray-700 bg-gray-800/60">
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Project #</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Customer</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Service</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Scheduled Date/Time</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-800">
+                                {scheduledProjects.map((p) => (
+                                    <tr key={`schedule-${p.id}`} className="hover:bg-gray-800/50">
+                                        <td className="px-4 py-3 text-white font-medium">#{p.id}</td>
+                                        <td className="px-4 py-3">
+                                            <div className="text-white">{p.customerName || '—'}</div>
+                                            <div className="text-xs text-gray-500">{p.customerEmail || 'No email on file'}</div>
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300">{p.serviceName}</td>
+                                        <td className="px-4 py-3 text-gray-300">{p.scheduledDate ? formatDate(p.scheduledDate) : 'Not set'}</td>
+                                        <td className="px-4 py-3">
+                                            <Badge variant={STATUS_BADGE[p.status] || 'secondary'}>{p.statusDisplay}</Badge>
                                         </td>
                                     </tr>
                                 ))}

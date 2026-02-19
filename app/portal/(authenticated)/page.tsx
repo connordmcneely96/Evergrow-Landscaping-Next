@@ -3,12 +3,35 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/components/portal/AuthContext'
 import Link from 'next/link'
-import { ArrowRight, DollarSign, Calendar, Clock } from 'lucide-react'
+import { DollarSign, Calendar, Clock, FileText } from 'lucide-react'
+
+interface Project {
+    id: number
+    serviceName: string
+    status: string
+    statusDisplay: string
+    description: string | null
+    scheduledDate: string | null
+}
+
+interface InvoicesSummaryResponse {
+    success?: boolean
+    summary?: {
+        totalPending: number
+        totalPaid: number
+    }
+}
+
+interface ProjectsResponse {
+    success?: boolean
+    projects?: Project[]
+}
 
 export default function PortalDashboard() {
     const { user, token } = useAuth()
     const [stats, setStats] = useState({ pending: 0, paid: 0 })
-    const [recentProjects, setRecentProjects] = useState<any[]>([])
+    const [recentProjects, setRecentProjects] = useState<Project[]>([])
+    const [quotesCount, setQuotesCount] = useState(0)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -20,13 +43,13 @@ export default function PortalDashboard() {
                 const invoicesRes = await fetch('/api/customer/invoices?limit=1', {
                     headers: { Authorization: `Bearer ${token}` }
                 })
-                const invoicesData = await invoicesRes.json() as any
+                const invoicesData = await invoicesRes.json() as InvoicesSummaryResponse
 
                 // Fetch Recent Projects
                 const projectsRes = await fetch('/api/customer/projects?limit=5', {
                     headers: { Authorization: `Bearer ${token}` }
                 })
-                const projectsData = await projectsRes.json() as any
+                const projectsData = await projectsRes.json() as ProjectsResponse
 
                 if (invoicesData.success && invoicesData.summary) {
                     setStats({
@@ -37,6 +60,14 @@ export default function PortalDashboard() {
 
                 if (projectsData.success && projectsData.projects) {
                     setRecentProjects(projectsData.projects)
+                }
+
+                const quotesRes = await fetch('/api/customer/quotes', {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                const quotesData = await quotesRes.json() as { success?: boolean; quotes?: unknown[] }
+                if (quotesData.success && Array.isArray(quotesData.quotes)) {
+                    setQuotesCount(quotesData.quotes.length)
                 }
 
             } catch (error) {
@@ -67,7 +98,7 @@ export default function PortalDashboard() {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="bg-white overflow-hidden shadow rounded-lg">
                     <div className="p-5">
                         <div className="flex items-center">
@@ -106,7 +137,7 @@ export default function PortalDashboard() {
                                     <dt className="text-sm font-medium text-gray-500 truncate">Active Projects</dt>
                                     <dd>
                                         <div className="text-lg font-medium text-gray-900">
-                                            {recentProjects.filter((p: any) => p.status === 'in_progress' || p.status === 'scheduled').length}
+                                            {recentProjects.filter((p) => p.status === 'in_progress' || p.status === 'scheduled').length}
                                         </div>
                                     </dd>
                                 </dl>
@@ -134,14 +165,39 @@ export default function PortalDashboard() {
                                     <dd>
                                         <div className="text-lg font-medium text-gray-900">
                                             {/* Placeholder logic for next scheduled date */}
-                                            {recentProjects.find((p: any) => p.status === 'scheduled')?.scheduledDate
-                                                ? new Date(recentProjects.find((p: any) => p.status === 'scheduled')?.scheduledDate).toLocaleDateString()
+                                            {recentProjects.find((p) => p.status === 'scheduled')?.scheduledDate
+                                                ? new Date(recentProjects.find((p) => p.status === 'scheduled')?.scheduledDate || '').toLocaleDateString()
                                                 : 'None Scheduled'
                                             }
                                         </div>
                                     </dd>
                                 </dl>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-white overflow-hidden shadow rounded-lg">
+                    <div className="p-5">
+                        <div className="flex items-center">
+                            <div className="flex-shrink-0">
+                                <FileText className="h-6 w-6 text-gray-400" aria-hidden="true" />
+                            </div>
+                            <div className="ml-5 w-0 flex-1">
+                                <dl>
+                                    <dt className="text-sm font-medium text-gray-500 truncate">Total Quotes</dt>
+                                    <dd>
+                                        <div className="text-lg font-medium text-gray-900">{quotesCount}</div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="bg-gray-50 px-5 py-3">
+                        <div className="text-sm">
+                            <Link href="/portal/quotes" className="font-medium text-ocean-blue hover:text-ocean-blue-600">
+                                View quotes &rarr;
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -154,7 +210,7 @@ export default function PortalDashboard() {
                     {recentProjects.length === 0 ? (
                         <li className="px-4 py-4 sm:px-6 text-gray-500 italic text-center">No recent projects found.</li>
                     ) : (
-                        recentProjects.map((project: any) => (
+                        recentProjects.map((project) => (
                             <li key={project.id}>
                                 <Link href={`/portal/projects/detail?id=${project.id}`} className="block hover:bg-gray-50">
                                     <div className="px-4 py-4 sm:px-6">
@@ -177,7 +233,7 @@ export default function PortalDashboard() {
                                             </div>
                                             <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
                                                 <p>
-                                                    Scheduled: <time dateTime={project.scheduledDate}>{project.scheduledDate ? new Date(project.scheduledDate).toLocaleDateString() : 'TBD'}</time>
+                                                    Scheduled: <time dateTime={project.scheduledDate || undefined}>{project.scheduledDate ? new Date(project.scheduledDate).toLocaleDateString() : 'TBD'}</time>
                                                 </p>
                                             </div>
                                         </div>
