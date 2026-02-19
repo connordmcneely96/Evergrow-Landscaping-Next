@@ -28,6 +28,7 @@ interface ProjectRow {
     total_amount: number;
     deposit_amount: number | null;
     deposit_paid: number | boolean;
+    balance_paid?: number | boolean;
     scheduled_date: string | null;
     status: string;
     completed_at: string | null;
@@ -65,8 +66,12 @@ function toNumber(value: unknown, fallback = 0): number {
 function getBalanceDue(
     totalAmount: number,
     depositAmount: number,
-    depositPaid: boolean
+    depositPaid: boolean,
+    balancePaid: boolean
 ): number {
+    if (balancePaid) {
+        return 0;
+    }
     const balance = depositPaid ? totalAmount - depositAmount : totalAmount;
     return balance > 0 ? balance : 0;
 }
@@ -104,8 +109,24 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                   p.description as project_description,
                   p.total_amount,
                   p.deposit_amount,
-                  p.deposit_paid,
-                  p.balance_paid,
+                  CASE
+                    WHEN EXISTS (
+                        SELECT 1 FROM invoices i
+                        WHERE i.project_id = p.id
+                          AND i.invoice_type = 'deposit'
+                          AND i.status = 'paid'
+                    ) THEN 1
+                    ELSE p.deposit_paid
+                  END as deposit_paid,
+                  CASE
+                    WHEN EXISTS (
+                        SELECT 1 FROM invoices i
+                        WHERE i.project_id = p.id
+                          AND i.invoice_type = 'balance'
+                          AND i.status = 'paid'
+                    ) THEN 1
+                    ELSE p.balance_paid
+                  END as balance_paid,
                   p.scheduled_date,
                   p.status,
                   p.completed_at,
@@ -137,22 +158,32 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             const totalAmount = toNumber(row.total_amount, 0);
             const depositAmount = toNumber(row.deposit_amount, 0);
             const depositPaid = row.deposit_paid === 1 || row.deposit_paid === true;
-            const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid);
+            const balancePaid = row.balance_paid === 1 || row.balance_paid === true;
+            const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid, balancePaid);
 
             const project = {
                 id: row.id,
                 serviceType: normalizedServiceType ?? row.service_type,
+                service_type: normalizedServiceType ?? row.service_type,
                 serviceName,
                 totalAmount,
+                total_amount: totalAmount,
                 depositAmount,
+                deposit_amount: depositAmount,
                 depositPaid,
-                balancePaid: false,
+                deposit_paid: depositPaid,
+                balancePaid,
+                balance_paid: balancePaid,
                 balanceDue,
+                balance_due: balanceDue,
                 scheduledDate: row.scheduled_date,
+                scheduled_date: row.scheduled_date,
                 status: normalizedRowStatus,
                 statusDisplay,
                 completedAt: row.completed_at,
+                completed_at: row.completed_at,
                 createdAt: row.created_at,
+                created_at: row.created_at,
                 description: row.quote_description ?? row.project_description ?? null,
             };
 
@@ -160,6 +191,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 JSON.stringify({
                     success: true,
                     projects: [project],
+                    data: [project],
                     pagination: { currentPage: 1, totalPages: 1, totalProjects: 1, hasMore: false },
                 }),
                 { status: 200, headers: { 'Content-Type': 'application/json' } }
@@ -206,7 +238,24 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
               p.description as project_description,
               p.total_amount,
               p.deposit_amount,
-              p.deposit_paid,
+              CASE
+                WHEN EXISTS (
+                    SELECT 1 FROM invoices i
+                    WHERE i.project_id = p.id
+                      AND i.invoice_type = 'deposit'
+                      AND i.status = 'paid'
+                ) THEN 1
+                ELSE p.deposit_paid
+              END as deposit_paid,
+              CASE
+                WHEN EXISTS (
+                    SELECT 1 FROM invoices i
+                    WHERE i.project_id = p.id
+                      AND i.invoice_type = 'balance'
+                      AND i.status = 'paid'
+                ) THEN 1
+                ELSE p.balance_paid
+              END as balance_paid,
               p.scheduled_date,
               p.status,
               p.completed_at,
@@ -244,21 +293,32 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             const totalAmount = toNumber(row.total_amount, 0);
             const depositAmount = toNumber(row.deposit_amount, 0);
             const depositPaid = row.deposit_paid === 1 || row.deposit_paid === true;
-            const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid);
+            const balancePaid = row.balance_paid === 1 || row.balance_paid === true;
+            const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid, balancePaid);
 
             return {
                 id: row.id,
                 serviceType: normalizedServiceType ?? row.service_type,
+                service_type: normalizedServiceType ?? row.service_type,
                 serviceName,
                 totalAmount,
+                total_amount: totalAmount,
                 depositAmount,
+                deposit_amount: depositAmount,
                 depositPaid,
+                deposit_paid: depositPaid,
+                balancePaid,
+                balance_paid: balancePaid,
                 balanceDue,
+                balance_due: balanceDue,
                 scheduledDate: row.scheduled_date,
+                scheduled_date: row.scheduled_date,
                 status: normalizedRowStatus,
                 statusDisplay,
                 completedAt: row.completed_at,
+                completed_at: row.completed_at,
                 createdAt: row.created_at,
+                created_at: row.created_at,
                 description: row.quote_description ?? row.project_description ?? null,
             };
         });
@@ -267,6 +327,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             JSON.stringify({
                 success: true,
                 projects,
+                data: projects,
                 pagination: {
                     currentPage: page,
                     totalPages,

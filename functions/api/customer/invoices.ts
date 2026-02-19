@@ -1,5 +1,6 @@
 import { requireAuth } from '../../lib/session';
 import { Env } from '../../types';
+import { getStripeClient } from '../../lib/stripe';
 
 type InvoiceStatusFilter = 'pending' | 'paid' | 'cancelled';
 
@@ -9,6 +10,7 @@ type InvoiceRow = {
     amount: number;
     invoice_type: string;
     status: string;
+    stripe_invoice_id: string | null;
     stripe_payment_intent_id: string | null;
     paid_at: string | null;
     created_at: string;
@@ -163,6 +165,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         i.amount,
         i.invoice_type,
         i.status,
+        i.stripe_invoice_id,
         i.stripe_payment_intent_id,
         i.paid_at,
         i.created_at,
@@ -185,6 +188,63 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         const invoiceResults = await env.DB.prepare(listQuery)
             .bind(customerId, statusFilter, statusFilter, limit, offset)
             .all<InvoiceRow>();
+
+        const rows = invoiceResults.results || [];
+
+        // Self-heal pending hosted-checkout invoices in case webhook delivery is delayed/missed.
+        const pendingCheckoutRows = rows.filter((row) => (
+            row.status === 'pending' &&
+            typeof row.stripe_invoice_id === 'string' &&
+            row.stripe_invoice_id.startsWith('cs_')
+        ));
+
+        if (pendingCheckoutRows.length > 0) {
+            const stripe = getStripeClient(env);
+            for (const row of pendingCheckoutRows) {
+                try {
+                    const session = await stripe.checkout.sessions.retrieve(row.stripe_invoice_id as string);
+                    if (session.payment_status !== 'paid') continue;
+
+                    const paymentIntentId = typeof session.payment_intent === 'string'
+                        ? session.payment_intent
+                        : session.payment_intent?.id || null;
+
+                    await env.DB.prepare(
+                        `
+                        UPDATE invoices
+                        SET status = 'paid',
+                            paid_at = CURRENT_TIMESTAMP,
+                            stripe_payment_intent_id = COALESCE(?, stripe_payment_intent_id)
+                        WHERE id = ?
+                        `
+                    ).bind(paymentIntentId, row.id).run();
+
+                    if (row.invoice_type === 'deposit') {
+                        await env.DB.prepare('UPDATE projects SET deposit_paid = 1 WHERE id = ?')
+                            .bind(row.project_id)
+                            .run();
+                    } else if (row.invoice_type === 'balance') {
+                        await env.DB.prepare('UPDATE projects SET balance_paid = 1 WHERE id = ?')
+                            .bind(row.project_id)
+                            .run();
+                    } else if (row.invoice_type === 'full') {
+                        await env.DB.prepare('UPDATE projects SET deposit_paid = 1, balance_paid = 1 WHERE id = ?')
+                            .bind(row.project_id)
+                            .run();
+                    }
+
+                    row.status = 'paid';
+                    row.paid_at = new Date().toISOString();
+                    row.stripe_payment_intent_id = paymentIntentId;
+                } catch (syncError) {
+                    console.error('Invoice sync from Stripe checkout session failed:', {
+                        invoiceId: row.id,
+                        sessionId: row.stripe_invoice_id,
+                        error: syncError,
+                    });
+                }
+            }
+        }
 
         const countResult = await env.DB.prepare(
             `
@@ -209,7 +269,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             .bind(customerId)
             .first<{ totalPending: number; totalPaid: number }>();
 
-        const invoices = (invoiceResults.results || []).map((row) => {
+        const invoices = rows.map((row) => {
             const invoiceType = row.invoice_type;
             const status = row.status;
             const createdAtFormatted = formatDate(row.created_at) || row.created_at;
@@ -221,20 +281,28 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             const invoice: Record<string, unknown> = {
                 id: row.id,
                 projectId: row.project_id,
+                project_id: row.project_id,
                 amount: Number(row.amount),
                 invoiceType,
+                invoice_type: invoiceType,
                 invoiceTypeDisplay: INVOICE_TYPE_DISPLAY[invoiceType] || toTitleCase(invoiceType),
                 status,
                 statusDisplay: STATUS_DISPLAY[status] || toTitleCase(status),
                 stripePaymentIntentId: row.stripe_payment_intent_id || null,
+                stripe_payment_intent_id: row.stripe_payment_intent_id || null,
                 paidAt: row.paid_at || null,
+                paid_at: row.paid_at || null,
                 createdAt: createdAtFormatted,
+                created_at: createdAtFormatted,
                 dueDate,
+                due_date: dueDate,
                 serviceType,
+                service_type: serviceType,
                 serviceName: serviceType
                     ? SERVICE_NAME_DISPLAY[serviceType] || toTitleCase(serviceType)
                     : null,
                 scheduledDate: scheduledDateFormatted,
+                scheduled_date: scheduledDateFormatted,
                 canPay,
             };
 
@@ -254,6 +322,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             JSON.stringify({
                 success: true,
                 invoices,
+                data: invoices,
                 pagination: {
                     currentPage: page,
                     totalPages,
