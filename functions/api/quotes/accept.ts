@@ -1,6 +1,8 @@
+import { getDepositInvoiceEmail, sendEmail } from '../../lib/email';
 import { Env } from '../../types';
 
 const QUOTE_TOKEN_PREFIX = 'quote_token:';
+const QUOTE_TOKEN_REVERSE_PREFIX = 'quote_token_reverse:';
 
 interface QuoteRow {
     id: number;
@@ -40,7 +42,7 @@ function parseQuoteNotes(notes: string | null): {
     }
 
     const lines = notes.split('\n');
-    let mainNotes: string[] = [];
+    const mainNotes: string[] = [];
     let timeline: string | null = null;
     let terms: string | null = null;
 
@@ -75,7 +77,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     }
 
     try {
-        // Parse token to get quote ID
         const tokenMatch = token.match(/^[a-f0-9]{32,}$/i);
         if (!tokenMatch) {
             return new Response(
@@ -84,35 +85,15 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             );
         }
 
-        // Find which quote this token belongs to by checking KV
-        // We need to iterate through potential quote IDs
-        // This is inefficient but necessary without a reverse lookup
-        // In production, consider storing token->quoteId mapping separately
-
-        let quoteId: number | null = null;
-        let storedToken: string | null = null;
-
-        // Try to find the quote by checking recent quote IDs
-        // This is a workaround - ideally we'd store a reverse mapping
-        for (let i = 1; i <= 1000; i++) {
-            const key = `${QUOTE_TOKEN_PREFIX}${i}`;
-            const value = await env.CACHE.get(key);
-            if (value === token) {
-                quoteId = i;
-                storedToken = value;
-                break;
-            }
-        }
-
-        if (!quoteId || !storedToken) {
+        // O(1) reverse lookup: token → quoteId
+        const quoteIdStr = await env.CACHE.get(`${QUOTE_TOKEN_REVERSE_PREFIX}${token}`);
+        if (!quoteIdStr) {
             return new Response(
-                JSON.stringify({
-                    success: false,
-                    error: 'Invalid or expired token',
-                }),
+                JSON.stringify({ success: false, error: 'Invalid or expired token' }),
                 { status: 404, headers: { 'Content-Type': 'application/json' } }
             );
         }
+        const quoteId = parseInt(quoteIdStr, 10);
 
         // Fetch quote details
         const quote = await env.DB.prepare(
@@ -141,10 +122,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
         if (!quote) {
             return new Response(
-                JSON.stringify({
-                    success: false,
-                    error: 'Quote not found or no longer available',
-                }),
+                JSON.stringify({ success: false, error: 'Quote not found or no longer available' }),
                 { status: 404, headers: { 'Content-Type': 'application/json' } }
             );
         }
@@ -153,10 +131,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         const validUntil = new Date(quote.quote_valid_until);
         if (validUntil < new Date()) {
             return new Response(
-                JSON.stringify({
-                    success: false,
-                    error: 'This quote has expired',
-                }),
+                JSON.stringify({ success: false, error: 'This quote has expired' }),
                 { status: 400, headers: { 'Content-Type': 'application/json' } }
             );
         }
@@ -184,20 +159,11 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     } catch (error) {
         console.error('Quote preview error:', error);
         return new Response(
-            JSON.stringify({
-                success: false,
-                error: 'Failed to load quote details',
-            }),
+            JSON.stringify({ success: false, error: 'Failed to load quote details' }),
             { status: 500, headers: { 'Content-Type': 'application/json' } }
         );
     }
 };
-
-// POST - Accept the quote
-// ... imports
-import { getDepositInvoiceEmail, sendEmail } from '../../lib/email';
-
-// ... (existing code)
 
 // POST - Accept the quote
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -223,32 +189,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     try {
-        // Find quote ID from token
-        // ... (existing token lookup is fine, but we need to fetch the QUOTE ROW too)
-
-        // Find quote ID from token
-        let quoteId: number | null = null;
-
-        for (let i = 1; i <= 1000; i++) {
-            const key = `${QUOTE_TOKEN_PREFIX}${i}`;
-            const value = await env.CACHE.get(key);
-            if (value === token) {
-                quoteId = i;
-                break;
-            }
-        }
-
-        if (!quoteId) {
+        // O(1) reverse lookup: token → quoteId
+        const quoteIdStr = await env.CACHE.get(`${QUOTE_TOKEN_REVERSE_PREFIX}${token}`);
+        if (!quoteIdStr) {
             return new Response(
-                JSON.stringify({
-                    success: false,
-                    error: 'Invalid or expired token',
-                }),
+                JSON.stringify({ success: false, error: 'Invalid or expired token' }),
                 { status: 404, headers: { 'Content-Type': 'application/json' } }
             );
         }
+        const quoteId = parseInt(quoteIdStr, 10);
 
-        // Fetch quote details (Required for creating Project/Invoice)
+        // Fetch quote details (required for creating project/invoice)
         const quote = await env.DB.prepare(
             `
             SELECT
@@ -273,10 +224,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         if (!quote) {
             return new Response(
-                JSON.stringify({
-                    success: false,
-                    error: 'Quote not found',
-                }),
+                JSON.stringify({ success: false, error: 'Quote not found' }),
                 { status: 404, headers: { 'Content-Type': 'application/json' } }
             );
         }
@@ -288,20 +236,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 .first() as { id: number } | null;
 
             if (existingProject) {
-                // Fully completed, return success
                 return new Response(
                     JSON.stringify({
                         success: true,
                         message: 'Quote already accepted',
                         quoteId,
                         projectId: existingProject.id,
-                        invoiceId: null // We could fetch this too, but not strictly needed for the response
+                        invoiceId: null,
                     }),
                     { status: 200, headers: { 'Content-Type': 'application/json' } }
                 );
             }
 
-            // If status is accepted but project missing, allow it to proceed to creation (Fallthrough)
+            // Status is accepted but project missing — retry creation
             console.log(`Quote ${quoteId} is accepted but missing project. Retrying creation...`);
         } else if (quote.status !== 'quoted') {
             return new Response(
@@ -313,6 +260,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             );
         }
 
+        // Resolve customer_id: use linked customer or look up by email
+        let resolvedCustomerId = quote.customer_id;
+        if (!resolvedCustomerId && (quote.contact_email || quote.customer_email)) {
+            const email = quote.contact_email || quote.customer_email;
+            const found = await env.DB.prepare(
+                'SELECT id FROM customers WHERE email = ? LIMIT 1'
+            ).bind(email).first<{ id: number }>();
+            resolvedCustomerId = found?.id ?? null;
+        }
 
         // 1. Update quote status to accepted
         await env.DB.prepare(
@@ -327,6 +283,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             .bind(quoteId)
             .run();
 
+        // Backfill customer_id on the quote if we just resolved it
+        if (resolvedCustomerId && !quote.customer_id) {
+            await env.DB.prepare('UPDATE quotes SET customer_id = ? WHERE id = ?')
+                .bind(resolvedCustomerId, quoteId).run();
+        }
+
         // 2. Create Project
         const depositAmount = quote.quoted_amount * 0.5;
 
@@ -339,7 +301,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             `
         )
             .bind(
-                quote.customer_id,
+                resolvedCustomerId,
                 quote.id,
                 quote.service_type,
                 quote.description,
@@ -350,18 +312,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
         const projectId = projectResult.meta.last_row_id;
 
-        // 3. Create Deposit Invoice
+        // 3. Create Deposit Invoice (status='pending' so payment endpoint can process it)
         const invoiceResult = await env.DB.prepare(
             `
             INSERT INTO invoices (
                 project_id, customer_id, amount, invoice_type,
                 description, status, due_date, sent_at, created_at
-            ) VALUES (?, ?, ?, 'deposit', ?, 'sent', date('now', '+3 days'), datetime('now'), datetime('now'))
+            ) VALUES (?, ?, ?, 'deposit', ?, 'pending', date('now', '+3 days'), datetime('now'), datetime('now'))
             `
         )
             .bind(
                 projectId,
-                quote.customer_id,
+                resolvedCustomerId,
                 depositAmount,
                 `Deposit for ${getServiceTypeLabel(quote.service_type)}`
             )
@@ -370,16 +332,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const invoiceId = invoiceResult.meta.last_row_id;
 
         // 4. Send Deposit Invoice Email
-        // We need an invoice URL. Assuming standard route: /portal/dashboard/invoices/:id
-        // Or a public payment link? The user asked for "Invoice for 50% deposit".
-        // The portal link is generic. We likely want to link to the invoice payment page.
-        // Assuming /portal/dashboard/invoices/{id} is the correct internal link.
-        // For external/email, maybe we don't have a direct public link yet without auth?
-        // But the email template asks for `invoiceUrl`.
-        // I'll point to the portal login/dashboard for now, or the specific invoice if authed.
-        // Since we don't have magic links for invoices implemented here yet, I'll use the portal link.
-
-        const invoiceUrl = `https://evergrowlandscaping.com/portal/dashboard/invoices/${invoiceId}`;
+        const invoiceUrl = `https://evergrowlandscaping.com/portal/invoices/${invoiceId}/pay`;
         const customerEmail = quote.contact_email || quote.customer_email;
         const customerName = quote.contact_name || quote.customer_name || 'Customer';
 
@@ -403,8 +356,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             );
         }
 
-        // Delete the token from cache
+        // Delete both forward and reverse token entries from cache
         await env.CACHE.delete(`${QUOTE_TOKEN_PREFIX}${quoteId}`);
+        await env.CACHE.delete(`${QUOTE_TOKEN_REVERSE_PREFIX}${token}`);
 
         console.info('Quote accepted, project and invoice created:', { quoteId, projectId, invoiceId });
 
@@ -414,7 +368,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 message: 'Quote accepted successfully. Project and invoice created.',
                 quoteId,
                 projectId,
-                invoiceId
+                invoiceId,
+                paymentUrl: `/portal/invoices/${invoiceId}/pay`,
             }),
             { status: 200, headers: { 'Content-Type': 'application/json' } }
         );

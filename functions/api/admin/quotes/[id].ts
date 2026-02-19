@@ -307,6 +307,10 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
             await env.CACHE.put(tokenKey, acceptanceToken, {
                 expirationTtl: QUOTE_TOKEN_TTL_SECONDS,
             });
+            // Store reverse mapping for O(1) token → quoteId lookup
+            await env.CACHE.put(`quote_token_reverse:${acceptanceToken}`, String(quoteId), {
+                expirationTtl: QUOTE_TOKEN_TTL_SECONDS,
+            });
         } catch (error) {
             console.error('Quote token storage failed:', error);
             return new Response(
