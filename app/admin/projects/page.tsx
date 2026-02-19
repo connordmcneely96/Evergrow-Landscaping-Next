@@ -107,6 +107,14 @@ export default function AdminProjectsPage() {
         }
     }
 
+    const scheduledProjects = projects
+        .filter((p) => Boolean(p.scheduledDate))
+        .sort((a, b) => {
+            const aTime = a.scheduledDate ? new Date(a.scheduledDate).getTime() : Number.MAX_SAFE_INTEGER
+            const bTime = b.scheduledDate ? new Date(b.scheduledDate).getTime() : Number.MAX_SAFE_INTEGER
+            return aTime - bTime
+        })
+
     return (
         <div className="space-y-6">
             <div>
@@ -180,6 +188,47 @@ export default function AdminProjectsPage() {
                                                     {cancellingId === p.id ? 'Cancelling…' : 'Cancel'}
                                                 </button>
                                             )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
+
+            <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                <div className="px-4 py-3 border-b border-gray-800 bg-gray-800">
+                    <h2 className="text-sm font-semibold text-white">Schedule Calendar</h2>
+                    <p className="text-xs text-gray-400 mt-1">Match project and customer details to scheduled date/time at a glance.</p>
+                </div>
+
+                {scheduledProjects.length === 0 ? (
+                    <div className="p-6 text-sm text-gray-500">No scheduled projects yet.</div>
+                ) : (
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <thead>
+                                <tr className="border-b border-gray-700 bg-gray-800/60">
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Project #</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Customer</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Service</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Scheduled Date/Time</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-800">
+                                {scheduledProjects.map((p) => (
+                                    <tr key={`schedule-${p.id}`} className="hover:bg-gray-800/50">
+                                        <td className="px-4 py-3 text-white font-medium">#{p.id}</td>
+                                        <td className="px-4 py-3">
+                                            <div className="text-white">{p.customerName || '—'}</div>
+                                            <div className="text-xs text-gray-500">{p.customerEmail || 'No email on file'}</div>
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300">{p.serviceName}</td>
+                                        <td className="px-4 py-3 text-gray-300">{p.scheduledDate ? formatDate(p.scheduledDate) : 'Not set'}</td>
+                                        <td className="px-4 py-3">
+                                            <Badge variant={STATUS_BADGE[p.status] || 'secondary'}>{p.statusDisplay}</Badge>
                                         </td>
                                     </tr>
                                 ))}
