@@ -32,7 +32,6 @@ interface QuoteRow {
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
-const R2_PUBLIC_BASE_URL = 'https://evergrowlandscaping.com/assets/';
 
 const SERVICE_NAME_DISPLAY: Record<string, string> = {
     lawn_care: 'Lawn Care & Maintenance',
@@ -167,9 +166,14 @@ function buildPhotoUrl(value: string): string | null {
     if (/^https?:\/\//i.test(trimmed)) {
         return trimmed;
     }
+    // Already a proper relative path to the asset proxy
+    if (trimmed.startsWith('/api/assets/')) {
+        return trimmed;
+    }
+    // Legacy format: bare R2 key, possibly with assets/ prefix
     const withoutLeadingSlash = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed;
     const normalized = withoutLeadingSlash.replace(/^assets\//i, '');
-    return `${R2_PUBLIC_BASE_URL}${normalized}`;
+    return `/api/assets/${normalized}`;
 }
 
 function parsePhotoUrls(value: string | null): string[] {

@@ -332,7 +332,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const invoiceId = invoiceResult.meta.last_row_id;
 
         // 4. Send Deposit Invoice Email
-        const invoiceUrl = `https://evergrowlandscaping.com/portal/invoices/${invoiceId}/pay`;
+        const invoiceUrl = `https://evergrowlandscaping.com/portal/invoices/pay?id=${invoiceId}`;
         const customerEmail = quote.contact_email || quote.customer_email;
         const customerName = quote.contact_name || quote.customer_name || 'Customer';
 
@@ -369,7 +369,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 quoteId,
                 projectId,
                 invoiceId,
-                paymentUrl: `/portal/invoices/${invoiceId}/pay`,
+                paymentUrl: `/portal/invoices/pay?id=${invoiceId}`,
             }),
             { status: 200, headers: { 'Content-Type': 'application/json' } }
         );

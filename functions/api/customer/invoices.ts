@@ -239,7 +239,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             };
 
             if (canPay) {
-                invoice.paymentUrl = `/portal/invoices/${row.id}/pay`;
+                invoice.paymentUrl = `/portal/invoices/pay?id=${row.id}`;
             } else if (status === 'paid') {
                 invoice.receiptUrl = `/portal/invoices/${row.id}/receipt`;
             }

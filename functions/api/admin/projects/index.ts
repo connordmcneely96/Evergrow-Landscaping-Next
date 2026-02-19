@@ -678,7 +678,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 id: invoiceId,
                 amount: Number(depositValidation.depositAmount.toFixed(2)),
                 dueDate: depositDueDate,
-                paymentUrl: `/portal/invoices/${invoiceId}/pay`,
+                paymentUrl: `/portal/invoices/pay?id=${invoiceId}`,
             };
         }
 
