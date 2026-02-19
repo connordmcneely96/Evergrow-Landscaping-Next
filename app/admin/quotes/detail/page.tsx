@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense, useEffect, useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/Badge'
@@ -33,6 +33,16 @@ interface Quote {
     needsResponse: boolean
 }
 
+interface ExistingProject {
+    id: number
+    status: string
+    statusDisplay: string
+    scheduledDate: string | null
+    scheduledTime: string | null
+    depositPaid: boolean
+    totalAmount: number
+}
+
 const STATUS_BADGE: Record<string, 'warning' | 'info' | 'success' | 'destructive' | 'secondary'> = {
     pending: 'warning',
     quoted: 'info',
@@ -40,6 +50,13 @@ const STATUS_BADGE: Record<string, 'warning' | 'info' | 'success' | 'destructive
     declined: 'destructive',
     expired: 'secondary',
     converted: 'success',
+}
+
+const PROJECT_STATUS_BADGE: Record<string, 'warning' | 'info' | 'success' | 'destructive' | 'secondary'> = {
+    scheduled: 'info',
+    in_progress: 'warning',
+    completed: 'success',
+    cancelled: 'destructive',
 }
 
 const PROPERTY_SIZE_LABELS: Record<string, string> = {
@@ -51,7 +68,6 @@ const PROPERTY_SIZE_LABELS: Record<string, string> = {
 
 function QuoteDetailContent() {
     const searchParams = useSearchParams()
-    const router = useRouter()
     const { addToast } = useToast()
     const quoteId = searchParams.get('id')
 
@@ -67,20 +83,33 @@ function QuoteDetailContent() {
     const [terms, setTerms] = useState('')
     const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 
-    // Create-project form state
-    const [scheduledDate, setScheduledDate] = useState('')
-    const [scheduledTime, setScheduledTime] = useState('')
-    const [projectNotes, setProjectNotes] = useState('')
-    const [projectSubmitting, setProjectSubmitting] = useState(false)
-    const [projectResult, setProjectResult] = useState<{ id: number } | null>(null)
-    const [projectError, setProjectError] = useState<string | null>(null)
+    // Decline quote state
+    const [declining, setDeclining] = useState(false)
+
+    // Existing project (when quote is accepted)
+    const [existingProject, setExistingProject] = useState<ExistingProject | null>(null)
+    const [projectLoading, setProjectLoading] = useState(false)
+
+    // Schedule update form (for existing project)
+    const [schedDate, setSchedDate] = useState('')
+    const [schedTime, setSchedTime] = useState('')
+    const [schedSubmitting, setSchedSubmitting] = useState(false)
+    const [schedError, setSchedError] = useState<string | null>(null)
+    const [schedSuccess, setSchedSuccess] = useState(false)
+
+    // Cancel project
+    const [cancelling, setCancelling] = useState(false)
+
+    // Create-project form (fallback if no project exists yet)
+    const [createDate, setCreateDate] = useState('')
+    const [createTime, setCreateTime] = useState('')
+    const [createNotes, setCreateNotes] = useState('')
+    const [createSubmitting, setCreateSubmitting] = useState(false)
+    const [createResult, setCreateResult] = useState<{ id: number } | null>(null)
+    const [createError, setCreateError] = useState<string | null>(null)
 
     useEffect(() => {
-        if (!quoteId) {
-            setLoading(false)
-            return
-        }
-
+        if (!quoteId) { setLoading(false); return }
         async function loadQuote() {
             try {
                 const res = await fetchWithAuth(`/api/admin/quotes?limit=100`)
@@ -88,9 +117,7 @@ function QuoteDetailContent() {
                     const data = await res.json() as any
                     if (data.success) {
                         const found = data.quotes.find((q: Quote) => q.id === Number(quoteId))
-                        if (found) {
-                            setQuote(found)
-                        }
+                        if (found) setQuote(found)
                     }
                 }
             } catch (err) {
@@ -99,9 +126,26 @@ function QuoteDetailContent() {
                 setLoading(false)
             }
         }
-
         loadQuote()
     }, [quoteId])
+
+    // When quote is accepted, fetch the associated project
+    useEffect(() => {
+        if (!quote || quote.status !== 'accepted') return
+        setProjectLoading(true)
+        fetchWithAuth(`/api/admin/projects?quoteId=${quote.id}&limit=1`)
+            .then(res => res.ok ? res.json() : null)
+            .then((data: any) => {
+                if (data?.success && data.projects?.length > 0) {
+                    const p = data.projects[0]
+                    setExistingProject(p)
+                    setSchedDate(p.scheduledDate || '')
+                    setSchedTime(p.scheduledTime || '')
+                }
+            })
+            .catch(() => {})
+            .finally(() => setProjectLoading(false))
+    }, [quote?.id, quote?.status])
 
     const validateForm = (): boolean => {
         const errors: Record<string, string> = {}
@@ -120,7 +164,6 @@ function QuoteDetailContent() {
     const handleSendQuote = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!validateForm()) return
-
         setSubmitting(true)
         try {
             const res = await fetchWithAuth(`/api/admin/quotes/${quoteId}`, {
@@ -132,16 +175,9 @@ function QuoteDetailContent() {
                     terms: terms || undefined,
                 }),
             })
-
             const data = await res.json() as any
-
-            if (!res.ok || !data.success) {
-                throw new Error(data.error || 'Failed to send quote')
-            }
-
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to send quote')
             addToast({ type: 'success', message: data.emailSent ? 'Quote sent to customer via email!' : 'Quote saved (email could not be sent)' })
-
-            // Force a full page refresh to ensure data is updated
             window.location.href = '/admin/quotes'
         } catch (err) {
             addToast({ type: 'error', message: err instanceof Error ? err.message : 'Failed to send quote' })
@@ -150,43 +186,98 @@ function QuoteDetailContent() {
         }
     }
 
+    const handleDeclineQuote = async () => {
+        if (!quote) return
+        if (!confirm('Decline this quote? The customer will not be notified.')) return
+        setDeclining(true)
+        try {
+            const res = await fetchWithAuth(`/api/admin/quotes/${quote.id}`, { method: 'PATCH' })
+            const data = await res.json() as any
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to decline quote')
+            addToast({ type: 'success', message: 'Quote declined' })
+            window.location.href = '/admin/quotes'
+        } catch (err) {
+            addToast({ type: 'error', message: err instanceof Error ? err.message : 'Failed to decline quote' })
+        } finally {
+            setDeclining(false)
+        }
+    }
+
+    const handleUpdateSchedule = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!existingProject || !schedDate) return
+        setSchedSubmitting(true)
+        setSchedError(null)
+        setSchedSuccess(false)
+        try {
+            const res = await fetchWithAuth(`/api/admin/projects/${existingProject.id}`, {
+                method: 'PATCH',
+                body: JSON.stringify({
+                    scheduledDate: schedDate,
+                    scheduledTime: schedTime || undefined,
+                }),
+            })
+            const data = await res.json() as any
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to update schedule')
+            setExistingProject({ ...existingProject, scheduledDate: schedDate, scheduledTime: schedTime || null })
+            setSchedSuccess(true)
+            addToast({ type: 'success', message: 'Schedule updated!' })
+        } catch (err) {
+            setSchedError(err instanceof Error ? err.message : 'Failed to update schedule')
+        } finally {
+            setSchedSubmitting(false)
+        }
+    }
+
+    const handleCancelProject = async () => {
+        if (!existingProject) return
+        if (!confirm('Cancel this project? All pending invoices will also be cancelled.')) return
+        setCancelling(true)
+        try {
+            const res = await fetchWithAuth(`/api/admin/projects/${existingProject.id}`, {
+                method: 'PUT',
+                body: JSON.stringify({ status: 'cancelled' }),
+            })
+            const data = await res.json() as any
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to cancel project')
+            setExistingProject({ ...existingProject, status: 'cancelled', statusDisplay: 'Cancelled' })
+            addToast({ type: 'success', message: 'Project cancelled' })
+        } catch (err) {
+            addToast({ type: 'error', message: err instanceof Error ? err.message : 'Failed to cancel project' })
+        } finally {
+            setCancelling(false)
+        }
+    }
+
     const handleCreateProject = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!quote || !scheduledDate) return
-
-        setProjectSubmitting(true)
-        setProjectError(null)
-
+        if (!quote || !createDate) return
+        setCreateSubmitting(true)
+        setCreateError(null)
         try {
             const depositRequired = DEPOSIT_REQUIRED_SERVICES.has(quote.serviceType)
             const res = await fetchWithAuth('/api/admin/projects', {
                 method: 'POST',
                 body: JSON.stringify({
                     quoteId: quote.id,
-                    scheduledDate,
-                    scheduledTime: scheduledTime || undefined,
-                    notes: projectNotes || undefined,
+                    scheduledDate: createDate,
+                    scheduledTime: createTime || undefined,
+                    notes: createNotes || undefined,
                     depositRequired,
                 }),
             })
-
             const data = await res.json() as any
-
             if (res.status === 409) {
-                setProjectError('A project already exists for this quote. View it in the Projects list.')
+                setCreateError('A project already exists. Refresh the page to see it.')
                 return
             }
-
-            if (!res.ok || !data.success) {
-                throw new Error(data.error || 'Failed to create project')
-            }
-
-            setProjectResult({ id: data.project.id })
-            addToast({ type: 'success', message: 'Project scheduled successfully!' })
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to create project')
+            setCreateResult({ id: data.project.id })
+            addToast({ type: 'success', message: 'Project scheduled!' })
         } catch (err) {
-            setProjectError(err instanceof Error ? err.message : 'Failed to create project')
+            setCreateError(err instanceof Error ? err.message : 'Failed to create project')
         } finally {
-            setProjectSubmitting(false)
+            setCreateSubmitting(false)
         }
     }
 
@@ -203,12 +294,12 @@ function QuoteDetailContent() {
         return (
             <div className="text-center py-16">
                 <p className="text-gray-500 mb-4">Quote not found</p>
-                <Link href="/admin/quotes">
-                    <Button variant="outline">Back to Quotes</Button>
-                </Link>
+                <Link href="/admin/quotes"><Button variant="outline">Back to Quotes</Button></Link>
             </div>
         )
     }
+
+    const canDecline = quote.status === 'pending' || quote.status === 'quoted'
 
     return (
         <div className="space-y-6 max-w-4xl">
@@ -246,7 +337,7 @@ function QuoteDetailContent() {
             )}
 
             <div className="grid lg:grid-cols-5 gap-6">
-                {/* Left column - Quote details */}
+                {/* Left column */}
                 <div className="lg:col-span-3 space-y-6">
                     {/* Customer info */}
                     <section className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
@@ -335,9 +426,9 @@ function QuoteDetailContent() {
                     )}
                 </div>
 
-                {/* Right column - Actions */}
+                {/* Right column — Actions */}
                 <div className="lg:col-span-2 space-y-6">
-                    {/* Already quoted */}
+                    {/* Status card (all non-pending quotes) */}
                     {quote.status !== 'pending' && (
                         <div className="bg-gray-900 rounded-xl border border-gray-800 p-5">
                             <h2 className="font-semibold text-white mb-3">Quote Status</h2>
@@ -358,68 +449,141 @@ function QuoteDetailContent() {
                                         <span className="text-white">{formatDate(quote.acceptedAt)}</span>
                                     </div>
                                 )}
-                                {quote.status === 'accepted' && (
-                                    <div className="pt-2 border-t border-gray-800">
-                                        <p className="text-xs text-gray-500 mb-3">Schedule this project</p>
 
-                                        {projectResult ? (
-                                            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-xs text-green-400 space-y-2">
-                                                <p className="font-medium">Project #{projectResult.id} scheduled!</p>
-                                                <Link href="/admin/projects" className="underline hover:no-underline">
-                                                    View in Projects →
-                                                </Link>
-                                            </div>
-                                        ) : (
-                                            <form onSubmit={handleCreateProject} className="space-y-3">
-                                                <div>
-                                                    <label className="block text-xs text-gray-400 mb-1">
-                                                        Scheduled Date <span className="text-red-500">*</span>
-                                                    </label>
-                                                    <input
-                                                        type="date"
-                                                        required
-                                                        value={scheduledDate}
-                                                        onChange={(e) => setScheduledDate(e.target.value)}
-                                                        className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
-                                                    />
+                                {/* ── Accepted: project management ── */}
+                                {quote.status === 'accepted' && (
+                                    <div className="pt-3 border-t border-gray-800 space-y-3">
+                                        {projectLoading ? (
+                                            <p className="text-xs text-gray-500 animate-pulse">Loading project info…</p>
+                                        ) : existingProject ? (
+                                            <>
+                                                {/* Project info */}
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs text-gray-400">Project #{existingProject.id}</span>
+                                                    <Badge variant={PROJECT_STATUS_BADGE[existingProject.status] || 'secondary'} className="text-xs">
+                                                        {existingProject.statusDisplay}
+                                                    </Badge>
                                                 </div>
-                                                <div>
-                                                    <label className="block text-xs text-gray-400 mb-1">
-                                                        Scheduled Time (optional)
-                                                    </label>
-                                                    <input
-                                                        type="time"
-                                                        value={scheduledTime}
-                                                        onChange={(e) => setScheduledTime(e.target.value)}
-                                                        className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-xs text-gray-400 mb-1">
-                                                        Internal Notes (optional)
-                                                    </label>
-                                                    <textarea
-                                                        rows={2}
-                                                        value={projectNotes}
-                                                        onChange={(e) => setProjectNotes(e.target.value)}
-                                                        placeholder="Crew notes, equipment needed..."
-                                                        className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white placeholder-gray-600 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent resize-none"
-                                                    />
-                                                </div>
-                                                {projectError && (
-                                                    <p className="text-xs text-red-400">{projectError}</p>
+                                                {existingProject.scheduledDate && (
+                                                    <p className="text-xs text-gray-400">
+                                                        Scheduled: {new Date(existingProject.scheduledDate).toLocaleDateString()}
+                                                        {existingProject.scheduledTime && ` at ${existingProject.scheduledTime}`}
+                                                    </p>
                                                 )}
-                                                <Button
-                                                    type="submit"
-                                                    variant="primary"
-                                                    size="sm"
-                                                    isLoading={projectSubmitting}
-                                                    className="w-full"
-                                                >
-                                                    Schedule Project
-                                                </Button>
-                                            </form>
+
+                                                {/* Update schedule form — only if not terminal */}
+                                                {existingProject.status !== 'cancelled' && existingProject.status !== 'completed' && (
+                                                    <>
+                                                        <form onSubmit={handleUpdateSchedule} className="space-y-2 pt-1">
+                                                            <p className="text-xs text-gray-500">
+                                                                {existingProject.scheduledDate ? 'Update schedule' : 'Set schedule'}
+                                                            </p>
+                                                            <div>
+                                                                <label className="block text-xs text-gray-400 mb-1">
+                                                                    Date <span className="text-red-500">*</span>
+                                                                </label>
+                                                                <input
+                                                                    type="date"
+                                                                    required
+                                                                    value={schedDate}
+                                                                    onChange={e => { setSchedDate(e.target.value); setSchedSuccess(false) }}
+                                                                    className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs text-gray-400 mb-1">Time (optional)</label>
+                                                                <input
+                                                                    type="time"
+                                                                    value={schedTime}
+                                                                    onChange={e => setSchedTime(e.target.value)}
+                                                                    className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue"
+                                                                />
+                                                            </div>
+                                                            {schedError && <p className="text-xs text-red-400">{schedError}</p>}
+                                                            {schedSuccess && <p className="text-xs text-green-400">Schedule updated!</p>}
+                                                            <Button type="submit" variant="secondary" size="sm" isLoading={schedSubmitting} className="w-full">
+                                                                {existingProject.scheduledDate ? 'Update Schedule' : 'Set Schedule'}
+                                                            </Button>
+                                                        </form>
+
+                                                        {/* Cancel project */}
+                                                        <button
+                                                            onClick={handleCancelProject}
+                                                            disabled={cancelling}
+                                                            className="w-full text-xs text-red-400 hover:text-red-300 border border-red-900 hover:border-red-600 rounded-lg px-3 py-2 transition-colors disabled:opacity-50"
+                                                        >
+                                                            {cancelling ? 'Cancelling…' : 'Cancel Project'}
+                                                        </button>
+                                                    </>
+                                                )}
+
+                                                <Link href="/admin/projects" className="block text-xs text-center text-ocean-blue hover:underline pt-1">
+                                                    View all projects →
+                                                </Link>
+                                            </>
+                                        ) : (
+                                            /* No project yet — creation form */
+                                            <>
+                                                <p className="text-xs text-gray-500">No project scheduled yet</p>
+                                                {createResult ? (
+                                                    <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-xs text-green-400 space-y-2">
+                                                        <p className="font-medium">Project #{createResult.id} created!</p>
+                                                        <Link href="/admin/projects" className="underline">View in Projects →</Link>
+                                                    </div>
+                                                ) : (
+                                                    <form onSubmit={handleCreateProject} className="space-y-2">
+                                                        <div>
+                                                            <label className="block text-xs text-gray-400 mb-1">
+                                                                Date <span className="text-red-500">*</span>
+                                                            </label>
+                                                            <input
+                                                                type="date"
+                                                                required
+                                                                value={createDate}
+                                                                onChange={e => setCreateDate(e.target.value)}
+                                                                className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs text-gray-400 mb-1">Time (optional)</label>
+                                                            <input
+                                                                type="time"
+                                                                value={createTime}
+                                                                onChange={e => setCreateTime(e.target.value)}
+                                                                className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs text-gray-400 mb-1">Notes (optional)</label>
+                                                            <textarea
+                                                                rows={2}
+                                                                value={createNotes}
+                                                                onChange={e => setCreateNotes(e.target.value)}
+                                                                placeholder="Crew notes, equipment…"
+                                                                className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white placeholder-gray-600 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue resize-none"
+                                                            />
+                                                        </div>
+                                                        {createError && <p className="text-xs text-red-400">{createError}</p>}
+                                                        <Button type="submit" variant="primary" size="sm" isLoading={createSubmitting} className="w-full">
+                                                            Schedule Project
+                                                        </Button>
+                                                    </form>
+                                                )}
+                                            </>
                                         )}
+                                    </div>
+                                )}
+
+                                {/* Decline button for pending / quoted */}
+                                {canDecline && (
+                                    <div className="pt-3 border-t border-gray-800">
+                                        <button
+                                            onClick={handleDeclineQuote}
+                                            disabled={declining}
+                                            className="w-full text-xs text-red-400 hover:text-red-300 border border-red-900 hover:border-red-600 rounded-lg px-3 py-2 transition-colors disabled:opacity-50"
+                                        >
+                                            {declining ? 'Declining…' : 'Decline Quote'}
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -433,7 +597,6 @@ function QuoteDetailContent() {
                                 <h2 className="font-semibold text-white text-sm">Send Quote to Customer</h2>
                             </div>
                             <div className="p-5 space-y-4">
-                                {/* Amount */}
                                 <div>
                                     <label htmlFor="amount" className="block text-sm font-medium text-gray-300 mb-1">
                                         Quoted Amount <span className="text-red-500">*</span>
@@ -449,62 +612,48 @@ function QuoteDetailContent() {
                                             placeholder="0.00"
                                             value={quotedAmount}
                                             onChange={(e) => { setQuotedAmount(e.target.value); setFormErrors({}) }}
-                                            className={`w-full pl-8 pr-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent bg-gray-800 text-white placeholder-gray-500 ${
-                                                formErrors.quotedAmount ? 'border-red-300 bg-red-50' : 'border-gray-700'
-                                            }`}
+                                            className={`w-full pl-8 pr-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent bg-gray-800 text-white placeholder-gray-500 ${formErrors.quotedAmount ? 'border-red-300' : 'border-gray-700'}`}
                                         />
                                     </div>
-                                    {formErrors.quotedAmount && (
-                                        <p className="text-xs text-red-600 mt-1">{formErrors.quotedAmount}</p>
-                                    )}
+                                    {formErrors.quotedAmount && <p className="text-xs text-red-600 mt-1">{formErrors.quotedAmount}</p>}
                                 </div>
 
-                                {/* Notes */}
                                 <div>
-                                    <label htmlFor="notes" className="block text-sm font-medium text-gray-300 mb-1">
-                                        Notes for Customer
-                                    </label>
+                                    <label htmlFor="notes" className="block text-sm font-medium text-gray-300 mb-1">Notes for Customer</label>
                                     <textarea
                                         id="notes"
                                         rows={3}
                                         placeholder="Describe what's included, any conditions..."
                                         value={notes}
                                         onChange={(e) => setNotes(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent resize-none"
+                                        className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue resize-none"
                                     />
                                 </div>
 
-                                {/* Timeline */}
                                 <div>
-                                    <label htmlFor="timeline" className="block text-sm font-medium text-gray-300 mb-1">
-                                        Estimated Timeline
-                                    </label>
+                                    <label htmlFor="timeline" className="block text-sm font-medium text-gray-300 mb-1">Estimated Timeline</label>
                                     <input
                                         id="timeline"
                                         type="text"
                                         placeholder='e.g., "2-3 hours" or "1 full day"'
                                         value={timeline}
                                         onChange={(e) => setTimeline(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue"
                                     />
                                 </div>
 
-                                {/* Terms */}
                                 <div>
-                                    <label htmlFor="terms" className="block text-sm font-medium text-gray-300 mb-1">
-                                        Special Terms
-                                    </label>
+                                    <label htmlFor="terms" className="block text-sm font-medium text-gray-300 mb-1">Special Terms</label>
                                     <input
                                         id="terms"
                                         type="text"
                                         placeholder="e.g., 50% deposit required"
                                         value={terms}
                                         onChange={(e) => setTerms(e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
+                                        className="w-full px-3 py-2 border border-gray-700 bg-gray-800 text-white placeholder-gray-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-blue"
                                     />
                                 </div>
 
-                                {/* Info */}
                                 <div className="bg-ocean-blue/10 border border-ocean-blue/30 rounded-lg p-3 text-xs text-ocean-blue">
                                     <p className="font-medium mb-1">What happens when you send:</p>
                                     <ul className="list-disc list-inside space-y-0.5">
@@ -514,7 +663,6 @@ function QuoteDetailContent() {
                                     </ul>
                                 </div>
 
-                                {/* Submit */}
                                 <Button
                                     type="submit"
                                     variant="primary"
@@ -524,6 +672,15 @@ function QuoteDetailContent() {
                                 >
                                     Send Quote to {quote.customerName || 'Customer'}
                                 </Button>
+
+                                <button
+                                    type="button"
+                                    onClick={handleDeclineQuote}
+                                    disabled={declining}
+                                    className="w-full text-xs text-red-400 hover:text-red-300 border border-red-900 hover:border-red-600 rounded-lg px-3 py-2 transition-colors disabled:opacity-50"
+                                >
+                                    {declining ? 'Declining…' : 'Decline & Close'}
+                                </button>
                             </div>
                         </form>
                     )}

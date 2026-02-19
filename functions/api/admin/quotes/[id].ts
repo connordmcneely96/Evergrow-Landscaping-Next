@@ -444,3 +444,59 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
         );
     }
 };
+
+// PATCH — decline a quote (sets status = 'declined')
+export const onRequestPatch: PagesFunction<Env> = async (context) => {
+    const { request, env, params } = context;
+
+    const authResult = await requireAdmin(request, env);
+    if (authResult instanceof Response) return authResult;
+
+    const quoteId = parseQuoteId(params.id);
+    if (!quoteId) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid quote ID' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    try {
+        const quote = await env.DB.prepare(
+            'SELECT id, status FROM quotes WHERE id = ? LIMIT 1'
+        )
+            .bind(quoteId)
+            .first<{ id: number; status: string }>();
+
+        if (!quote) {
+            return new Response(JSON.stringify({ success: false, error: 'Quote not found' }), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        if (quote.status === 'accepted' || quote.status === 'declined') {
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    error: `Quote cannot be declined (current status: ${quote.status})`,
+                }),
+                { status: 400, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
+        await env.DB.prepare("UPDATE quotes SET status = 'declined' WHERE id = ?")
+            .bind(quoteId)
+            .run();
+
+        return new Response(
+            JSON.stringify({ success: true, message: 'Quote declined' }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+    } catch (error) {
+        console.error('[Decline Quote] error:', error);
+        return new Response(
+            JSON.stringify({ success: false, error: 'Failed to decline quote' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
+    }
+};

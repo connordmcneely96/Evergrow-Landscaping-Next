@@ -31,6 +31,7 @@ type ExistingProjectRow = {
 type ProjectRow = {
     id: number;
     customer_id: number | null;
+    quote_id: number | null;
     customer_name: string | null;
     customer_email: string | null;
     service_type: string;
@@ -38,6 +39,7 @@ type ProjectRow = {
     deposit_amount: number | null;
     deposit_paid: number | boolean;
     scheduled_date: string | null;
+    scheduled_time: string | null;
     status: string;
     completed_at: string | null;
     created_at: string;
@@ -296,6 +298,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         const statusQuery = url.searchParams.get('status');
         const limitQuery = url.searchParams.get('limit');
         const pageQuery = url.searchParams.get('page');
+        const quoteIdQuery = url.searchParams.get('quoteId');
 
         const limit = parsePositiveInt(limitQuery, 20);
         const page = parsePositiveInt(pageQuery, 1);
@@ -310,15 +313,17 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         }
 
         const statusFilter = normalizedStatus ? STATUS_FILTERS[normalizedStatus] : null;
+        const quoteIdFilter = quoteIdQuery ? parsePositiveInt(quoteIdQuery, 0) || null : null;
 
         const countResult = await env.DB.prepare(
             `
         SELECT COUNT(*) as total
         FROM projects p
         WHERE (? IS NULL OR p.status = ?)
+          AND (? IS NULL OR p.quote_id = ?)
       `
         )
-            .bind(statusFilter, statusFilter)
+            .bind(statusFilter, statusFilter, quoteIdFilter, quoteIdFilter)
             .first<{ total: number }>();
 
         const totalProjects = Math.max(0, toNumber(countResult?.total));
@@ -327,15 +332,17 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
         const projectResults = await env.DB.prepare(
             `
-        SELECT 
+        SELECT
           p.id,
           p.customer_id,
+          p.quote_id,
           p.service_type,
           p.description as project_description,
           p.total_amount,
           p.deposit_amount,
           p.deposit_paid,
           p.scheduled_date,
+          p.scheduled_time,
           p.status,
           p.completed_at,
           p.created_at,
@@ -347,7 +354,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         LEFT JOIN quotes q ON p.quote_id = q.id
         LEFT JOIN customers c ON p.customer_id = c.id
         WHERE (? IS NULL OR p.status = ?)
-        ORDER BY 
+          AND (? IS NULL OR p.quote_id = ?)
+        ORDER BY
           CASE p.status
             WHEN 'in_progress' THEN 1
             WHEN 'in-progress' THEN 1
@@ -360,7 +368,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         LIMIT ? OFFSET ?
       `
         )
-            .bind(statusFilter, statusFilter, limit, offset)
+            .bind(statusFilter, statusFilter, quoteIdFilter, quoteIdFilter, limit, offset)
             .all<ProjectRow>();
 
         const projects = (projectResults.results ?? []).map((row) => {
@@ -379,6 +387,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             return {
                 id: row.id,
                 customerId: row.customer_id,
+                quoteId: row.quote_id,
                 customerName: row.customer_name,
                 customerEmail: row.customer_email,
                 serviceType: normalizedServiceType ?? row.service_type,
@@ -388,6 +397,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 depositPaid,
                 balanceDue,
                 scheduledDate: row.scheduled_date,
+                scheduledTime: row.scheduled_time,
                 status: normalizedRowStatus,
                 statusDisplay,
                 completedAt: row.completed_at,

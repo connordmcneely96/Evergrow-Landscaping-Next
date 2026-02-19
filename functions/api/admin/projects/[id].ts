@@ -251,7 +251,7 @@ function formatDateOnly(value: Date): string {
 }
 
 function buildPaymentPath(invoiceId: number): string {
-    return `/portal/invoices/${invoiceId}/pay`;
+    return `/portal/invoices/pay?id=${invoiceId}`;
 }
 
 function getStatusMessage(status: ProjectStatus): string {
@@ -267,6 +267,106 @@ function getStatusMessage(status: ProjectStatus): string {
     }
 }
 
+// PATCH — update scheduling fields (scheduled_date, scheduled_time) without status change
+export const onRequestPatch: PagesFunction<Env> = async (context) => {
+    const { request, env, params } = context;
+
+    const authResult = await requireAdmin(request, env);
+    if (authResult instanceof Response) return authResult;
+
+    const projectId = parseProjectId(params.id);
+    if (!projectId) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid project ID' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    let body: unknown;
+    try {
+        body = await request.json();
+    } catch {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid request body' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    if (!body || typeof body !== 'object') {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid request body' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    const { scheduledDate, scheduledTime } = body as Record<string, unknown>;
+
+    if (typeof scheduledDate !== 'string' || !scheduledDate.trim()) {
+        return new Response(JSON.stringify({ success: false, error: 'scheduledDate is required' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    const parsedDate = new Date(scheduledDate.trim());
+    if (Number.isNaN(parsedDate.getTime())) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid scheduledDate format' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    const scheduledDateValue = scheduledDate.trim();
+    const scheduledTimeValue =
+        typeof scheduledTime === 'string' ? scheduledTime.trim() || null : null;
+
+    try {
+        const project = await env.DB.prepare(
+            'SELECT id, status FROM projects WHERE id = ? LIMIT 1'
+        )
+            .bind(projectId)
+            .first<{ id: number; status: string | null }>();
+
+        if (!project) {
+            return new Response(JSON.stringify({ success: false, error: 'Project not found' }), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        const currentStatus = normalizeStoredStatus(project.status);
+        if (currentStatus === 'completed' || currentStatus === 'cancelled') {
+            return new Response(
+                JSON.stringify({
+                    success: false,
+                    error: `Cannot reschedule a ${currentStatus} project`,
+                }),
+                { status: 400, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+
+        await env.DB.prepare(
+            `UPDATE projects
+             SET scheduled_date = ?, scheduled_time = ?
+             WHERE id = ?`
+        )
+            .bind(scheduledDateValue, scheduledTimeValue, projectId)
+            .run();
+
+        return new Response(
+            JSON.stringify({ success: true, message: 'Schedule updated' }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+    } catch (error) {
+        console.error('Admin project patch error:', error);
+        return new Response(
+            JSON.stringify({ success: false, error: 'Failed to update schedule' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
+    }
+};
+
+// PUT — update project status (scheduled → in_progress → completed/cancelled)
 export const onRequestPut: PagesFunction<Env> = async (context) => {
     const { request, env, params } = context;
 
