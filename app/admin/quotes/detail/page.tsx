@@ -10,6 +10,8 @@ import { useToast } from '@/components/ui/Toast'
 import { fetchWithAuth } from '@/lib/auth'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
+const DEPOSIT_REQUIRED_SERVICES = new Set(['flower_beds', 'pressure_washing'])
+
 interface Quote {
     id: number
     customerId: number | null
@@ -58,12 +60,20 @@ function QuoteDetailContent() {
     const [submitting, setSubmitting] = useState(false)
     const [lightboxImg, setLightboxImg] = useState<string | null>(null)
 
-    // Form state
+    // Send-quote form state
     const [quotedAmount, setQuotedAmount] = useState('')
     const [notes, setNotes] = useState('')
     const [timeline, setTimeline] = useState('')
     const [terms, setTerms] = useState('')
     const [formErrors, setFormErrors] = useState<Record<string, string>>({})
+
+    // Create-project form state
+    const [scheduledDate, setScheduledDate] = useState('')
+    const [scheduledTime, setScheduledTime] = useState('')
+    const [projectNotes, setProjectNotes] = useState('')
+    const [projectSubmitting, setProjectSubmitting] = useState(false)
+    const [projectResult, setProjectResult] = useState<{ id: number } | null>(null)
+    const [projectError, setProjectError] = useState<string | null>(null)
 
     useEffect(() => {
         if (!quoteId) {
@@ -137,6 +147,46 @@ function QuoteDetailContent() {
             addToast({ type: 'error', message: err instanceof Error ? err.message : 'Failed to send quote' })
         } finally {
             setSubmitting(false)
+        }
+    }
+
+    const handleCreateProject = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!quote || !scheduledDate) return
+
+        setProjectSubmitting(true)
+        setProjectError(null)
+
+        try {
+            const depositRequired = DEPOSIT_REQUIRED_SERVICES.has(quote.serviceType)
+            const res = await fetchWithAuth('/api/admin/projects', {
+                method: 'POST',
+                body: JSON.stringify({
+                    quoteId: quote.id,
+                    scheduledDate,
+                    scheduledTime: scheduledTime || undefined,
+                    notes: projectNotes || undefined,
+                    depositRequired,
+                }),
+            })
+
+            const data = await res.json() as any
+
+            if (res.status === 409) {
+                setProjectError('A project already exists for this quote. View it in the Projects list.')
+                return
+            }
+
+            if (!res.ok || !data.success) {
+                throw new Error(data.error || 'Failed to create project')
+            }
+
+            setProjectResult({ id: data.project.id })
+            addToast({ type: 'success', message: 'Project scheduled successfully!' })
+        } catch (err) {
+            setProjectError(err instanceof Error ? err.message : 'Failed to create project')
+        } finally {
+            setProjectSubmitting(false)
         }
     }
 
@@ -310,10 +360,66 @@ function QuoteDetailContent() {
                                 )}
                                 {quote.status === 'accepted' && (
                                     <div className="pt-2 border-t border-gray-800">
-                                        <p className="text-xs text-gray-500 mb-2">Ready to schedule this project?</p>
-                                        <Link href="/admin/projects">
-                                            <Button variant="primary" size="sm" className="w-full">Create Project</Button>
-                                        </Link>
+                                        <p className="text-xs text-gray-500 mb-3">Schedule this project</p>
+
+                                        {projectResult ? (
+                                            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-xs text-green-400 space-y-2">
+                                                <p className="font-medium">Project #{projectResult.id} scheduled!</p>
+                                                <Link href="/admin/projects" className="underline hover:no-underline">
+                                                    View in Projects →
+                                                </Link>
+                                            </div>
+                                        ) : (
+                                            <form onSubmit={handleCreateProject} className="space-y-3">
+                                                <div>
+                                                    <label className="block text-xs text-gray-400 mb-1">
+                                                        Scheduled Date <span className="text-red-500">*</span>
+                                                    </label>
+                                                    <input
+                                                        type="date"
+                                                        required
+                                                        value={scheduledDate}
+                                                        onChange={(e) => setScheduledDate(e.target.value)}
+                                                        className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs text-gray-400 mb-1">
+                                                        Scheduled Time (optional)
+                                                    </label>
+                                                    <input
+                                                        type="time"
+                                                        value={scheduledTime}
+                                                        onChange={(e) => setScheduledTime(e.target.value)}
+                                                        className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs text-gray-400 mb-1">
+                                                        Internal Notes (optional)
+                                                    </label>
+                                                    <textarea
+                                                        rows={2}
+                                                        value={projectNotes}
+                                                        onChange={(e) => setProjectNotes(e.target.value)}
+                                                        placeholder="Crew notes, equipment needed..."
+                                                        className="w-full px-3 py-1.5 border border-gray-700 bg-gray-800 text-white placeholder-gray-600 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-ocean-blue focus:border-transparent resize-none"
+                                                    />
+                                                </div>
+                                                {projectError && (
+                                                    <p className="text-xs text-red-400">{projectError}</p>
+                                                )}
+                                                <Button
+                                                    type="submit"
+                                                    variant="primary"
+                                                    size="sm"
+                                                    isLoading={projectSubmitting}
+                                                    className="w-full"
+                                                >
+                                                    Schedule Project
+                                                </Button>
+                                            </form>
+                                        )}
                                     </div>
                                 )}
                             </div>
