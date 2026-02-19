@@ -50,15 +50,22 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             case 'checkout.session.completed': {
                 const session = event.data.object as Stripe.Checkout.Session;
 
-                // Get invoice ID from metadata
-                const invoiceId = session.metadata?.invoice_id;
-                if (!invoiceId) {
-                    console.error('No invoice_id in session metadata');
+                if (session.payment_status !== 'paid') {
+                    console.log('Checkout session completed without paid status, skipping:', session.id);
                     break;
                 }
 
                 // Get payment intent ID
-                const paymentIntentId = session.payment_intent as string;
+                const paymentIntentId = typeof session.payment_intent === 'string'
+                    ? session.payment_intent
+                    : session.payment_intent?.id;
+
+                if (!paymentIntentId) {
+                    console.error('Checkout session missing payment_intent:', session.id);
+                    break;
+                }
+
+                const invoiceIdFromMetadata = session.metadata?.invoice_id;
 
                 // Get invoice details
                 const invoice = await env.DB.prepare(`
@@ -71,11 +78,21 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                         p.service_type
                     FROM invoices i
                     JOIN projects p ON i.project_id = p.id
-                    WHERE i.id = ?
-                `).bind(invoiceId).first<InvoiceRow>();
+                    WHERE (i.id = ?)
+                       OR (i.stripe_invoice_id = ?)
+                    LIMIT 1
+                `).bind(invoiceIdFromMetadata ?? null, session.id).first<InvoiceRow>();
 
                 if (!invoice) {
-                    console.error('Invoice not found:', invoiceId);
+                    console.error('Invoice not found for checkout session:', {
+                        sessionId: session.id,
+                        invoiceIdFromMetadata,
+                    });
+                    break;
+                }
+
+                if (invoice.status === 'paid') {
+                    console.log('Invoice already paid, skipping checkout completion:', invoice.id);
                     break;
                 }
 
@@ -86,7 +103,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                         stripe_payment_intent_id = ?,
                         paid_at = CURRENT_TIMESTAMP
                     WHERE id = ?
-                `).bind(paymentIntentId, invoiceId).run();
+                `).bind(paymentIntentId, invoice.id).run();
 
                 // Update project payment status
                 if (invoice.invoice_type === 'deposit') {
@@ -99,6 +116,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                     await env.DB.prepare(`
                         UPDATE projects
                         SET balance_paid = 1
+                        WHERE id = ?
+                    `).bind(invoice.project_id).run();
+                } else if (invoice.invoice_type === 'full') {
+                    await env.DB.prepare(`
+                        UPDATE projects
+                        SET deposit_paid = 1,
+                            balance_paid = 1
                         WHERE id = ?
                     `).bind(invoice.project_id).run();
                 }
@@ -130,7 +154,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                     }
                 }
 
-                console.log('Payment processed successfully for invoice:', invoiceId);
+                console.log('Payment processed successfully for invoice:', invoice.id);
                 break;
             }
 
