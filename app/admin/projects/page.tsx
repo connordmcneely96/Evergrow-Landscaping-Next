@@ -115,6 +115,24 @@ export default function AdminProjectsPage() {
             return aTime - bTime
         })
 
+    const availabilityWindow = Array.from({ length: 14 }, (_, index) => {
+        const day = new Date()
+        day.setHours(0, 0, 0, 0)
+        day.setDate(day.getDate() + index)
+
+        const isoDate = day.toISOString().slice(0, 10)
+        const jobs = scheduledProjects.filter((project) => {
+            if (!project.scheduledDate) return false
+            return project.scheduledDate.slice(0, 10) === isoDate
+        })
+
+        return {
+            isoDate,
+            label: day.toLocaleDateString(),
+            jobs,
+        }
+    })
+
     return (
         <div className="space-y-6">
             <div>
@@ -200,7 +218,28 @@ export default function AdminProjectsPage() {
             <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
                 <div className="px-4 py-3 border-b border-gray-800 bg-gray-800">
                     <h2 className="text-sm font-semibold text-white">Schedule Calendar</h2>
-                    <p className="text-xs text-gray-400 mt-1">Match project and customer details to scheduled date/time at a glance.</p>
+                    <p className="text-xs text-gray-400 mt-1">Match project numbers and customer details to scheduled date/time, and spot open days quickly.</p>
+                </div>
+
+                <div className="px-4 py-3 border-b border-gray-800 bg-gray-900/60">
+                    <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Next 14 days availability</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
+                        {availabilityWindow.map((day) => (
+                            <div key={day.isoDate} className="rounded-md border border-gray-800 p-2 bg-gray-900">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs text-gray-300">{day.label}</span>
+                                    <span className={`text-[11px] px-2 py-0.5 rounded-full ${day.jobs.length === 0 ? 'bg-green-900/40 text-green-300' : 'bg-yellow-900/40 text-yellow-300'}`}>
+                                        {day.jobs.length === 0 ? 'Available' : `${day.jobs.length} booked`}
+                                    </span>
+                                </div>
+                                {day.jobs.length > 0 && (
+                                    <p className="text-xs text-gray-400 mt-1">
+                                        Jobs: {day.jobs.map((job) => `#${job.id}`).join(', ')}
+                                    </p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {scheduledProjects.length === 0 ? (
