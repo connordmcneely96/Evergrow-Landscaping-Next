@@ -8,6 +8,7 @@ import { formatCurrency, formatDate } from '@/lib/utils'
 interface Project {
     id: number
     customerName: string | null
+    customerEmail: string | null
     serviceName: string
     totalAmount: number
     depositAmount: number | null
@@ -17,6 +18,7 @@ interface Project {
     status: string
     statusDisplay: string
     createdAt: string
+    description: string | null
 }
 
 const STATUS_BADGE: Record<string, 'warning' | 'info' | 'success' | 'destructive' | 'secondary'> = {
@@ -27,6 +29,29 @@ const STATUS_BADGE: Record<string, 'warning' | 'info' | 'success' | 'destructive
 }
 
 const CANCELLABLE = new Set(['scheduled', 'in_progress'])
+
+type ProjectsResponse = {
+    success: boolean
+    projects?: unknown
+    error?: string
+}
+
+function getProjectsFromResponse(data: ProjectsResponse): Project[] {
+    if (!Array.isArray(data.projects)) return []
+    return data.projects as Project[]
+}
+
+function parseProjectsResponse(payload: unknown): ProjectsResponse | null {
+    if (!payload || typeof payload !== 'object') return null
+    const maybe = payload as Record<string, unknown>
+    if (typeof maybe.success !== 'boolean') return null
+
+    return {
+        success: maybe.success,
+        projects: maybe.projects,
+        error: typeof maybe.error === 'string' ? maybe.error : undefined,
+    }
+}
 
 export default function AdminProjectsPage() {
     const [projects, setProjects] = useState<Project[]>([])
@@ -39,8 +64,13 @@ export default function AdminProjectsPage() {
             try {
                 const res = await fetchWithAuth('/api/admin/projects?limit=50')
                 if (res.ok) {
-                    const data = await res.json() as any
-                    if (data.success) setProjects(data.projects)
+                    const payload = await res.json() as unknown
+                    const data = parseProjectsResponse(payload)
+                    if (data?.success) {
+                        setProjects(getProjectsFromResponse(data))
+                    } else {
+                        setProjects([])
+                    }
                 }
             } catch (err) {
                 console.error('Failed to load projects:', err)
@@ -61,7 +91,7 @@ export default function AdminProjectsPage() {
                 method: 'PUT',
                 body: JSON.stringify({ status: 'cancelled' }),
             })
-            const data = await res.json() as any
+            const data = await res.json() as ProjectsResponse
             if (!res.ok || !data.success) throw new Error(data.error || 'Failed to cancel project')
 
             setProjects(prev =>
@@ -105,6 +135,8 @@ export default function AdminProjectsPage() {
                                     <th className="text-left px-4 py-3 font-medium text-gray-400">Customer</th>
                                     <th className="text-left px-4 py-3 font-medium text-gray-400">Service</th>
                                     <th className="text-left px-4 py-3 font-medium text-gray-400">Amount</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Deposit</th>
+                                    <th className="text-left px-4 py-3 font-medium text-gray-400">Balance</th>
                                     <th className="text-left px-4 py-3 font-medium text-gray-400">Scheduled</th>
                                     <th className="text-left px-4 py-3 font-medium text-gray-400">Status</th>
                                     <th className="text-left px-4 py-3 font-medium text-gray-400">Actions</th>
@@ -113,14 +145,30 @@ export default function AdminProjectsPage() {
                             <tbody className="divide-y divide-gray-800">
                                 {projects.map((p) => (
                                     <tr key={p.id} className="hover:bg-gray-800/50">
-                                        <td className="px-4 py-3 font-medium text-white">{p.customerName || '—'}</td>
+                                        <td className="px-4 py-3">
+                                            <div className="font-medium text-white">{p.customerName || '—'}</div>
+                                            <div className="text-xs text-gray-500">{p.customerEmail || 'No email on file'}</div>
+                                        </td>
                                         <td className="px-4 py-3 text-gray-300">{p.serviceName}</td>
-                                        <td className="px-4 py-3 text-white font-medium">{formatCurrency(p.totalAmount)}</td>
+                                        <td className="px-4 py-3 text-white font-medium">
+                                            {formatCurrency(p.totalAmount)}
+                                            <div className="text-xs text-gray-500">Created {formatDate(p.createdAt)}</div>
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300">
+                                            {p.depositAmount ? formatCurrency(p.depositAmount) : '—'}
+                                            <div className={`text-xs ${p.depositPaid ? 'text-forest-green' : 'text-yellow-400'}`}>
+                                                {p.depositPaid ? 'Paid' : 'Pending'}
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-3 text-gray-300">{formatCurrency(p.balanceDue)}</td>
                                         <td className="px-4 py-3 text-gray-300">
                                             {p.scheduledDate ? formatDate(p.scheduledDate) : <span className="text-gray-600 italic">Not set</span>}
                                         </td>
                                         <td className="px-4 py-3">
                                             <Badge variant={STATUS_BADGE[p.status] || 'secondary'}>{p.statusDisplay}</Badge>
+                                            {p.description && (
+                                                <p className="text-xs text-gray-500 mt-2 max-w-xs line-clamp-2">{p.description}</p>
+                                            )}
                                         </td>
                                         <td className="px-4 py-3">
                                             {CANCELLABLE.has(p.status) && (
