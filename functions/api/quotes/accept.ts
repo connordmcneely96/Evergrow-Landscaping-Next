@@ -169,17 +169,20 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
 
-    let body: any;
+    let body: unknown;
     try {
         body = await request.json();
-    } catch (error) {
+    } catch {
         return new Response(
             JSON.stringify({ success: false, error: 'Invalid request body' }),
             { status: 400, headers: { 'Content-Type': 'application/json' } }
         );
     }
 
-    const { token } = body;
+    const token =
+        body && typeof body === 'object' && 'token' in body
+            ? (body as { token?: unknown }).token
+            : undefined;
 
     if (!token || typeof token !== 'string') {
         return new Response(
@@ -332,7 +335,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const invoiceId = invoiceResult.meta.last_row_id;
 
         // 4. Send Deposit Invoice Email
-        const invoiceUrl = `https://evergrowlandscaping.com/portal/invoices/pay?id=${invoiceId}`;
+        const guestEmail = encodeURIComponent((quote.contact_email || quote.customer_email || '').trim());
+        const invoiceUrl = `https://evergrowlandscaping.com/pay?invoice=${invoiceId}&email=${guestEmail}`;
         const customerEmail = quote.contact_email || quote.customer_email;
         const customerName = quote.contact_name || quote.customer_name || 'Customer';
 
@@ -369,7 +373,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 quoteId,
                 projectId,
                 invoiceId,
-                paymentUrl: `/portal/invoices/pay?id=${invoiceId}`,
+                paymentUrl: `/pay?invoice=${invoiceId}&email=${guestEmail}`,
             }),
             { status: 200, headers: { 'Content-Type': 'application/json' } }
         );
