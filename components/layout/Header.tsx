@@ -24,18 +24,8 @@ const services = [
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
-    const [isScrolled, setIsScrolled] = useState(false);
     const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
     const pathname = usePathname();
-
-    // Handle scroll effect
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     // Close mobile menu on route change
     useEffect(() => {
@@ -43,41 +33,41 @@ export default function Header() {
         setActiveSubmenu(null);
     }, [pathname]);
 
-    const isTransparent = !isScrolled && (pathname === '/' || pathname === '/commercial');
-    const headerBg = !isTransparent ? 'bg-white shadow-md py-2' : 'bg-transparent py-4';
-    const textColor = !isTransparent ? 'text-forest-green' : 'text-white';
-
     return (
-        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${headerBg}`}>
+        <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
             <div className="container mx-auto px-4">
-                <div className="flex items-center justify-start">
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center group">
-                        <div className={isTransparent ? 'bg-white/95 backdrop-blur-sm rounded-xl px-3 py-1.5 shadow-sm' : ''}>
+                <div className="flex items-center h-16">
+                    {/* Logo — icon-only crop in nav */}
+                    <Link href="/" className="flex items-center flex-shrink-0 group">
+                        <div
+                            className="overflow-hidden flex-shrink-0"
+                            style={{ width: 56, height: 56 }}
+                        >
                             <Image
                                 src="/images/Logo- Transparent & No Buffer .png"
                                 alt="Evergrow Landscaping"
                                 width={200}
                                 height={80}
                                 className="h-14 w-auto"
+                                style={{ maxWidth: 'none' }}
                                 priority
                             />
                         </div>
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav className="hidden lg:flex items-center space-x-10 ml-12">
+                    <nav className="hidden lg:flex items-center space-x-10 ml-10">
                         {navigation.map((item) => (
                             <Link
                                 key={item.name}
                                 href={item.href}
-                                className={`text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors ${textColor}`}
+                                className="text-sm font-semibold uppercase tracking-wider text-forest-green hover:text-vibrant-gold transition-colors"
                             >
                                 {item.name}
                             </Link>
                         ))}
                         <div className="relative group">
-                            <button className={`text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors flex items-center ${textColor}`}>
+                            <button className="text-sm font-semibold uppercase tracking-wider text-forest-green hover:text-vibrant-gold transition-colors flex items-center">
                                 Services
                             </button>
                             <div className="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -96,30 +86,30 @@ export default function Header() {
                         </div>
                     </nav>
 
-                    {/* CTA Buttons */}
+                    {/* Desktop CTA Buttons */}
                     <div className="hidden lg:flex items-center space-x-6 ml-auto">
                         <a
                             href="tel:+14054795794"
-                            className={`flex items-center space-x-2 font-semibold hover:text-vibrant-gold transition-colors ${textColor}`}
+                            className="flex items-center space-x-2 text-forest-green font-semibold hover:text-vibrant-gold transition-colors"
                         >
                             <Phone className="w-4 h-4" />
                             <span>405-479-5794</span>
                         </a>
                         <Link
                             href="/pay"
-                            className={`text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors ${textColor}`}
+                            className="text-sm font-semibold uppercase tracking-wider text-forest-green hover:text-vibrant-gold transition-colors"
                         >
                             Make a Payment
                         </Link>
                         <Link
                             href="/portal"
-                            className={`text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors ${textColor}`}
+                            className="text-sm font-semibold uppercase tracking-wider text-forest-green hover:text-vibrant-gold transition-colors"
                         >
                             Client Login
                         </Link>
                         <Link
                             href="/admin/login"
-                            className={`flex items-center space-x-1 text-sm font-semibold uppercase tracking-wider hover:text-vibrant-gold transition-colors ${textColor}`}
+                            className="flex items-center space-x-1 text-sm font-semibold uppercase tracking-wider text-forest-green hover:text-vibrant-gold transition-colors"
                         >
                             <Shield className="w-4 h-4" />
                             <span>Admin</span>
@@ -132,18 +122,49 @@ export default function Header() {
                         </Link>
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className={`lg:hidden p-2 rounded-md ${textColor}`}
-                        aria-label="Toggle menu"
-                    >
-                        {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
+                    {/* Mobile Actions — Phone, Login, Quote always visible outside hamburger */}
+                    <div className="flex lg:hidden items-center gap-1 ml-auto">
+                        {/* Phone — icon always, number on ≥380px */}
+                        <a
+                            href="tel:+14054795794"
+                            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-forest-green"
+                            aria-label="Call us at 405-479-5794"
+                        >
+                            <Phone className="w-5 h-5" />
+                            <span className="hidden min-[380px]:inline ml-1 text-sm font-semibold whitespace-nowrap">
+                                405-479-5794
+                            </span>
+                        </a>
+
+                        {/* Client Login — shown on ≥380px */}
+                        <Link
+                            href="/portal"
+                            className="hidden min-[380px]:flex min-h-[44px] min-w-[44px] items-center justify-center text-xs font-semibold uppercase tracking-wider text-forest-green px-2 whitespace-nowrap"
+                        >
+                            Login
+                        </Link>
+
+                        {/* Get Quote CTA — always visible */}
+                        <Link
+                            href="/quote-request"
+                            className="min-h-[44px] flex items-center justify-center bg-forest-green text-white px-3 py-2 rounded-md font-bold text-xs uppercase tracking-wide whitespace-nowrap"
+                        >
+                            Get Quote
+                        </Link>
+
+                        {/* Hamburger */}
+                        <button
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="min-w-[44px] min-h-[44px] p-2 rounded-md text-forest-green flex items-center justify-center"
+                            aria-label="Toggle menu"
+                        >
+                            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Menu Overlay — nav links only */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -194,30 +215,11 @@ export default function Header() {
                             </div>
 
                             <div className="pt-4 flex flex-col space-y-3">
-                                <a
-                                    href="tel:+14054795794"
-                                    className="flex items-center justify-center space-x-2 text-forest-green font-bold text-lg"
-                                >
-                                    <Phone className="w-5 h-5" />
-                                    <span>(405) 479-5794</span>
-                                </a>
-                                <Link
-                                    href="/quote-request"
-                                    className="bg-vibrant-gold text-white py-3 rounded-lg font-bold uppercase text-center tracking-wide shadow-md"
-                                >
-                                    Get a Free Quote
-                                </Link>
                                 <Link
                                     href="/pay"
                                     className="bg-hopeful-teal text-white py-3 rounded-lg font-bold uppercase text-center tracking-wide shadow-md"
                                 >
                                     Make a Payment
-                                </Link>
-                                <Link
-                                    href="/portal"
-                                    className="bg-forest-green-50 text-forest-green py-3 rounded-lg font-bold uppercase text-center tracking-wide border border-forest-green-100"
-                                >
-                                    Customer Portal
                                 </Link>
                                 <Link
                                     href="/admin/login"

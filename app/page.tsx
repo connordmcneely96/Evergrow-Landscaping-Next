@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Star, Phone, Calendar, MapPin, Shield, Clock, BadgeDollarSign } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, Phone, Calendar, MapPin, Shield, Clock } from 'lucide-react';
 import Image from 'next/image';
 import { MotionDiv } from '@/components/ui/MotionDiv';
 import Testimonials from '@/components/sections/Testimonials';
@@ -9,54 +9,105 @@ export default function HomePage() {
   return (
     <main className="flex-col">
       {/* Hero Section */}
-      {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col justify-start pt-0 md:pt-0 overflow-hidden">
-        {/* Background Image Placeholder */}
+        {/* Background */}
         <div className="absolute inset-0 bg-forest-green-900">
           <div className="absolute inset-0 bg-gradient-to-r from-forest-green-900/95 to-forest-green-800/80 z-10" />
           <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
         </div>
 
-        <div className="container relative z-20 px-4 h-full flex flex-col justify-center pt-32 pb-20">
-          <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto md:mx-0 md:max-w-3xl text-center md:text-left"
-          >
-            <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1 mb-6">
-              <span className="text-white font-bold text-sm tracking-wider uppercase">Arkansas • Oklahoma • Texas</span>
-            </div>
-            <h1 className="text-white font-heading font-extrabold text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight drop-shadow-lg">
-              Professional Multi-Location <br />
-              <span className="text-white">Landscaping Services</span>
-            </h1>
-            <p className="text-gray-100 text-lg md:text-2xl mb-10 max-w-2xl mx-auto md:mx-0 leading-relaxed">
-              Managing 40+ properties with consistent quality across all locations. Licensed and insured in AR, OK, and TX. Family-owned, owner-managed.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
-              <Link
-                href="/commercial"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-vibrant-gold text-white font-bold text-lg hover:bg-forest-green-400 hover:scale-105 transition-all shadow-xl"
-              >
-                Commercial Inquiries
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-              <Link
-                href="/quote-request"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-white/10 border-2 border-white text-white font-bold text-lg hover:bg-white hover:text-forest-green transition-all shadow-lg"
-              >
-                Residential Quote
-              </Link>
-            </div>
+        <div className="container relative z-20 px-4 pt-24 pb-12 lg:pt-28 lg:pb-20">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16">
 
-            <div className="mt-12 flex flex-wrap justify-center md:justify-start gap-6 md:gap-8 text-white/90 text-sm md:text-base font-medium">
-              <div className="flex items-center"><Shield className="w-5 h-5 text-white mr-2" /> Licensed & Insured in AR, OK, TX</div>
-              <div className="flex items-center"><MapPin className="w-5 h-5 text-white mr-2" /> 40+ Properties Managed</div>
-              <div className="flex items-center"><CheckCircle className="w-5 h-5 text-white mr-2" /> Family-Owned & Operated</div>
-              <div className="flex items-center"><Clock className="w-5 h-5 text-white mr-2" /> 20+ Years Experience</div>
+            {/* Text Column */}
+            <MotionDiv
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 text-center lg:text-left"
+            >
+              {/* Location Badge — Change 5: AR & OK only */}
+              <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1 mb-6">
+                <span className="text-white font-bold text-sm tracking-wider uppercase">Serving Arkansas &amp; Oklahoma</span>
+              </div>
+
+              {/* Full Logo in Hero — Change 6 */}
+              <div className="mb-8 flex justify-center lg:justify-start">
+                <Image
+                  src="/images/Logo- Transparent & No Buffer .png"
+                  alt="Evergrow Landscaping"
+                  width={280}
+                  height={112}
+                  className="w-full max-w-[200px] md:max-w-[280px] h-auto"
+                  priority
+                />
+              </div>
+
+              {/* Headline — Change 7: 3 lines */}
+              <h1 className="text-white font-heading font-extrabold text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight drop-shadow-lg">
+                <span className="block">Professional</span>
+                <span className="block">Multi-location</span>
+                <span className="block">Landscaping Services</span>
+              </h1>
+
+              {/* Subheadline — Change 10: 2 sentences on separate lines */}
+              <p className="text-gray-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                <span className="block">Managing 80+ properties with consistent quality across all locations.</span>
+                <span className="block mt-1">Licensed and insured in AR &amp; OK. Family-owned, owner-managed.</span>
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+                <Link
+                  href="/commercial"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-vibrant-gold text-white font-bold text-lg hover:bg-forest-green-400 hover:scale-105 transition-all shadow-xl"
+                >
+                  Commercial Inquiries
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Link>
+                <Link
+                  href="/quote-request"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-white/10 border-2 border-white text-white font-bold text-lg hover:bg-white hover:text-forest-green transition-all shadow-lg"
+                >
+                  Residential Quote
+                </Link>
+              </div>
+
+              {/* Trust Signals — Changes 8 & 9: removed years of experience, added 80+ properties */}
+              <div className="mt-10 flex flex-wrap justify-center lg:justify-start gap-5 md:gap-8 text-white/90 text-sm md:text-base font-medium">
+                <div className="flex items-center"><Shield className="w-5 h-5 text-white mr-2" /> Licensed &amp; Insured in AR &amp; OK</div>
+                <div className="flex items-center"><MapPin className="w-5 h-5 text-white mr-2" /> 80+ Properties Managed</div>
+                <div className="flex items-center"><CheckCircle className="w-5 h-5 text-white mr-2" /> Family-Owned &amp; Operated</div>
+              </div>
+            </MotionDiv>
+
+            {/* Portrait Hero Image — Change 11: vertical/portrait on desktop */}
+            <div className="hidden lg:block flex-shrink-0">
+              <MotionDiv
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.9, delay: 0.2 }}
+                className="relative rounded-2xl overflow-hidden shadow-2xl"
+                style={{ width: 420, height: 560 }}
+              >
+                <Image
+                  src="/api/assets/LawnCareAndMaintenance_image1.png"
+                  alt="Professional landscaping services"
+                  fill
+                  className="object-cover object-center"
+                />
+              </MotionDiv>
             </div>
-          </MotionDiv>
+          </div>
+
+          {/* Mobile Portrait Image — stacks below text on small screens */}
+          <div className="mt-8 lg:hidden w-full relative rounded-2xl overflow-hidden" style={{ height: 300 }}>
+            <Image
+              src="/api/assets/LawnCareAndMaintenance_image1.png"
+              alt="Professional landscaping services"
+              fill
+              className="object-cover object-center"
+            />
+          </div>
         </div>
       </section>
 

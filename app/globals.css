@@ -1,30 +1,35 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Brand Colors - matched to Evergrow logo */
-  --color-forest-green: #1A5422;
-  --color-forest-green-50: #E8F3EB;
-  --color-forest-green-100: #C5DECA;
-  --color-forest-green-200: #9EC6A8;
-  --color-forest-green-300: #76AE86;
-  --color-forest-green-400: #4E9664;
-  --color-forest-green-500: #1A5422;
-  --color-forest-green-600: #16441B;
-  --color-forest-green-700: #113415;
-  --color-forest-green-800: #0B240E;
-  --color-forest-green-900: #061407;
+  /* Brand Colors - Evergrow approved palette */
+  /* Dark Green: #13733A | Light Green: #94C952 | White: #FFFFFF */
+  --color-brand-dark-green: #13733A;
+  --color-brand-light-green: #94C952;
+  --color-brand-white: #FFFFFF;
 
-  --color-vibrant-gold: #4DB87A;
-  --color-vibrant-gold-50: #EDF8F4;
-  --color-vibrant-gold-100: #CEE9DB;
-  --color-vibrant-gold-200: #9ED3B7;
-  --color-vibrant-gold-300: #6FBD93;
-  --color-vibrant-gold-400: #4DB87A;
-  --color-vibrant-gold-500: #4DB87A;
-  --color-vibrant-gold-600: #3A9262;
-  --color-vibrant-gold-700: #2C704A;
-  --color-vibrant-gold-800: #1E4E33;
-  --color-vibrant-gold-900: #0F2C1B;
+  --color-forest-green: #13733A;
+  --color-forest-green-50: #E8F5EE;
+  --color-forest-green-100: #C3E4CF;
+  --color-forest-green-200: #9BD3AF;
+  --color-forest-green-300: #73C18F;
+  --color-forest-green-400: #4BAF6F;
+  --color-forest-green-500: #13733A;
+  --color-forest-green-600: #0F5C2E;
+  --color-forest-green-700: #0B4522;
+  --color-forest-green-800: #072E17;
+  --color-forest-green-900: #04170B;
+
+  --color-vibrant-gold: #94C952;
+  --color-vibrant-gold-50: #F2F8E8;
+  --color-vibrant-gold-100: #DFF0C0;
+  --color-vibrant-gold-200: #C7E397;
+  --color-vibrant-gold-300: #AFDA6D;
+  --color-vibrant-gold-400: #94C952;
+  --color-vibrant-gold-500: #94C952;
+  --color-vibrant-gold-600: #76A141;
+  --color-vibrant-gold-700: #597C32;
+  --color-vibrant-gold-800: #3C5722;
+  --color-vibrant-gold-900: #1F3211;
 
   --color-deep-charcoal: #1F1F1F;
   --color-deep-charcoal-50: #F5F5F5;
