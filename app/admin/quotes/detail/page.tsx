@@ -526,7 +526,7 @@ function QuoteDetailContent() {
                                             <>
                                                 <p className="text-xs text-gray-500">No project scheduled yet</p>
                                                 {createResult ? (
-                                                    <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 text-xs text-green-400 space-y-2">
+                                                    <div className="bg-forest-green-500/10 border border-forest-green-500/30 rounded-lg p-3 text-xs text-forest-green-400 space-y-2">
                                                         <p className="font-medium">Project #{createResult.id} created!</p>
                                                         <Link href="/admin/projects" className="underline">View in Projects →</Link>
                                                     </div>

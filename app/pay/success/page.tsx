@@ -65,7 +65,7 @@ function SuccessContent() {
             <div className="container">
                 <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-8 text-center">
                     <div className="flex justify-center mb-4">
-                        <CheckCircle className="h-16 w-16 text-green-500" />
+                        <CheckCircle className="h-16 w-16 text-forest-green" />
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h2>
                     <p className="text-gray-600 mb-6">
