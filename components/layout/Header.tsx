@@ -37,22 +37,16 @@ export default function Header() {
         <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
             <div className="container mx-auto px-4">
                 <div className="flex items-center h-16">
-                    {/* Logo — icon-only crop in nav */}
+                    {/* Logo — full logo in nav */}
                     <Link href="/" className="flex items-center flex-shrink-0 group">
-                        <div
-                            className="overflow-hidden flex-shrink-0"
-                            style={{ width: 56, height: 56 }}
-                        >
-                            <Image
-                                src="/images/Logo- Transparent & No Buffer .png"
-                                alt="Evergrow Landscaping"
-                                width={200}
-                                height={80}
-                                className="h-14 w-auto"
-                                style={{ maxWidth: 'none' }}
-                                priority
-                            />
-                        </div>
+                        <Image
+                            src="/images/Logo- Transparent & No Buffer .png"
+                            alt="Evergrow Landscaping"
+                            width={200}
+                            height={80}
+                            className="h-12 w-auto"
+                            priority
+                        />
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -76,7 +70,7 @@ export default function Header() {
                                         <Link
                                             key={service.href}
                                             href={service.href}
-                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-forest-green-50 hover:text-forest-green"
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-vibrant-gold-50 hover:text-forest-green"
                                         >
                                             {service.name}
                                         </Link>
@@ -116,7 +110,7 @@ export default function Header() {
                         </Link>
                         <Link
                             href="/quote-request"
-                            className="bg-forest-green text-white px-6 py-2.5 rounded-md font-bold uppercase text-sm tracking-wide hover:bg-forest-green-600 transition-colors shadow-md"
+                            className="bg-forest-green text-white px-6 py-2.5 rounded-md font-bold uppercase text-sm tracking-wide hover:bg-forest-green-700 transition-colors shadow-md"
                         >
                             Get a Quote
                         </Link>

@@ -5,7 +5,7 @@ export function SuccessStep() {
     return (
         <div className="text-center py-8">
             {/* Success Icon */}
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-forest-green-100 mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-vibrant-gold-100 mb-6">
                 <svg className="w-10 h-10 text-forest-green" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
@@ -20,7 +20,7 @@ export function SuccessStep() {
             </p>
 
             {/* What's Next */}
-            <div className="bg-forest-green-50 p-6 rounded-lg mb-8 text-left max-w-md mx-auto border border-forest-green-100">
+            <div className="bg-vibrant-gold-50 p-6 rounded-lg mb-8 text-left max-w-md mx-auto border border-vibrant-gold-100">
                 <h3 className="font-heading font-bold text-forest-green mb-4">
                     What Happens Next?
                 </h3>

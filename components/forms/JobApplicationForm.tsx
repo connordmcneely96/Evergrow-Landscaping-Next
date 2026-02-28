@@ -171,7 +171,7 @@ export default function JobApplicationForm() {
                         })
                         setResume(null)
                     }}
-                    className="mt-8 inline-block bg-forest-green text-white px-8 py-3 rounded-md font-semibold hover:bg-forest-green-600 transition-colors"
+                    className="mt-8 inline-block bg-forest-green text-white px-8 py-3 rounded-md font-semibold hover:bg-forest-green-700 transition-colors"
                 >
                     Submit Another Application
                 </button>

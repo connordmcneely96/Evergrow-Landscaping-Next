@@ -82,7 +82,7 @@ export function ZipValidator({ onValidZip }: ZipValidatorProps) {
             </form>
 
             {/* Service Area Info */}
-            <div className="mt-8 p-4 bg-forest-green-50 rounded-lg">
+            <div className="mt-8 p-4 bg-vibrant-gold-50 rounded-lg">
                 <h3 className="font-semibold text-forest-green mb-2">
                     Our Service Areas:
                 </h3>

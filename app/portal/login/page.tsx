@@ -161,7 +161,7 @@ export default function LoginPage() {
                     </ul>
                     <Link
                         href="/portal/register"
-                        className="block w-full text-center py-2.5 px-4 rounded-md bg-forest-green text-white font-semibold hover:bg-forest-green-600 transition-colors"
+                        className="block w-full text-center py-2.5 px-4 rounded-md bg-forest-green text-white font-semibold hover:bg-forest-green-700 transition-colors"
                     >
                         Create an Account
                     </Link>

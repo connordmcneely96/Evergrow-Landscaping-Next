@@ -140,8 +140,8 @@ function AdminQuotesContent() {
                     <span className="text-blue-500 ml-1">Quoted</span>
                 </div>
                 <div className="bg-forest-green/10 border border-forest-green/30 rounded-lg px-3 py-1.5 text-sm">
-                    <span className="font-semibold text-forest-green-300">{summary.accepted}</span>
-                    <span className="text-forest-green-400 ml-1">Accepted</span>
+                    <span className="font-semibold text-vibrant-gold">{summary.accepted}</span>
+                    <span className="text-vibrant-gold ml-1">Accepted</span>
                 </div>
                 <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-1.5 text-sm">
                     <span className="font-semibold text-red-400">{summary.declined}</span>

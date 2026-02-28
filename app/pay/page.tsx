@@ -155,7 +155,7 @@ function GuestPaymentContent() {
 
     return (
         <main>
-            <section className="relative bg-gradient-to-r from-forest-green to-forest-green-600 py-16">
+            <section className="relative bg-forest-green py-16">
                 <div className="container">
                     <div className="max-w-3xl mx-auto text-center text-white">
                         <h1 className="text-h1 font-heading font-bold mb-4">Make a Payment</h1>

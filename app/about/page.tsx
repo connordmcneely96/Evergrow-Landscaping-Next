@@ -12,7 +12,7 @@ export default function AboutPage() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="bg-forest-green-50 py-20">
+            <section className="bg-vibrant-gold-50 py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-4xl mx-auto text-center">
                         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -111,7 +111,7 @@ export default function AboutPage() {
                         </h2>
                         <div className="grid md:grid-cols-2 gap-8">
                             {/* Craftsmanship */}
-                            <div className="bg-forest-green-50 p-8 rounded-lg">
+                            <div className="bg-vibrant-gold-50 p-8 rounded-lg">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                     Craftsmanship
                                 </h3>
@@ -126,7 +126,7 @@ export default function AboutPage() {
                             </div>
 
                             {/* Customer-Centric */}
-                            <div className="bg-forest-green-50 p-8 rounded-lg">
+                            <div className="bg-vibrant-gold-50 p-8 rounded-lg">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                     Customer-Centric
                                 </h3>
@@ -140,7 +140,7 @@ export default function AboutPage() {
                             </div>
 
                             {/* Passion */}
-                            <div className="bg-forest-green-50 p-8 rounded-lg">
+                            <div className="bg-vibrant-gold-50 p-8 rounded-lg">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                     Passion
                                 </h3>
@@ -155,7 +155,7 @@ export default function AboutPage() {
                             </div>
 
                             {/* Professionalism */}
-                            <div className="bg-forest-green-50 p-8 rounded-lg">
+                            <div className="bg-vibrant-gold-50 p-8 rounded-lg">
                                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                                     Professionalism
                                 </h3>
@@ -286,7 +286,7 @@ export default function AboutPage() {
                         <h2 className="text-3xl md:text-4xl font-bold mb-6">
                             Let&apos;s Work Together
                         </h2>
-                        <p className="text-xl mb-8 text-forest-green-50">
+                        <p className="text-xl mb-8 text-white/90">
                             Ready to experience landscaping done right? We&apos;d love to hear
                             about your project and show you what sets Evergrow apart. Whether
                             you need weekly lawn care, a seasonal cleanup, or a complete
@@ -295,7 +295,7 @@ export default function AboutPage() {
                         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                             <Link
                                 href="/quote-request"
-                                className="bg-white text-forest-green px-8 py-4 rounded-lg font-semibold hover:bg-forest-green-50 transition-colors inline-block"
+                                className="bg-white text-forest-green px-8 py-4 rounded-lg font-semibold hover:bg-vibrant-gold-50 transition-colors inline-block"
                             >
                                 Get Your Free Quote
                             </Link>
@@ -306,7 +306,7 @@ export default function AboutPage() {
                                 Call Us: 405-479-5794
                             </a>
                         </div>
-                        <p className="mt-8 text-forest-green-100">
+                        <p className="mt-8 text-white/75">
                             Join the homeowners in El Dorado and Oklahoma City who trust
                             Evergrow for their landscaping needs. We&apos;ve been keeping our
                             promises since day one—let us prove it to you.
