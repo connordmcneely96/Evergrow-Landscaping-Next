@@ -39,7 +39,6 @@ const Footer = () => {
                             <li><Link href="/services/flower-beds" className="hover:text-white transition-colors">Flower Bed Design</Link></li>
                             <li><Link href="/services/seasonal-cleanup" className="hover:text-white transition-colors">Spring & Fall Cleanup</Link></li>
                             <li><Link href="/services/pressure-washing" className="hover:text-white transition-colors">Pressure Washing</Link></li>
-                            <li><Link href="/services/fertilization" className="hover:text-white transition-colors">Fertilization & Weed Control</Link></li>
                         </ul>
                     </div>
 
