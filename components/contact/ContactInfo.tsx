@@ -50,7 +50,7 @@ export function ContactInfo() {
                 {contactMethods.map((method, index) => (
                     <div key={index} className="flex gap-4">
                         <div className="flex-shrink-0">
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-forest-green-100 text-forest-green">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-vibrant-gold-100 text-forest-green">
                                 {method.icon}
                             </div>
                         </div>
@@ -75,7 +75,7 @@ export function ContactInfo() {
             </div>
 
             {/* Business Hours */}
-            <div className="bg-forest-green-50 p-6 rounded-lg">
+            <div className="bg-vibrant-gold-50 p-6 rounded-lg">
                 <h3 className="font-heading font-bold text-forest-green mb-4">
                     Business Hours
                 </h3>

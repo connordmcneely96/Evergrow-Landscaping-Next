@@ -526,7 +526,7 @@ function QuoteDetailContent() {
                                             <>
                                                 <p className="text-xs text-gray-500">No project scheduled yet</p>
                                                 {createResult ? (
-                                                    <div className="bg-forest-green-500/10 border border-forest-green-500/30 rounded-lg p-3 text-xs text-forest-green-400 space-y-2">
+                                                    <div className="bg-vibrant-gold-500/10 border border-forest-green-500/30 rounded-lg p-3 text-xs text-vibrant-gold space-y-2">
                                                         <p className="font-medium">Project #{createResult.id} created!</p>
                                                         <Link href="/admin/projects" className="underline">View in Projects →</Link>
                                                     </div>
@@ -668,7 +668,7 @@ function QuoteDetailContent() {
                                     variant="primary"
                                     size="md"
                                     isLoading={submitting}
-                                    className="w-full bg-forest-green hover:bg-forest-green-400 text-white"
+                                    className="w-full bg-forest-green hover:bg-forest-green-700 text-white"
                                 >
                                     Send Quote to {quote.customerName || 'Customer'}
                                 </Button>

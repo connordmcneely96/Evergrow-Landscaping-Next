@@ -91,7 +91,7 @@ export default function PortalDashboard() {
                     Welcome back, {user?.name}
                 </h1>
                 <Link href="/quote-request">
-                    <button className="mt-4 sm:mt-0 px-4 py-2 bg-forest-green text-white rounded-md hover:bg-forest-green-600 shadow-sm text-sm font-medium">
+                    <button className="mt-4 sm:mt-0 px-4 py-2 bg-forest-green text-white rounded-md hover:bg-forest-green-700 shadow-sm text-sm font-medium">
                         Request New Service
                     </button>
                 </Link>

@@ -141,7 +141,7 @@
   }
 
   .section-alt {
-    background-color: var(--color-forest-green-50);
+    background-color: var(--color-vibrant-gold-50);
   }
 
   .btn {
@@ -172,6 +172,6 @@
   .card:hover {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transform: translateY(-2px);
-    border-color: var(--color-forest-green-300);
+    border-color: var(--color-vibrant-gold);
   }
 }

@@ -12,17 +12,17 @@ export default function CareersPage() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="bg-gradient-to-r from-forest-green to-forest-green-600 text-white py-20">
+            <section className="bg-forest-green text-white py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center">
                         <Briefcase className="w-16 h-16 mx-auto mb-6" />
                         <h1 className="text-4xl md:text-5xl font-bold mb-6">
                             Join the Evergrow Team
                         </h1>
-                        <p className="text-xl md:text-2xl text-forest-green-50 mb-4">
+                        <p className="text-xl md:text-2xl text-white/90 mb-4">
                             Help us manage 80+ properties across Arkansas and Oklahoma
                         </p>
-                        <p className="text-lg text-forest-green-100">
+                        <p className="text-lg text-white/75">
                             We're growing fast and looking for passionate landscaping professionals to join our team
                         </p>
                     </div>

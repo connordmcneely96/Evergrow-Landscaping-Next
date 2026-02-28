@@ -121,8 +121,8 @@ export default function CommercialPage() {
             {/* Custom Hero for Commercial */}
             <section className="relative min-h-[70vh] flex items-center pt-20">
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-forest-green-900" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-forest-green-900/95 to-forest-green-800/80 z-10" />
+                    <div className="absolute inset-0 bg-forest-green" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10 z-10" />
                     {/* Fallback pattern if image fails */}
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
                 </div>
@@ -141,7 +141,7 @@ export default function CommercialPage() {
 
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link href="/quote-request">
-                                <Button className="w-full sm:w-auto bg-vibrant-gold text-white hover:bg-forest-green-400 border-0" size="lg">
+                                <Button className="w-full sm:w-auto bg-vibrant-gold text-white hover:bg-forest-green-700 border-0" size="lg">
                                     Request Commercial Proposal
                                 </Button>
                             </Link>

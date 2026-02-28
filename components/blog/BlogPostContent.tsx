@@ -176,7 +176,7 @@ export function BlogPostContent({ slug }: BlogPostContentProps) {
 
                         {/* Article Content */}
                         <div
-                            className="prose prose-lg prose-headings:text-forest-green prose-a:text-forest-green prose-a:font-semibold hover:prose-a:text-forest-green-400 prose-img:rounded-lg max-w-none mb-12"
+                            className="prose prose-lg prose-headings:text-forest-green prose-a:text-forest-green prose-a:font-semibold hover:prose-a:text-vibrant-gold prose-img:rounded-lg max-w-none mb-12"
                             dangerouslySetInnerHTML={{ __html: post.content }}
                         />
 
@@ -193,7 +193,7 @@ export function BlogPostContent({ slug }: BlogPostContentProps) {
                         )}
 
                         {/* Author CTA */}
-                        <div className="bg-forest-green-50 p-8 rounded-xl border border-forest-green-100 text-center md:text-left md:flex md:items-center md:justify-between gap-6">
+                        <div className="bg-vibrant-gold-50 p-8 rounded-xl border border-vibrant-gold-100 text-center md:text-left md:flex md:items-center md:justify-between gap-6">
                             <div>
                                 <h3 className="text-xl font-heading font-bold text-forest-green mb-2">
                                     Ready to Get Started?
@@ -203,7 +203,7 @@ export function BlogPostContent({ slug }: BlogPostContentProps) {
                                 </p>
                             </div>
                             <Link href="/quote-request" className="flex-shrink-0">
-                                <Button variant="primary" size="lg" className="bg-vibrant-gold text-white hover:bg-forest-green-400 border-none shadow-md">
+                                <Button variant="primary" size="lg" className="bg-vibrant-gold text-white hover:bg-forest-green-700 border-none shadow-md">
                                     Get Your Free Quote
                                 </Button>
                             </Link>
