@@ -107,10 +107,10 @@ export function ContactInfo() {
                     <a href="/quote-request" className="block text-forest-green hover:underline">
                         → Request a Free Quote
                     </a>
-                    <a href="/gallery" className="block text-forest-green hover:underline">
+                    <a href="/about" className="block text-forest-green hover:underline">
                         → View Our Work
                     </a>
-                    <a href="/services" className="block text-forest-green hover:underline">
+                    <a href="/#services" className="block text-forest-green hover:underline">
                         → See Our Services
                     </a>
                     <a href="/about" className="block text-forest-green hover:underline">

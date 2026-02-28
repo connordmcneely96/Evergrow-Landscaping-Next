@@ -26,11 +26,11 @@ function decodeToken(token: string): JwtPayload | null {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter()
     const pathname = usePathname()
-    const [authorized, setAuthorized] = useState(false)
+    // null = still checking, true = authorized, false = not authorized
+    const [authorized, setAuthorized] = useState<boolean | null>(null)
     const [userName, setUserName] = useState<string | undefined>()
 
-    const isLoginPage = pathname?.startsWith('/admin/login') ||
-        (typeof window !== 'undefined' && window.location.pathname.startsWith('/admin/login'))
+    const isLoginPage = pathname?.startsWith('/admin/login')
 
     useEffect(() => {
         // On login page, redirect to dashboard if already authenticated as admin
@@ -42,6 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     router.replace('/admin')
                 }
             }
+            setAuthorized(false)
             return
         }
 
@@ -58,7 +59,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             return
         }
 
-        // Check admin role from JWT payload
         if (decoded.role !== 'admin') {
             router.replace('/dashboard')
             return
@@ -78,7 +78,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         return <>{children}</>
     }
 
-    if (!authorized) {
+    // null = still checking, false = redirecting — never flash dashboard content
+    if (authorized !== true) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-deep-charcoal">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-forest-green" />
