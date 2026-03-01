@@ -27,6 +27,7 @@ interface QuoteRow {
     contact_address: string | null;
     contact_city: string | null;
     contact_zip: string | null;
+    project_deposit_paid: number | null;
 }
 
 const DEFAULT_LIMIT = 20;
@@ -271,7 +272,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         ];
 
         const quotesQuery = `
-      SELECT 
+      SELECT
         q.id,
         q.customer_id,
         q.service_type,
@@ -288,9 +289,11 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         COALESCE(c.address, q.contact_address) as customer_address,
         COALESCE(c.city, q.contact_city) as customer_city,
         c.state as customer_state,
-        COALESCE(c.zip_code, q.contact_zip) as customer_zip
+        COALESCE(c.zip_code, q.contact_zip) as customer_zip,
+        p.deposit_paid as project_deposit_paid
       FROM quotes q
       LEFT JOIN customers c ON q.customer_id = c.id
+      LEFT JOIN projects p ON p.quote_id = q.id
       WHERE (? IS NULL OR q.status = ?)
         AND (? IS NULL OR q.service_type = ?)
         AND (? IS NULL OR DATE(q.created_at) >= ?)
@@ -390,6 +393,15 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 row.customer_zip
             );
 
+            // Compute deposit status for the quote
+            const depositStatus = (() => {
+                const s = row.status;
+                if (s !== 'accepted' && s !== 'converted') return 'na';
+                if (row.project_deposit_paid === 1) return 'paid';
+                if (row.project_deposit_paid === 0) return 'pending';
+                return 'na';
+            })();
+
             return {
                 id: row.id,
                 customerId: row.customer_id,
@@ -409,6 +421,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 acceptedAt: row.accepted_at,
                 daysWaiting,
                 needsResponse,
+                depositStatus,
             };
         });
 

@@ -68,8 +68,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 cover_letter,
                 availability_date,
                 status,
-                submitted_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', CURRENT_TIMESTAMP)
+                submitted_at,
+                updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         `).bind(
             data.name,
             data.email,
@@ -92,12 +93,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const applicationId = result.meta.last_row_id;
 
         // Send notification email to business
-        const notificationEmail = env.NOTIFICATION_EMAIL || 'karson@evergrowlandscaping.com';
-
         try {
             await sendEmail(env, {
-                to: notificationEmail,
-                subject: `New Job Application - ${data.position}`,
+                from: 'Evergrow Landscaping <support@evergrowlandscaping.com>',
+                to: 'Karson@evergrowlandscaping.com',
+                subject: `New Job Application – ${data.position} – ${data.name}`,
                 html: getJobApplicationNotificationEmail({
                     applicationId: applicationId as number,
                     name: data.name,
@@ -122,8 +122,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         // Send confirmation email to applicant
         try {
             await sendEmail(env, {
+                from: 'Evergrow Landscaping <support@evergrowlandscaping.com>',
                 to: data.email,
-                subject: 'Application Received - Evergrow Landscaping',
+                subject: 'Application received – Evergrow Landscaping',
                 html: getJobApplicationConfirmationEmail({
                     name: data.name,
                     position: data.position

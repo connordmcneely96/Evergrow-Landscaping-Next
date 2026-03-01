@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         hostname: 'localhost',
         pathname: '/api/assets/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
   trailingSlash: true, // Better routing for static sites

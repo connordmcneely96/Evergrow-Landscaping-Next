@@ -44,3 +44,7 @@ id = "2c81924851c24379b97a970d820336ba"
 [[kv_namespaces]]
 binding = "CACHE"
 id = "9f958c24ca8c4c7ba8b3096a6e9c582b"
+
+# Cron triggers — run daily at 8am CST (2pm UTC)
+[triggers]
+crons = ["0 14 * * *"]

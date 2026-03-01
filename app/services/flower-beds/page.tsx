@@ -109,7 +109,7 @@ export default function FlowerBedsPage() {
       <ServiceHero
         title="Flower Bed Installation & Design"
         description="Transform your landscape with beautiful, custom-designed flower beds that add color and curb appeal year-round."
-        imageSrc="/api/assets/FlowerBedInstall_image2.png"
+        imageSrc="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80"
         imageAlt="Beautiful flower bed installation in Oklahoma"
       />
 
@@ -174,11 +174,11 @@ export default function FlowerBedsPage() {
         title="Flower Bed Installations"
         images={[
           {
-            src: '/api/assets/FlowerBedInstall_image1.png',
+            src: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80',
             alt: 'Beautiful flower bed installation'
           },
           {
-            src: '/api/assets/FlowerBedInstall_image2.png',
+            src: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1200&q=80',
             alt: 'Custom landscape design with flowers'
           }
         ]}

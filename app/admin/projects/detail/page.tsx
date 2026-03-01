@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 import { fetchWithAuth } from '@/lib/auth'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import PaymentStatusBadge from '@/components/admin/PaymentStatusBadge'
 
 interface Invoice {
     id: number
@@ -79,6 +80,9 @@ function AdminProjectDetailContent() {
 
     // Cancel project
     const [cancelling, setCancelling] = useState(false)
+
+    // Mark as completed
+    const [completing, setCompleting] = useState(false)
 
     useEffect(() => {
         if (!projectId) { setLoading(false); return }
@@ -157,7 +161,32 @@ function AdminProjectDetailContent() {
         )
     }
 
+    const handleMarkComplete = async () => {
+        if (!project) return
+        if (!confirm(
+            'Mark this project as complete? This will generate the final invoice and notify the customer.'
+        )) return
+        setCompleting(true)
+        try {
+            const res = await fetchWithAuth(`/api/admin/projects/${project.id}/complete`, { method: 'POST' })
+            const data = await res.json() as { success: boolean; error?: string; balanceAmount?: number }
+            if (!res.ok || !data.success) throw new Error(data.error || 'Failed to complete project')
+            setProject(p => p ? { ...p, status: 'completed', statusDisplay: 'Completed', balancePaid: false } : p)
+            addToast({ type: 'success', message: 'Project marked as complete! Balance invoice created.' })
+            // Reload to get updated invoices
+            fetchWithAuth(`/api/admin/projects/${project.id}`)
+                .then(r => r.json())
+                .then((d: any) => { if (d?.success && d.project) setProject(d.project) })
+                .catch(() => {})
+        } catch (err) {
+            addToast({ type: 'error', message: err instanceof Error ? err.message : 'Failed to complete project' })
+        } finally {
+            setCompleting(false)
+        }
+    }
+
     const isCancellable = CANCELLABLE.has(project.status)
+    const isCompletable = (project.status === 'scheduled' || project.status === 'in_progress') && project.depositPaid
     const totalPaid =
         (project.depositPaid ? project.depositAmount : 0) +
         (project.balancePaid ? project.balanceDue : 0)
@@ -194,15 +223,26 @@ function AdminProjectDetailContent() {
                         )}
                     </p>
                 </div>
-                {isCancellable && (
-                    <button
-                        onClick={handleCancel}
-                        disabled={cancelling}
-                        className="text-sm text-red-400 hover:text-red-300 border border-red-900 hover:border-red-600 rounded-lg px-4 py-2 transition-colors disabled:opacity-50 whitespace-nowrap"
-                    >
-                        {cancelling ? 'Cancelling…' : 'Cancel Project'}
-                    </button>
-                )}
+                <div className="flex items-center gap-2 flex-wrap">
+                    {isCompletable && (
+                        <button
+                            onClick={handleMarkComplete}
+                            disabled={completing}
+                            className="text-sm text-white bg-green-700 hover:bg-green-600 rounded-lg px-4 py-2 transition-colors disabled:opacity-50 whitespace-nowrap font-medium"
+                        >
+                            {completing ? 'Processing…' : '✅ Mark as Completed'}
+                        </button>
+                    )}
+                    {isCancellable && (
+                        <button
+                            onClick={handleCancel}
+                            disabled={cancelling}
+                            className="text-sm text-red-400 hover:text-red-300 border border-red-900 hover:border-red-600 rounded-lg px-4 py-2 transition-colors disabled:opacity-50 whitespace-nowrap"
+                        >
+                            {cancelling ? 'Cancelling…' : 'Cancel Project'}
+                        </button>
+                    )}
+                </div>
             </div>
 
             <div className="grid lg:grid-cols-3 gap-6">
@@ -304,6 +344,66 @@ function AdminProjectDetailContent() {
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                    </section>
+
+                    {/* Payment Overview */}
+                    <section className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                        <div className="px-5 py-3 bg-gray-800 border-b border-gray-700">
+                            <h2 className="font-semibold text-white text-sm">Payment Overview</h2>
+                        </div>
+                        <div className="divide-y divide-gray-800">
+                            {/* Deposit row */}
+                            <div className="px-5 py-4 flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm font-medium text-gray-300">Deposit (50%)</p>
+                                    <p className="text-xs text-gray-500">{formatCurrency(project.depositAmount)}</p>
+                                </div>
+                                <PaymentStatusBadge
+                                    status={project.depositPaid ? 'paid' : 'pending'}
+                                    paidAt={project.invoices.find(i => i.invoiceType === 'deposit' && i.status === 'paid')?.paidAt}
+                                    amount={project.depositAmount}
+                                />
+                            </div>
+                            {/* Balance row */}
+                            {(() => {
+                                const balanceInv = project.invoices.find(i => i.invoiceType === 'balance')
+                                const balanceAmt = project.totalAmount - project.depositAmount
+                                if (!balanceInv) {
+                                    return (
+                                        <div className="px-5 py-4 flex items-center justify-between">
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-300">Final Balance</p>
+                                                <p className="text-xs text-gray-500 italic">Will generate when project is marked complete</p>
+                                            </div>
+                                            <span className="text-gray-400 text-sm">—</span>
+                                        </div>
+                                    )
+                                }
+                                if (balanceInv.status === 'paid') {
+                                    return (
+                                        <div className="px-5 py-4 flex items-center justify-between">
+                                            <div>
+                                                <p className="text-sm font-medium text-gray-300">Final Balance</p>
+                                                <p className="text-xs text-gray-500">{formatCurrency(balanceAmt)}</p>
+                                            </div>
+                                            <PaymentStatusBadge status="paid" paidAt={balanceInv.paidAt} amount={balanceAmt} />
+                                        </div>
+                                    )
+                                }
+                                return (
+                                    <div className="px-5 py-4 flex items-center justify-between gap-4">
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-300">Final Balance</p>
+                                            <p className="text-xs text-gray-500">
+                                                {formatCurrency(balanceAmt)}
+                                                {balanceInv.dueDate ? ` · Due ${formatDate(balanceInv.dueDate)}` : ''}
+                                            </p>
+                                        </div>
+                                        <PaymentStatusBadge status="pending" amount={balanceAmt} />
+                                    </div>
+                                )
+                            })()}
                         </div>
                     </section>
 

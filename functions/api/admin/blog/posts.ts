@@ -2,6 +2,56 @@ import { invalidateByTag } from '../../../lib/cache';
 import { requireAdmin } from '../../../lib/session';
 import { Env } from '../../../types';
 
+// GET — list all blog posts for admin
+export const onRequestGet: PagesFunction<Env> = async (context) => {
+    const { request, env } = context;
+
+    const authResult = await requireAdmin(request, env);
+    if (authResult instanceof Response) {
+        return authResult;
+    }
+
+    try {
+        const url = new URL(request.url);
+        const limit = Math.min(parseInt(url.searchParams.get('limit') || '50', 10) || 50, 200);
+        const offset = Math.max(parseInt(url.searchParams.get('offset') || '0', 10) || 0, 0);
+
+        const rows = await env.DB.prepare(
+            `SELECT id, title, slug, excerpt, category, published, published_at, created_at, updated_at
+             FROM blog_posts
+             ORDER BY created_at DESC
+             LIMIT ? OFFSET ?`
+        ).bind(limit, offset).all<{
+            id: number; title: string; slug: string; excerpt: string | null;
+            category: string | null; published: number; published_at: string | null;
+            created_at: string; updated_at: string;
+        }>();
+
+        const posts = (rows.results || []).map(row => ({
+            id: row.id,
+            title: row.title,
+            slug: row.slug,
+            excerpt: row.excerpt,
+            category: row.category,
+            published: row.published === 1,
+            publishedAt: row.published_at,
+            createdAt: row.created_at,
+            updatedAt: row.updated_at,
+        }));
+
+        return new Response(JSON.stringify({ success: true, posts }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    } catch (error) {
+        console.error('Admin blog list error:', error);
+        return new Response(JSON.stringify({ success: false, error: 'Failed to load blog posts' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+};
+
 const TITLE_MIN_LENGTH = 10;
 const TITLE_MAX_LENGTH = 200;
 const CONTENT_MIN_LENGTH = 100;

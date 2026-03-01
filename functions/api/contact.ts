@@ -6,6 +6,43 @@ interface Env {
     NOTIFICATION_EMAIL?: string;
 }
 
+function getContactConfirmationEmail(data: { name: string }): string {
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #2E5A8F; color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .content { padding: 30px 20px; background: #f9f9f9; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 14px; background: #e9ecef; border-radius: 0 0 8px 8px; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>We Got Your Message!</h1>
+        </div>
+        <div class="content">
+          <p>Hi ${escapeHtml(data.name)},</p>
+          <p>Thank you for reaching out to Evergrow Landscaping! We've received your message and our team will review it shortly.</p>
+          <p>We typically respond within <strong>24 hours</strong> during business days. If your request is urgent, you can also reach us directly at <a href="mailto:contact@evergrowlandscaping.com">contact@evergrowlandscaping.com</a>.</p>
+          <p>We look forward to helping you create a beautiful outdoor space!</p>
+          <p>Warm regards,<br><strong>The Evergrow Landscaping Team</strong></p>
+        </div>
+        <div class="footer">
+          <p><strong>Evergrow Landscaping</strong> &bull; contact@evergrowlandscaping.com</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
 function escapeHtml(value: string): string {
     return value
         .replace(/&/g, '&amp;')
@@ -127,11 +164,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
 
         // Send email notification to business owner
-        const notificationEmail = env.NOTIFICATION_EMAIL || 'karson@evergrowlandscaping.com';
+        const notificationEmail = 'Karson@evergrowlandscaping.com';
         try {
             await sendEmail(env as any, {
+                from: 'Evergrow Landscaping <support@evergrowlandscaping.com>',
                 to: notificationEmail,
-                subject: `New Contact Form Submission from ${name.trim()}`,
+                subject: `New Contact Form Submission – ${name.trim()}`,
                 html: getContactNotificationEmail({
                     name: name.trim(),
                     email: email.trim(),
@@ -144,6 +182,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         } catch (emailError) {
             // Log but don't fail the request if email fails
             console.error('Failed to send contact notification email:', emailError);
+        }
+
+        // Send confirmation auto-reply to customer
+        try {
+            await sendEmail(env as any, {
+                from: 'Evergrow Landscaping <support@evergrowlandscaping.com>',
+                to: email.trim(),
+                subject: 'We got your message – Evergrow Landscaping',
+                html: getContactConfirmationEmail({ name: name.trim() }),
+            });
+        } catch (emailError) {
+            console.error('Failed to send contact confirmation email:', emailError);
         }
 
         return new Response(JSON.stringify({

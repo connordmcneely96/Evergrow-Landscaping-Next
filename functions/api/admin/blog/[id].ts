@@ -2,6 +2,123 @@ import { invalidateByTag } from '../../../lib/cache';
 import { requireAdmin } from '../../../lib/session';
 import { Env } from '../../../types';
 
+// GET — fetch single blog post for editing
+export const onRequestGet: PagesFunction<Env> = async (context) => {
+    const { request, env, params } = context;
+
+    const authResult = await requireAdmin(request, env);
+    if (authResult instanceof Response) {
+        return authResult;
+    }
+
+    const postId = parseInt(params.id as string, 10);
+    if (!postId || postId <= 0) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid post ID' }), {
+            status: 400, headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    try {
+        const post = await env.DB.prepare(
+            `SELECT id, title, slug, content, excerpt, featured_image_url, category, tags,
+                    meta_title, meta_description, published, published_at, created_at, updated_at
+             FROM blog_posts WHERE id = ? LIMIT 1`
+        ).bind(postId).first<{
+            id: number; title: string; slug: string; content: string; excerpt: string | null;
+            featured_image_url: string | null; category: string | null; tags: string | null;
+            meta_title: string | null; meta_description: string | null;
+            published: number; published_at: string | null; created_at: string; updated_at: string;
+        }>();
+
+        if (!post) {
+            return new Response(JSON.stringify({ success: false, error: 'Post not found' }), {
+                status: 404, headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        let tags: string[] = [];
+        try { tags = post.tags ? JSON.parse(post.tags) : []; } catch { tags = []; }
+
+        return new Response(JSON.stringify({
+            success: true,
+            post: {
+                id: post.id,
+                title: post.title,
+                slug: post.slug,
+                content: post.content,
+                excerpt: post.excerpt,
+                featuredImageUrl: post.featured_image_url,
+                category: post.category,
+                tags,
+                metaTitle: post.meta_title,
+                metaDescription: post.meta_description,
+                published: post.published === 1,
+                publishedAt: post.published_at,
+                createdAt: post.created_at,
+                updatedAt: post.updated_at,
+            },
+        }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    } catch (error) {
+        console.error('Admin blog GET error:', error);
+        return new Response(JSON.stringify({ success: false, error: 'Failed to load post' }), {
+            status: 500, headers: { 'Content-Type': 'application/json' },
+        });
+    }
+};
+
+// DELETE — remove a blog post
+export const onRequestDelete: PagesFunction<Env> = async (context) => {
+    const { request, env, params } = context;
+
+    const authResult = await requireAdmin(request, env);
+    if (authResult instanceof Response) {
+        return authResult;
+    }
+
+    const postId = parseInt(params.id as string, 10);
+    if (!postId || postId <= 0) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid post ID' }), {
+            status: 400, headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    try {
+        const existing = await env.DB.prepare(
+            'SELECT id, slug, category, tags FROM blog_posts WHERE id = ? LIMIT 1'
+        ).bind(postId).first<{ id: number; slug: string; category: string | null; tags: string | null }>();
+
+        if (!existing) {
+            return new Response(JSON.stringify({ success: false, error: 'Post not found' }), {
+                status: 404, headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        const result = await env.DB.prepare('DELETE FROM blog_posts WHERE id = ?').bind(postId).run();
+        if (!result.success) {
+            throw new Error('Failed to delete post');
+        }
+
+        const cacheTags = new Set<string>(['blog-posts', `blog-post:${existing.slug}`]);
+        if (existing.category) cacheTags.add(`blog-category:${existing.category.toLowerCase()}`);
+        let tags: string[] = [];
+        try { tags = existing.tags ? JSON.parse(existing.tags) : []; } catch { tags = []; }
+        for (const tag of tags) {
+            const normalized = tag.trim().toLowerCase();
+            if (normalized) cacheTags.add(`blog-tag:${normalized}`);
+        }
+        await Promise.all(Array.from(cacheTags).map(tag => invalidateByTag(env, tag)));
+
+        return new Response(JSON.stringify({ success: true, message: 'Post deleted' }), {
+            status: 200, headers: { 'Content-Type': 'application/json' },
+        });
+    } catch (error) {
+        console.error('Admin blog DELETE error:', error);
+        return new Response(JSON.stringify({ success: false, error: 'Failed to delete post' }), {
+            status: 500, headers: { 'Content-Type': 'application/json' },
+        });
+    }
+};
+
 interface BlogPostRow {
     id: number;
     title: string;
