@@ -120,7 +120,7 @@ function QuoteAcceptContent() {
                     {/* Header */}
                     <div className="bg-forest-green px-6 py-8 text-center">
                         <h1 className="text-2xl font-bold text-white mb-2">Your Quote is Ready</h1>
-                        <p className="text-forest-green-100">Review and accept your landscaping quote below</p>
+                        <p className="text-white/75">Review and accept your landscaping quote below</p>
                     </div>
 
                     {/* Quote Details */}
@@ -177,7 +177,7 @@ function QuoteAcceptContent() {
                                 variant="primary"
                                 size="lg"
                                 isLoading={accepting}
-                                className="w-full bg-forest-green hover:bg-forest-green-400"
+                                className="w-full bg-forest-green hover:bg-forest-green-700"
                             >
                                 Accept Quote
                             </Button>

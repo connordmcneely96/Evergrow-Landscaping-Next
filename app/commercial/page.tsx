@@ -9,7 +9,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
     title: 'Commercial Landscaping & Regulation Maintenance | Evergrow',
-    description: 'Scalable landscape management for multi-location businesses, retail chains, and corporate campuses in Arkansas, Oklahoma, and Texas.',
+    description: 'Scalable landscape management for multi-location businesses, retail chains, and corporate campuses in Arkansas and Oklahoma.',
 }
 
 const features = [
@@ -20,7 +20,7 @@ const features = [
             </svg>
         ),
         title: 'Multi-State Coverage',
-        description: 'One vendor for all your locations in Arkansas, Oklahoma, and Texas. Simplify your procurement process.',
+        description: 'One vendor for all your locations in Arkansas and Oklahoma. Simplify your procurement process.',
     },
     {
         icon: (
@@ -95,7 +95,7 @@ const process = [
 const faqs = [
     {
         question: 'What areas do you service?',
-        answer: 'We currently cover the entire states of Arkansas and Oklahoma, plus Northern Texas. We are rapidly expanding our footprint to meet client needs.',
+        answer: 'We currently cover the entire states of Arkansas and Oklahoma. We are rapidly expanding our footprint to meet client needs.',
     },
     {
         question: 'Do you self-perform or subcontract?',
@@ -121,8 +121,8 @@ export default function CommercialPage() {
             {/* Custom Hero for Commercial */}
             <section className="relative min-h-[70vh] flex items-center pt-20">
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-forest-green-900" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-forest-green-900/95 to-forest-green-800/80 z-10" />
+                    <div className="absolute inset-0 bg-forest-green" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10 z-10" />
                     {/* Fallback pattern if image fails */}
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
                 </div>
@@ -136,12 +136,12 @@ export default function CommercialPage() {
                             Simplified Property <br className="hidden lg:block" /> Management Solution
                         </h1>
                         <p className="text-white/90 text-xl md:text-2xl mb-8 max-w-2xl leading-relaxed">
-                            Managing 40+ properties? We deliver consistent quality, unified billing, and 24/7 reliability across Arkansas, Oklahoma, and Texas.
+                            Managing 80+ properties? We deliver consistent quality, unified billing, and 24/7 reliability across Arkansas and Oklahoma.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link href="/quote-request">
-                                <Button className="w-full sm:w-auto bg-vibrant-gold text-white hover:bg-forest-green-400 border-0" size="lg">
+                                <Button className="w-full sm:w-auto bg-vibrant-gold text-white hover:bg-forest-green-700 border-0" size="lg">
                                     Request Commercial Proposal
                                 </Button>
                             </Link>
@@ -159,7 +159,7 @@ export default function CommercialPage() {
                         <div className="mt-12 flex flex-wrap gap-6 text-white/80 items-center">
                             <div className="flex items-center gap-2">
                                 <svg className="w-5 h-5 text-vibrant-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                                <span>Licensed in AR, OK, TX</span>
+                                <span>Licensed in AR & OK</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <svg className="w-5 h-5 text-vibrant-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
@@ -206,7 +206,7 @@ export default function CommercialPage() {
                                     The Evergrow Solution
                                 </h3>
                                 <ul className="space-y-3 text-gray-700">
-                                    <li>• Single partner for AR, OK, TX</li>
+                                    <li>• Single partner for AR & OK</li>
                                     <li>• Standardized SOPs and quality checks</li>
                                     <li>• One consolidated monthly invoice</li>
                                     <li>• Proactive communication and reporting</li>

@@ -15,7 +15,7 @@ export function ServiceCTA({
   buttonLink = "/quote-request"
 }: ServiceCTAProps) {
   return (
-    <section className="section bg-gradient-to-r from-forest-green to-forest-green-800 relative overflow-hidden">
+    <section className="section bg-forest-green relative overflow-hidden">
       {/* Optional: Add a subtle overlay or pattern if needed to match new branding in future */}
       <div className="container relative z-10">
         <div className="max-w-3xl mx-auto text-center">

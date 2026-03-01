@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Star, Phone, Calendar, MapPin, Shield, Clock, BadgeDollarSign } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, Phone, Calendar, MapPin, Shield, Clock } from 'lucide-react';
 import Image from 'next/image';
 import { MotionDiv } from '@/components/ui/MotionDiv';
 import Testimonials from '@/components/sections/Testimonials';
@@ -9,54 +9,105 @@ export default function HomePage() {
   return (
     <main className="flex-col">
       {/* Hero Section */}
-      {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col justify-start pt-0 md:pt-0 overflow-hidden">
-        {/* Background Image Placeholder */}
-        <div className="absolute inset-0 bg-forest-green-900">
-          <div className="absolute inset-0 bg-gradient-to-r from-forest-green-900/95 to-forest-green-800/80 z-10" />
-          <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
+        {/* Background — brand dark green #13733A */}
+        <div className="absolute inset-0 bg-forest-green">
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10 z-10" />
+          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
         </div>
 
-        <div className="container relative z-20 px-4 h-full flex flex-col justify-center pt-32 pb-20">
-          <MotionDiv
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto md:mx-0 md:max-w-3xl text-center md:text-left"
-          >
-            <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1 mb-6">
-              <span className="text-white font-bold text-sm tracking-wider uppercase">Arkansas • Oklahoma • Texas</span>
-            </div>
-            <h1 className="text-white font-heading font-extrabold text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight drop-shadow-lg">
-              Professional Multi-Location <br />
-              <span className="text-white">Landscaping Services</span>
-            </h1>
-            <p className="text-gray-100 text-lg md:text-2xl mb-10 max-w-2xl mx-auto md:mx-0 leading-relaxed">
-              Managing 40+ properties with consistent quality across all locations. Licensed and insured in AR, OK, and TX. Family-owned, owner-managed.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center">
-              <Link
-                href="/commercial"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-vibrant-gold text-white font-bold text-lg hover:bg-forest-green-400 hover:scale-105 transition-all shadow-xl"
-              >
-                Commercial Inquiries
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Link>
-              <Link
-                href="/quote-request"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-white/10 border-2 border-white text-white font-bold text-lg hover:bg-white hover:text-forest-green transition-all shadow-lg"
-              >
-                Residential Quote
-              </Link>
-            </div>
+        <div className="container relative z-20 px-4 pt-24 pb-12 lg:pt-28 lg:pb-20">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16">
 
-            <div className="mt-12 flex flex-wrap justify-center md:justify-start gap-6 md:gap-8 text-white/90 text-sm md:text-base font-medium">
-              <div className="flex items-center"><Shield className="w-5 h-5 text-white mr-2" /> Licensed & Insured in AR, OK, TX</div>
-              <div className="flex items-center"><MapPin className="w-5 h-5 text-white mr-2" /> 40+ Properties Managed</div>
-              <div className="flex items-center"><CheckCircle className="w-5 h-5 text-white mr-2" /> Family-Owned & Operated</div>
-              <div className="flex items-center"><Clock className="w-5 h-5 text-white mr-2" /> 20+ Years Experience</div>
+            {/* Text Column */}
+            <MotionDiv
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex-1 text-center lg:text-left"
+            >
+              {/* Location Badge — Change 5: AR & OK only */}
+              <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1 mb-6">
+                <span className="text-white font-bold text-sm tracking-wider uppercase">Serving Arkansas &amp; Oklahoma</span>
+              </div>
+
+              {/* Full Logo in Hero — Change 6 */}
+              <div className="mb-8 flex justify-center lg:justify-start">
+                <Image
+                  src="/images/Logo- Transparent & No Buffer .png"
+                  alt="Evergrow Landscaping"
+                  width={280}
+                  height={112}
+                  className="w-full max-w-[200px] md:max-w-[280px] h-auto"
+                  priority
+                />
+              </div>
+
+              {/* Headline — Change 7: 3 lines */}
+              <h1 className="text-white font-heading font-extrabold text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight drop-shadow-lg">
+                <span className="block">Professional</span>
+                <span className="block">Multi-location</span>
+                <span className="block">Landscaping Services</span>
+              </h1>
+
+              {/* Subheadline — Change 10: 2 sentences on separate lines */}
+              <p className="text-gray-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                <span className="block">Managing 80+ properties with consistent quality across all locations.</span>
+                <span className="block mt-1">Licensed and insured in AR &amp; OK. Family-owned, owner-managed.</span>
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+                <Link
+                  href="/commercial"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-vibrant-gold text-white font-bold text-lg hover:bg-forest-green-700 hover:scale-105 transition-all shadow-xl"
+                >
+                  Commercial Inquiries
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Link>
+                <Link
+                  href="/quote-request"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-lg bg-white/10 border-2 border-white text-white font-bold text-lg hover:bg-white hover:text-forest-green transition-all shadow-lg"
+                >
+                  Residential Quote
+                </Link>
+              </div>
+
+              {/* Trust Signals — Changes 8 & 9: removed years of experience, added 80+ properties */}
+              <div className="mt-10 flex flex-wrap justify-center lg:justify-start gap-5 md:gap-8 text-white/90 text-sm md:text-base font-medium">
+                <div className="flex items-center"><Shield className="w-5 h-5 text-white mr-2" /> Licensed &amp; Insured in AR &amp; OK</div>
+                <div className="flex items-center"><MapPin className="w-5 h-5 text-white mr-2" /> 80+ Properties Managed</div>
+                <div className="flex items-center"><CheckCircle className="w-5 h-5 text-white mr-2" /> Family-Owned &amp; Operated</div>
+              </div>
+            </MotionDiv>
+
+            {/* Portrait Hero Image — Change 11: vertical/portrait on desktop */}
+            <div className="hidden lg:block flex-shrink-0">
+              <MotionDiv
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.9, delay: 0.2 }}
+                className="relative rounded-2xl overflow-hidden shadow-2xl"
+                style={{ width: 420, height: 560 }}
+              >
+                <Image
+                  src="/api/assets/LawnCareAndMaintenance_image1.png"
+                  alt="Professional landscaping services"
+                  fill
+                  className="object-cover object-center"
+                />
+              </MotionDiv>
             </div>
-          </MotionDiv>
+          </div>
+
+          {/* Mobile Portrait Image — stacks below text on small screens */}
+          <div className="mt-8 lg:hidden w-full relative rounded-2xl overflow-hidden" style={{ height: 300 }}>
+            <Image
+              src="/api/assets/LawnCareAndMaintenance_image1.png"
+              alt="Professional landscaping services"
+              fill
+              className="object-cover object-center"
+            />
+          </div>
         </div>
       </section>
 
@@ -105,7 +156,7 @@ export default function HomePage() {
                   <span className="text-gray-700">Reliable, on-time service you can count on</span>
                 </li>
               </ul>
-              <Link href="/quote-request" className="text-forest-green font-bold text-lg hover:text-forest-green-400 transition-colors inline-flex items-center">
+              <Link href="/quote-request" className="text-forest-green font-bold text-lg hover:text-vibrant-gold transition-colors inline-flex items-center">
                 Schedule Consultation <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
             </div>
@@ -121,7 +172,7 @@ export default function HomePage() {
             <h2 className="text-h2 font-heading font-bold text-4xl text-deep-charcoal mb-4">
               Our Professional Services
             </h2>
-            <div className="w-24 h-1 bg-forest-green-300 mx-auto mb-6"></div>
+            <div className="w-24 h-1 bg-vibrant-gold mx-auto mb-6"></div>
             <p className="text-lg text-gray-600">
               Comprehensive landscaping solutions tailored to transform and maintain your outdoor spaces throughout every season.
             </p>
@@ -130,7 +181,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Service 1 */}
             <Link href="/services/lawn-care" className="group h-full">
-              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-forest-green-300 h-full flex flex-col">
+              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
                     src="/api/assets/LawnCareAndMaintenance_image2.png"
@@ -140,7 +191,7 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
-                  <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-forest-green-400 transition-colors">
+                  <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
                     Lawn Care & Maintenance
                   </h3>
                   <p className="text-gray-600 mb-6 flex-grow text-sm">
@@ -155,7 +206,7 @@ export default function HomePage() {
 
             {/* Service 2 */}
             <Link href="/services/flower-beds" className="group h-full">
-              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-forest-green-300 h-full flex flex-col">
+              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
                     src="/api/assets/FlowerBedInstall_image1.png"
@@ -165,7 +216,7 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
-                  <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-forest-green-400 transition-colors">
+                  <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
                     Landscaping & Design
                   </h3>
                   <p className="text-gray-600 mb-6 flex-grow text-sm">
@@ -180,7 +231,7 @@ export default function HomePage() {
 
             {/* Service 3 */}
             <Link href="/services/seasonal-cleanup" className="group h-full">
-              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-forest-green-300 h-full flex flex-col">
+              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
                     src="/api/assets/SpringAndFallCleanup_image1.png"
@@ -190,7 +241,7 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
-                  <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-forest-green-400 transition-colors">
+                  <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
                     Seasonal Services
                   </h3>
                   <p className="text-gray-600 mb-6 flex-grow text-sm">
@@ -205,7 +256,7 @@ export default function HomePage() {
 
             {/* Service 4 */}
             <Link href="/services/pressure-washing" className="group h-full">
-              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-forest-green-300 h-full flex flex-col">
+              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
                     src="/api/assets/PressureWashing_image1.png"
@@ -215,7 +266,7 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
-                  <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-forest-green-400 transition-colors">
+                  <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
                     Pressure Washing
                   </h3>
                   <p className="text-gray-600 mb-6 flex-grow text-sm">
@@ -248,7 +299,7 @@ export default function HomePage() {
                 <Star className="w-8 h-8 text-white group-hover:text-forest-green" />
               </div>
               <h3 className="text-xl font-bold text-deep-charcoal group-hover:text-white mb-3">Quality Work</h3>
-              <p className="text-gray-600 group-hover:text-forest-green-100">We take pride in every project, ensuring exceptional results that exceed your expectations.</p>
+              <p className="text-gray-600 group-hover:text-white/75">We take pride in every project, ensuring exceptional results that exceed your expectations.</p>
             </div>
 
             {/* Card 2 */}
@@ -257,7 +308,7 @@ export default function HomePage() {
                 <Clock className="w-8 h-8 text-white group-hover:text-forest-green" />
               </div>
               <h3 className="text-xl font-bold text-deep-charcoal group-hover:text-white mb-3">Reliable Service</h3>
-              <p className="text-gray-600 group-hover:text-forest-green-100">Count on us to show up on time, every time, with consistent and dependable service.</p>
+              <p className="text-gray-600 group-hover:text-white/75">Count on us to show up on time, every time, with consistent and dependable service.</p>
             </div>
 
             {/* Card 3 */}
@@ -266,7 +317,7 @@ export default function HomePage() {
                 <Shield className="w-8 h-8 text-white group-hover:text-forest-green" />
               </div>
               <h3 className="text-xl font-bold text-deep-charcoal group-hover:text-white mb-3">Expert Team</h3>
-              <p className="text-gray-600 group-hover:text-forest-green-100">Our experienced professionals bring skill, care, and attention to detail to every project.</p>
+              <p className="text-gray-600 group-hover:text-white/75">Our experienced professionals bring skill, care, and attention to detail to every project.</p>
             </div>
 
             {/* Card 4 */}
@@ -275,7 +326,7 @@ export default function HomePage() {
                 <CheckCircle className="w-8 h-8 text-white group-hover:text-forest-green" />
               </div>
               <h3 className="text-xl font-bold text-deep-charcoal group-hover:text-white mb-3">Customer Care</h3>
-              <p className="text-gray-600 group-hover:text-forest-green-100">Your satisfaction is our priority. We treat every property like our own.</p>
+              <p className="text-gray-600 group-hover:text-white/75">Your satisfaction is our priority. We treat every property like our own.</p>
             </div>
           </div>
         </div>
@@ -313,7 +364,7 @@ export default function HomePage() {
                 ))}
               </div>
               <div className="mt-8">
-                <Link href="/quote-request" className="btn bg-forest-green text-white hover:bg-forest-green-800 transition-colors px-6 py-3 rounded-lg font-bold">
+                <Link href="/quote-request" className="btn bg-forest-green text-white hover:bg-forest-green-700 transition-colors px-6 py-3 rounded-lg font-bold">
                   Check Your Zip Code
                 </Link>
               </div>
@@ -326,22 +377,22 @@ export default function HomePage() {
       {/* Final CTA Section */}
       <section className="py-24 bg-forest-green relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-forest-green-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-forest-green-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-vibrant-gold rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-vibrant-gold rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
 
         <div className="container relative z-10 text-center">
           <span className="inline-block py-1 px-3 rounded-full bg-white/20 text-white text-sm font-bold tracking-wider uppercase mb-6 backdrop-blur-sm border border-white/20">Get Started</span>
           <h2 className="text-h2 font-heading font-bold text-4xl md:text-5xl text-white mb-6">
             Ready for a Yard You Love Coming Home To?
           </h2>
-          <p className="text-xl text-forest-green-100 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
             From weekly maintenance to full landscape upgrades, Evergrow Landscaping makes it easy to keep your outdoor space beautiful.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
               href="/quote-request"
-              className="inline-flex items-center justify-center px-10 py-5 rounded-lg bg-vibrant-gold text-white font-bold text-xl hover:bg-forest-green-400 transform hover:-translate-y-1 transition-all shadow-lg"
+              className="inline-flex items-center justify-center px-10 py-5 rounded-lg bg-vibrant-gold text-white font-bold text-xl hover:bg-forest-green-700 transform hover:-translate-y-1 transition-all shadow-lg"
             >
               Get Your Free Quote
             </Link>

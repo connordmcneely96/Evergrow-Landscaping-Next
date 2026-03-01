@@ -4,7 +4,7 @@ import JobApplicationForm from '@/components/forms/JobApplicationForm'
 
 export const metadata: Metadata = {
     title: 'Careers - Join Our Team | Evergrow Landscaping',
-    description: 'Join the Evergrow Landscaping team. We manage 40+ properties across Arkansas, Oklahoma, and Texas. Apply today for landscaping positions.',
+    description: 'Join the Evergrow Landscaping team. We manage 80+ properties across Arkansas and Oklahoma. Apply today for landscaping positions.',
     keywords: ['landscaping jobs', 'careers', 'El Dorado AR jobs', 'Oklahoma City jobs', 'landscaping employment'],
 }
 
@@ -12,17 +12,17 @@ export default function CareersPage() {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="bg-gradient-to-r from-forest-green to-forest-green-600 text-white py-20">
+            <section className="bg-forest-green text-white py-20">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center">
                         <Briefcase className="w-16 h-16 mx-auto mb-6" />
                         <h1 className="text-4xl md:text-5xl font-bold mb-6">
                             Join the Evergrow Team
                         </h1>
-                        <p className="text-xl md:text-2xl text-forest-green-50 mb-4">
-                            Help us manage 40+ properties across Arkansas, Oklahoma, and Texas
+                        <p className="text-xl md:text-2xl text-white/90 mb-4">
+                            Help us manage 80+ properties across Arkansas and Oklahoma
                         </p>
-                        <p className="text-lg text-forest-green-100">
+                        <p className="text-lg text-white/75">
                             We're growing fast and looking for passionate landscaping professionals to join our team
                         </p>
                     </div>
@@ -42,7 +42,7 @@ export default function CareersPage() {
                             </div>
                             <h3 className="text-xl font-bold text-gray-900 mb-2">Multi-Location Opportunities</h3>
                             <p className="text-gray-600">
-                                Work across Arkansas, Oklahoma, and Texas with opportunities to travel and grow
+                                Work across Arkansas and Oklahoma with opportunities to travel and grow
                             </p>
                         </div>
 
@@ -147,11 +147,11 @@ export default function CareersPage() {
                                         Multi-Location Landscaper (Travel Required)
                                     </h3>
                                     <p className="text-gray-600 mb-2">
-                                        Full-time position traveling between our AR, OK, and TX locations to manage multiple properties.
+                                        Full-time position traveling between our AR and OK locations to manage multiple properties.
                                     </p>
                                     <div className="flex items-center text-sm text-gray-500">
                                         <MapPin className="w-4 h-4 mr-1" />
-                                        Arkansas, Oklahoma, Texas
+                                        Arkansas & Oklahoma
                                     </div>
                                 </div>
                             </div>

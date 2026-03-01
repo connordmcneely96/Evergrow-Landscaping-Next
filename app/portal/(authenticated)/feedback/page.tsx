@@ -83,7 +83,7 @@ export default function FeedbackPage() {
     if (submitSuccess) {
         return (
             <div className="max-w-xl mx-auto py-12 px-4 text-center">
-                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-forest-green-100 mb-4">
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-vibrant-gold-100 mb-4">
                     <Star className="h-6 w-6 text-forest-green" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank you!</h2>

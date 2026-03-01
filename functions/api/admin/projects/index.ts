@@ -38,6 +38,7 @@ type ProjectRow = {
     total_amount: number;
     deposit_amount: number | null;
     deposit_paid: number | boolean;
+    balance_paid: number | boolean;
     scheduled_date: string | null;
     scheduled_time: string | null;
     status: string;
@@ -234,8 +235,12 @@ function calculateDepositDueDate(scheduledDate: string): string {
 function getBalanceDue(
     totalAmount: number,
     depositAmount: number,
-    depositPaid: boolean
+    depositPaid: boolean,
+    balancePaid: boolean
 ): number {
+    if (balancePaid) {
+        return 0;
+    }
     const balance = depositPaid ? totalAmount - depositAmount : totalAmount;
     return balance > 0 ? balance : 0;
 }
@@ -340,7 +345,24 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
           p.description as project_description,
           p.total_amount,
           p.deposit_amount,
-          p.deposit_paid,
+          CASE
+            WHEN EXISTS (
+              SELECT 1 FROM invoices i
+              WHERE i.project_id = p.id
+                AND i.invoice_type = 'deposit'
+                AND i.status = 'paid'
+            ) THEN 1
+            ELSE p.deposit_paid
+          END as deposit_paid,
+          CASE
+            WHEN EXISTS (
+              SELECT 1 FROM invoices i
+              WHERE i.project_id = p.id
+                AND i.invoice_type = 'balance'
+                AND i.status = 'paid'
+            ) THEN 1
+            ELSE p.balance_paid
+          END as balance_paid,
           p.scheduled_date,
           p.scheduled_time,
           p.status,
@@ -382,7 +404,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             const totalAmount = toNumber(row.total_amount);
             const depositAmount = toNumber(row.deposit_amount);
             const depositPaid = row.deposit_paid === 1 || row.deposit_paid === true;
-            const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid);
+            const balancePaid = row.balance_paid === 1 || row.balance_paid === true;
+            const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid, balancePaid);
 
             return {
                 id: row.id,
@@ -395,6 +418,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 totalAmount,
                 depositAmount,
                 depositPaid,
+                balancePaid,
                 balanceDue,
                 scheduledDate: row.scheduled_date,
                 scheduledTime: row.scheduled_time,

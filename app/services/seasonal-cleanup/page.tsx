@@ -132,7 +132,7 @@ export default function SeasonalCleanupPage() {
               </p>
             </div>
 
-            <div className="bg-forest-green-50 border-l-4 border-forest-green p-6 rounded-lg">
+            <div className="bg-vibrant-gold-50 border-l-4 border-forest-green p-6 rounded-lg">
               <h3 className="text-xl font-heading font-bold text-forest-green mb-3">
                 What's Included in Our Seasonal Cleanup:
               </h3>

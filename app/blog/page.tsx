@@ -66,7 +66,7 @@ export default function BlogPage() {
     return (
         <main>
             {/* Hero Section */}
-            <section className="relative bg-gradient-to-r from-forest-green to-forest-green-600 py-16">
+            <section className="relative bg-forest-green py-16">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center text-white">
                         <h1 className="text-h1 font-heading font-bold mb-4">
@@ -88,7 +88,7 @@ export default function BlogPage() {
 
                         {/* Featured Post */}
                         <div className="mb-12">
-                            <div className="bg-forest-green-50 rounded-lg overflow-hidden shadow-md border border-forest-green-100">
+                            <div className="bg-vibrant-gold-50 rounded-lg overflow-hidden shadow-md border border-vibrant-gold-100">
                                 <PostCard post={posts[0]} featured />
                             </div>
                         </div>
@@ -111,7 +111,7 @@ export default function BlogPage() {
             </section>
 
             {/* Newsletter CTA */}
-            <section className="section py-16 bg-gradient-to-r from-forest-green to-forest-green-600">
+            <section className="section py-16 bg-forest-green">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center text-white">
                         <h2 className="text-h2 font-heading mb-4 text-white">
@@ -127,7 +127,7 @@ export default function BlogPage() {
                                 className="flex-1 px-4 py-3 rounded-lg text-gray-900 border-none focus:ring-2 focus:ring-vibrant-gold outline-none"
                                 required
                             />
-                            <Button variant="primary" size="lg" type="submit" className="bg-vibrant-gold text-white hover:bg-forest-green-400 border-none">
+                            <Button variant="primary" size="lg" type="submit" className="bg-vibrant-gold text-white hover:bg-forest-green-700 border-none">
                                 Subscribe
                             </Button>
                         </form>
