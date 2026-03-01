@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { fetchWithAuth } from '@/lib/auth'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import PaymentStatusBadge from '@/components/admin/PaymentStatusBadge'
 
 interface Quote {
     id: number
@@ -22,6 +23,7 @@ interface Quote {
     createdAt: string
     daysWaiting: number
     needsResponse: boolean
+    depositStatus?: 'paid' | 'pending' | 'na'
 }
 
 interface QuoteSummary {
@@ -201,6 +203,7 @@ function AdminQuotesContent() {
                                         <th className="text-left px-4 py-3 font-medium text-gray-400">Size</th>
                                         <th className="text-left px-4 py-3 font-medium text-gray-400">Amount</th>
                                         <th className="text-left px-4 py-3 font-medium text-gray-400">Status</th>
+                                        <th className="text-left px-4 py-3 font-medium text-gray-400">Deposit</th>
                                         <th className="text-left px-4 py-3 font-medium text-gray-400">Received</th>
                                         <th className="text-right px-4 py-3 font-medium text-gray-400">Action</th>
                                     </tr>
@@ -224,6 +227,9 @@ function AdminQuotesContent() {
                                                     {quote.needsResponse && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />}
                                                     <Badge variant={STATUS_BADGE[quote.status] || 'secondary'}>{quote.statusDisplay}</Badge>
                                                 </div>
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                <PaymentStatusBadge status={quote.depositStatus ?? 'na'} />
                                             </td>
                                             <td className="px-4 py-3">
                                                 <p className="text-gray-300">{formatDate(quote.createdAt)}</p>

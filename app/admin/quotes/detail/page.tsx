@@ -3,12 +3,12 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { useToast } from '@/components/ui/Toast'
 import { fetchWithAuth } from '@/lib/auth'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import PhotoModal from '@/components/admin/PhotoModal'
 
 const DEPOSIT_REQUIRED_SERVICES = new Set(['flower_beds', 'pressure_washing'])
 
@@ -74,7 +74,7 @@ function QuoteDetailContent() {
     const [quote, setQuote] = useState<Quote | null>(null)
     const [loading, setLoading] = useState(true)
     const [submitting, setSubmitting] = useState(false)
-    const [lightboxImg, setLightboxImg] = useState<string | null>(null)
+    const [modalState, setModalState] = useState<{ photos: string[]; index: number } | null>(null)
 
     // Send-quote form state
     const [quotedAmount, setQuotedAmount] = useState('')
@@ -394,35 +394,44 @@ function QuoteDetailContent() {
                     </section>
 
                     {/* Photos */}
-                    {quote.photoUrls.length > 0 && (
-                        <section className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
-                            <div className="px-5 py-3 bg-gray-800 border-b border-gray-700">
-                                <h2 className="font-semibold text-white text-sm">Photos ({quote.photoUrls.length})</h2>
-                            </div>
-                            <div className="p-5 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                {quote.photoUrls.map((url, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setLightboxImg(url)}
-                                        className="relative aspect-square rounded-lg overflow-hidden border border-gray-700 hover:border-ocean-blue transition-colors"
-                                    >
-                                        <Image src={url} alt={`Quote photo ${idx + 1}`} fill className="object-cover" sizes="200px" />
-                                    </button>
-                                ))}
-                            </div>
-                        </section>
-                    )}
-
-                    {/* Lightbox */}
-                    {lightboxImg && (
-                        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setLightboxImg(null)}>
-                            <div className="relative max-w-3xl max-h-[80vh] w-full">
-                                <Image src={lightboxImg} alt="Quote photo" fill className="object-contain" sizes="100vw" />
-                            </div>
-                            <button className="absolute top-4 right-4 text-white bg-black/50 rounded-full w-10 h-10 flex items-center justify-center text-xl hover:bg-black/70" onClick={() => setLightboxImg(null)}>
-                                &times;
-                            </button>
+                    <section className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                        <div className="px-5 py-3 bg-gray-800 border-b border-gray-700">
+                            <h2 className="font-semibold text-white text-sm">
+                                Photos {quote.photoUrls.length > 0 ? `(${quote.photoUrls.length})` : ''}
+                            </h2>
                         </div>
+                        <div className="p-5">
+                            {quote.photoUrls.length === 0 ? (
+                                <p className="text-sm text-gray-400 italic">No photos submitted</p>
+                            ) : (
+                                <div className="grid grid-cols-3 gap-2">
+                                    {quote.photoUrls.map((url, i) => (
+                                        <div
+                                            key={i}
+                                            className="relative group cursor-pointer"
+                                            onClick={() => setModalState({ photos: quote.photoUrls, index: i })}
+                                        >
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img src={url} alt={`Quote photo ${i + 1}`} className="w-full h-24 object-cover rounded" />
+                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center rounded">
+                                                <span className="opacity-0 group-hover:opacity-100 text-white text-xs font-medium">
+                                                    View Full Size
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </section>
+
+                    {/* Photo Modal */}
+                    {modalState && (
+                        <PhotoModal
+                            photos={modalState.photos}
+                            initialIndex={modalState.index}
+                            onClose={() => setModalState(null)}
+                        />
                     )}
                 </div>
 

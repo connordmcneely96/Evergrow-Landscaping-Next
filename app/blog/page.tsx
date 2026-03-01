@@ -1,76 +1,43 @@
-import { PostCard } from '@/components/blog/PostCard'
-import { CategoryFilter } from '@/components/blog/CategoryFilter'
-import { Button } from '@/components/ui/Button'
-import Link from 'next/link'
+'use client'
 
-// Mock data - will be replaced with API call to GET /api/blog/posts
-const posts = [
-    {
-        id: 1,
-        title: 'How to Choose a Reliable Landscaper in El Dorado',
-        slug: 'how-to-choose-reliable-landscaper-el-dorado',
-        excerpt: 'Finding a trustworthy landscaping company shouldn\'t be a gamble. Here are 7 key factors to consider before hiring anyone to work on your property.',
-        featuredImage: '/images/blog/choosing-landscaper.jpg',
-        category: 'Landscaping Tips',
-        author: 'Evergrow Team',
-        publishedAt: '2025-01-20',
-        readTime: '5 min read',
-    },
-    {
-        id: 2,
-        title: 'Spring Lawn Care Tips for Oklahoma Homeowners',
-        slug: 'spring-lawn-care-tips-oklahoma',
-        excerpt: 'Oklahoma\'s unpredictable spring weather requires a strategic approach to lawn care. Learn what to do (and when) for a lush green lawn all summer.',
-        featuredImage: '/images/blog/spring-lawn-care.jpg',
-        category: 'Lawn Care',
-        author: 'Evergrow Team',
-        publishedAt: '2025-01-15',
-        readTime: '7 min read',
-    },
-    {
-        id: 3,
-        title: 'Flower Bed Ideas That Thrive in Our Climate',
-        slug: 'flower-bed-ideas-oklahoma-climate',
-        excerpt: 'Not all plants are created equal in Oklahoma\'s climate. Discover native and hardy plant options that look beautiful and require less maintenance.',
-        featuredImage: '/images/blog/flower-bed-ideas.jpg',
-        category: 'Flower Beds',
-        author: 'Evergrow Team',
-        publishedAt: '2025-01-10',
-        readTime: '6 min read',
-    },
-    {
-        id: 4,
-        title: 'Why Regular Lawn Maintenance Saves You Money',
-        slug: 'why-regular-lawn-maintenance-saves-money',
-        excerpt: 'Skipping lawn care to save money? Here\'s why that approach actually costs more in the long run—and how consistent maintenance protects your investment.',
-        featuredImage: '/images/blog/lawn-maintenance-savings.jpg',
-        category: 'Lawn Care',
-        author: 'Evergrow Team',
-        publishedAt: '2025-01-05',
-        readTime: '4 min read',
-    },
-    {
-        id: 5,
-        title: 'Pressure Washing: What Homeowners Need to Know',
-        slug: 'pressure-washing-guide-homeowners',
-        excerpt: 'Thinking about pressure washing your driveway or deck? Learn about the benefits, risks, and why hiring a pro is often the safer choice.',
-        featuredImage: '/images/blog/pressure-washing-guide.jpg',
-        category: 'Pressure Washing',
-        author: 'Evergrow Team',
-        publishedAt: '2025-01-01',
-        readTime: '5 min read',
-    },
-]
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { formatDate } from '@/lib/utils'
+
+interface Post {
+    id: number
+    title: string
+    slug: string
+    excerpt: string
+    featuredImageUrl: string | null
+    category: string | null
+    publishedAt: string | null
+    readTime: string
+}
 
 export default function BlogPage() {
+    const [posts, setPosts] = useState<Post[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        fetch('/api/blog/posts?limit=20')
+            .then(r => r.json())
+            .then((data: { success?: boolean; posts?: Post[] }) => {
+                if (data.success && data.posts) {
+                    setPosts(data.posts)
+                }
+            })
+            .catch(err => console.error('Failed to load blog posts:', err))
+            .finally(() => setLoading(false))
+    }, [])
+
     return (
         <main>
-            {/* Hero Section */}
             <section className="relative bg-forest-green py-16">
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center text-white">
                         <h1 className="text-h1 font-heading font-bold mb-4">
-                            Landscaping Tips & Insights
+                            Landscaping Tips &amp; Insights
                         </h1>
                         <p className="text-xl">
                             Expert advice for homeowners in El Dorado and Oklahoma City
@@ -79,69 +46,54 @@ export default function BlogPage() {
                 </div>
             </section>
 
-            {/* Blog Content */}
             <section className="section py-16">
                 <div className="container mx-auto px-4">
                     <div className="max-w-6xl mx-auto">
-                        {/* Category Filter */}
-                        <CategoryFilter />
-
-                        {/* Featured Post */}
-                        <div className="mb-12">
-                            <div className="bg-vibrant-gold-50 rounded-lg overflow-hidden shadow-md border border-vibrant-gold-100">
-                                <PostCard post={posts[0]} featured />
+                        {loading ? (
+                            <div className="text-center py-12 text-gray-500">Loading posts...</div>
+                        ) : posts.length === 0 ? (
+                            <div className="text-center py-12">
+                                <p className="text-gray-500 text-lg">No blog posts published yet. Check back soon!</p>
                             </div>
-                        </div>
-
-                        {/* Post Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {posts.slice(1).map((post) => (
-                                <PostCard key={post.id} post={post} />
-                            ))}
-                        </div>
-
-                        {/* Load More */}
-                        <div className="text-center mt-12">
-                            <Button variant="outline" size="lg">
-                                Load More Articles
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Newsletter CTA */}
-            <section className="section py-16 bg-forest-green">
-                <div className="container mx-auto px-4">
-                    <div className="max-w-3xl mx-auto text-center text-white">
-                        <h2 className="text-h2 font-heading mb-4 text-white">
-                            Get Landscaping Tips in Your Inbox
-                        </h2>
-                        <p className="text-xl mb-8">
-                            Join our newsletter for seasonal tips, project ideas, and exclusive offers.
-                        </p>
-                        <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                            <input
-                                type="email"
-                                placeholder="Your email address"
-                                className="flex-1 px-4 py-3 rounded-lg text-gray-900 border-none focus:ring-2 focus:ring-vibrant-gold outline-none"
-                                required
-                            />
-                            <Button variant="primary" size="lg" type="submit" className="bg-vibrant-gold text-white hover:bg-forest-green-700 border-none">
-                                Subscribe
-                            </Button>
-                        </form>
-                        <p className="text-sm text-white/80 mt-4">
-                            We respect your privacy. Unsubscribe anytime.
-                        </p>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {posts.map(post => (
+                                    <article key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                                        {post.featuredImageUrl && (
+                                            <div className="h-48 bg-gray-100 overflow-hidden">
+                                                <img
+                                                    src={post.featuredImageUrl}
+                                                    alt={post.title}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="p-5">
+                                            {post.category && (
+                                                <span className="text-xs font-semibold text-forest-green uppercase tracking-wider">
+                                                    {post.category}
+                                                </span>
+                                            )}
+                                            <h2 className="text-lg font-bold text-gray-900 mt-1 mb-2 leading-tight">
+                                                <Link href={`/blog/${post.slug}`} className="hover:text-forest-green transition-colors">
+                                                    {post.title}
+                                                </Link>
+                                            </h2>
+                                            {post.excerpt && (
+                                                <p className="text-gray-600 text-sm line-clamp-3 mb-3">{post.excerpt}</p>
+                                            )}
+                                            <div className="flex items-center justify-between text-xs text-gray-400 mt-3">
+                                                <span>{post.publishedAt ? formatDate(post.publishedAt) : ''}</span>
+                                                <span>{post.readTime}</span>
+                                            </div>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
         </main>
     )
-}
-
-export const metadata = {
-    title: 'Blog | Evergrow Landscaping',
-    description: 'Landscaping tips, lawn care advice, and seasonal guides for homeowners in El Dorado and Oklahoma City.',
 }

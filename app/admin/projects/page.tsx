@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import { fetchWithAuth } from '@/lib/auth'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import PaymentStatusBadge from '@/components/admin/PaymentStatusBadge'
 
 interface Project {
     id: number
@@ -184,11 +185,11 @@ export default function AdminProjectsPage() {
                                             {formatCurrency(p.totalAmount)}
                                             <div className="text-xs text-gray-500">Created {formatDate(p.createdAt)}</div>
                                         </td>
-                                        <td className="px-4 py-3 text-gray-300">
-                                            {p.depositAmount ? formatCurrency(p.depositAmount) : '—'}
-                                            <div className={`text-xs ${p.depositPaid ? 'text-forest-green' : 'text-yellow-400'}`}>
-                                                {p.depositPaid ? 'Paid' : 'Pending'}
-                                            </div>
+                                        <td className="px-4 py-3">
+                                            <PaymentStatusBadge
+                                                status={p.depositPaid ? 'paid' : 'pending'}
+                                                amount={p.depositAmount ?? undefined}
+                                            />
                                         </td>
                                         <td className="px-4 py-3 text-gray-300">{formatCurrency(p.balanceDue)}</td>
                                         <td className="px-4 py-3 text-gray-300">
