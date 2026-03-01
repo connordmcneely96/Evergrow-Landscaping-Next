@@ -28,6 +28,7 @@ interface ProjectRow {
     total_amount: number;
     deposit_amount: number | null;
     deposit_paid: number | boolean;
+    balance_paid: number | boolean | null;
     scheduled_date: string | null;
     status: string;
     completed_at: string | null;
@@ -105,7 +106,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                   p.total_amount,
                   p.deposit_amount,
                   p.deposit_paid,
-                  p.balance_paid,
+                  COALESCE(p.balance_paid, 0) as balance_paid,
                   p.scheduled_date,
                   p.status,
                   p.completed_at,
@@ -139,6 +140,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             const depositPaid = row.deposit_paid === 1 || row.deposit_paid === true;
             const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid);
 
+            const balancePaid = row.balance_paid === 1 || row.balance_paid === true;
             const project = {
                 id: row.id,
                 serviceType: normalizedServiceType ?? row.service_type,
@@ -146,7 +148,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 totalAmount,
                 depositAmount,
                 depositPaid,
-                balancePaid: false,
+                balancePaid,
                 balanceDue,
                 scheduledDate: row.scheduled_date,
                 status: normalizedRowStatus,
@@ -200,13 +202,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
         const projectResults = await env.DB.prepare(
             `
-            SELECT 
+            SELECT
               p.id,
               p.service_type,
               p.description as project_description,
               p.total_amount,
               p.deposit_amount,
               p.deposit_paid,
+              COALESCE(p.balance_paid, 0) as balance_paid,
               p.scheduled_date,
               p.status,
               p.completed_at,
@@ -244,6 +247,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             const totalAmount = toNumber(row.total_amount, 0);
             const depositAmount = toNumber(row.deposit_amount, 0);
             const depositPaid = row.deposit_paid === 1 || row.deposit_paid === true;
+            const balancePaid = row.balance_paid === 1 || row.balance_paid === true;
             const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid);
 
             return {
@@ -253,6 +257,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 totalAmount,
                 depositAmount,
                 depositPaid,
+                balancePaid,
                 balanceDue,
                 scheduledDate: row.scheduled_date,
                 status: normalizedRowStatus,

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import { fetchWithAuth } from '@/lib/auth'
 import { formatCurrency, formatDate } from '@/lib/utils'
@@ -113,7 +114,11 @@ export default function AdminProjectsPage() {
                             <tbody className="divide-y divide-gray-800">
                                 {projects.map((p) => (
                                     <tr key={p.id} className="hover:bg-gray-800/50">
-                                        <td className="px-4 py-3 font-medium text-white">{p.customerName || '—'}</td>
+                                        <td className="px-4 py-3">
+                                            <Link href={`/admin/projects/detail?id=${p.id}`} className="font-medium text-white hover:text-ocean-blue transition-colors">
+                                                {p.customerName || '—'}
+                                            </Link>
+                                        </td>
                                         <td className="px-4 py-3 text-gray-300">{p.serviceName}</td>
                                         <td className="px-4 py-3 text-white font-medium">{formatCurrency(p.totalAmount)}</td>
                                         <td className="px-4 py-3 text-gray-300">
@@ -123,15 +128,23 @@ export default function AdminProjectsPage() {
                                             <Badge variant={STATUS_BADGE[p.status] || 'secondary'}>{p.statusDisplay}</Badge>
                                         </td>
                                         <td className="px-4 py-3">
-                                            {CANCELLABLE.has(p.status) && (
-                                                <button
-                                                    onClick={() => handleCancel(p)}
-                                                    disabled={cancellingId === p.id}
-                                                    className="text-xs text-red-400 hover:text-red-300 border border-red-900 hover:border-red-600 rounded px-2 py-1 transition-colors disabled:opacity-50 whitespace-nowrap"
+                                            <div className="flex items-center gap-2">
+                                                <Link
+                                                    href={`/admin/projects/detail?id=${p.id}`}
+                                                    className="text-xs text-ocean-blue hover:underline whitespace-nowrap"
                                                 >
-                                                    {cancellingId === p.id ? 'Cancelling…' : 'Cancel'}
-                                                </button>
-                                            )}
+                                                    View →
+                                                </Link>
+                                                {CANCELLABLE.has(p.status) && (
+                                                    <button
+                                                        onClick={() => handleCancel(p)}
+                                                        disabled={cancellingId === p.id}
+                                                        className="text-xs text-red-400 hover:text-red-300 border border-red-900 hover:border-red-600 rounded px-2 py-1 transition-colors disabled:opacity-50 whitespace-nowrap"
+                                                    >
+                                                        {cancellingId === p.id ? 'Cancelling…' : 'Cancel'}
+                                                    </button>
+                                                )}
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}

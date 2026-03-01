@@ -267,6 +267,165 @@ function getStatusMessage(status: ProjectStatus): string {
     }
 }
 
+// GET — full project detail with customer info and invoices
+export const onRequestGet: PagesFunction<Env> = async (context) => {
+    const { request, env, params } = context;
+
+    const authResult = await requireAdmin(request, env);
+    if (authResult instanceof Response) return authResult;
+
+    const projectId = parseProjectId(params.id);
+    if (!projectId) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid project ID' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    try {
+        const project = await env.DB.prepare(
+            `
+            SELECT
+              p.id,
+              p.customer_id,
+              p.quote_id,
+              p.service_type,
+              p.description AS project_description,
+              p.total_amount,
+              p.deposit_amount,
+              p.deposit_paid,
+              COALESCE(p.balance_paid, 0) AS balance_paid,
+              p.scheduled_date,
+              p.scheduled_time,
+              p.status,
+              p.completed_at,
+              p.created_at,
+              c.name  AS customer_name,
+              c.email AS customer_email,
+              c.phone AS customer_phone,
+              c.address AS customer_address,
+              q.quoted_amount,
+              q.description AS quote_description,
+              q.quote_notes
+            FROM projects p
+            LEFT JOIN customers c ON p.customer_id = c.id
+            LEFT JOIN quotes   q ON p.quote_id   = q.id
+            WHERE p.id = ?
+            LIMIT 1
+            `
+        )
+            .bind(projectId)
+            .first<Record<string, unknown>>();
+
+        if (!project) {
+            return new Response(JSON.stringify({ success: false, error: 'Project not found' }), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        const invoiceResults = await env.DB.prepare(
+            `
+            SELECT
+              id,
+              amount,
+              invoice_type,
+              status,
+              stripe_payment_intent_id,
+              paid_at,
+              due_date,
+              created_at
+            FROM invoices
+            WHERE project_id = ?
+            ORDER BY created_at ASC
+            `
+        )
+            .bind(projectId)
+            .all<Record<string, unknown>>();
+
+        const rawStatus = project.status as string | null;
+        const normalizedStatus = normalizeStoredStatus(rawStatus) ?? rawStatus ?? 'scheduled';
+
+        const serviceTypeRaw = project.service_type as string | null;
+        const serviceType = serviceTypeRaw
+            ? serviceTypeRaw.trim().toLowerCase().replace(/-/g, '_')
+            : null;
+        const serviceName = serviceType
+            ? SERVICE_TYPE_LABELS[serviceType] ?? serviceType
+            : 'Service';
+
+        const totalAmount = Number(project.total_amount ?? 0);
+        const depositAmount = Number(project.deposit_amount ?? 0);
+        const depositPaid =
+            project.deposit_paid === 1 || project.deposit_paid === true;
+        const balancePaid =
+            project.balance_paid === 1 || project.balance_paid === true;
+        const balanceDue = depositPaid
+            ? Math.max(0, totalAmount - depositAmount)
+            : totalAmount;
+
+        const INVOICE_TYPE_DISPLAY: Record<string, string> = {
+            deposit: 'Deposit (50%)',
+            balance: 'Balance Due',
+            full: 'Full Payment',
+            additional: 'Additional Charge',
+        };
+
+        return new Response(
+            JSON.stringify({
+                success: true,
+                project: {
+                    id: project.id,
+                    customerId: project.customer_id,
+                    quoteId: project.quote_id,
+                    serviceType,
+                    serviceName,
+                    totalAmount,
+                    depositAmount,
+                    depositPaid,
+                    balancePaid,
+                    balanceDue,
+                    scheduledDate: project.scheduled_date ?? null,
+                    scheduledTime: project.scheduled_time ?? null,
+                    status: normalizedStatus,
+                    statusDisplay: formatStatusLabel(normalizedStatus as ProjectStatus) ?? normalizedStatus,
+                    completedAt: project.completed_at ?? null,
+                    createdAt: project.created_at,
+                    description:
+                        (project.quote_description as string | null) ??
+                        (project.project_description as string | null) ??
+                        null,
+                    customer: {
+                        name: project.customer_name ?? null,
+                        email: project.customer_email ?? null,
+                        phone: project.customer_phone ?? null,
+                        address: project.customer_address ?? null,
+                    },
+                    invoices: (invoiceResults.results ?? []).map((inv) => ({
+                        id: inv.id,
+                        amount: Number(inv.amount ?? 0),
+                        invoiceType: inv.invoice_type,
+                        invoiceTypeDisplay:
+                            INVOICE_TYPE_DISPLAY[inv.invoice_type as string] ??
+                            inv.invoice_type,
+                        status: inv.status,
+                        paidAt: inv.paid_at ?? null,
+                        dueDate: inv.due_date ?? null,
+                        createdAt: inv.created_at,
+                    })),
+                },
+            }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+    } catch (error) {
+        console.error('Admin project GET error:', error);
+        return new Response(
+            JSON.stringify({ success: false, error: 'Failed to load project' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
+    }
+};
+
 // PATCH — update scheduling fields (scheduled_date, scheduled_time) without status change
 export const onRequestPatch: PagesFunction<Env> = async (context) => {
     const { request, env, params } = context;
