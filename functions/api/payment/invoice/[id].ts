@@ -160,13 +160,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             },
         });
 
-        // Update invoice with checkout session info
-        await env.DB.prepare(`
-            UPDATE invoices
-            SET stripe_invoice_id = ?
-            WHERE id = ?
-        `).bind(session.id, invoice.id).run();
-
         return new Response(JSON.stringify({
             success: true,
             sessionId: session.id,

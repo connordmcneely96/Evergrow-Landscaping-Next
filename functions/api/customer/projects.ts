@@ -182,6 +182,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             const balancePaid = row.balance_paid === 1 || row.balance_paid === true;
             const balanceDue = getBalanceDue(totalAmount, depositAmount, depositPaid, balancePaid);
 
+            const balancePaid = row.balance_paid === 1 || row.balance_paid === true;
             const project = {
                 id: row.id,
                 serviceType: normalizedServiceType ?? row.service_type,
@@ -329,7 +330,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
         const projectResults = await env.DB.prepare(
             `
-            SELECT 
+            SELECT
               p.id,
               p.service_type,
               p.description as project_description,
