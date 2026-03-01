@@ -22,12 +22,12 @@ export function Button({
 
   const variants = {
     primary:
-      'bg-vibrant-gold text-white hover:bg-forest-green-400 focus:ring-vibrant-gold',
+      'bg-vibrant-gold text-white hover:bg-forest-green-700 focus:ring-vibrant-gold',
     secondary:
-      'bg-forest-green text-white hover:bg-forest-green-400 focus:ring-forest-green',
+      'bg-forest-green text-white hover:bg-forest-green-700 focus:ring-forest-green',
     outline:
       'border-2 border-forest-green text-forest-green hover:bg-forest-green hover:text-white focus:ring-forest-green',
-    ghost: 'text-forest-green hover:bg-forest-green-50 focus:ring-forest-green',
+    ghost: 'text-forest-green hover:bg-vibrant-gold-50 focus:ring-forest-green',
   }
 
   const sizes = {

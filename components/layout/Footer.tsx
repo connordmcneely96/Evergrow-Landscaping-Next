@@ -5,14 +5,14 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="bg-forest-green-900 text-white pt-16 pb-8">
+        <footer className="bg-forest-green text-white pt-16 pb-8">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                     {/* Brand Column */}
                     <div>
                         <Link href="/" className="inline-block mb-4">
                             <span className="font-heading font-bold text-2xl tracking-tight text-white">
-                                EVER<span className="text-forest-green-300">GROW</span>
+                                EVER<span className="text-vibrant-gold">GROW</span>
                             </span>
                         </Link>
                         <p className="text-gray-300 text-sm leading-relaxed mb-6">
@@ -33,30 +33,29 @@ const Footer = () => {
 
                     {/* Services Column */}
                     <div>
-                        <h3 className="text-lg font-bold mb-4 text-forest-green-300">Services</h3>
+                        <h3 className="text-lg font-bold mb-4 text-vibrant-gold">Services</h3>
                         <ul className="space-y-3 text-sm text-gray-300">
                             <li><Link href="/services/lawn-care" className="hover:text-white transition-colors">Lawn Care & Mowing</Link></li>
                             <li><Link href="/services/flower-beds" className="hover:text-white transition-colors">Flower Bed Design</Link></li>
                             <li><Link href="/services/seasonal-cleanup" className="hover:text-white transition-colors">Spring & Fall Cleanup</Link></li>
                             <li><Link href="/services/pressure-washing" className="hover:text-white transition-colors">Pressure Washing</Link></li>
-                            <li><Link href="/services/fertilization" className="hover:text-white transition-colors">Fertilization & Weed Control</Link></li>
                         </ul>
                     </div>
 
                     {/* Contact Column */}
                     <div>
-                        <h3 className="text-lg font-bold mb-4 text-forest-green-300">Contact Us</h3>
+                        <h3 className="text-lg font-bold mb-4 text-vibrant-gold">Contact Us</h3>
                         <ul className="space-y-4 text-sm text-gray-300">
                             <li className="flex items-start">
-                                <MapPin className="w-5 h-5 mr-3 text-forest-green-300 flex-shrink-0" />
+                                <MapPin className="w-5 h-5 mr-3 text-vibrant-gold flex-shrink-0" />
                                 <span>El Dorado, AR 71730</span>
                             </li>
                             <li className="flex items-center">
-                                <Phone className="w-5 h-5 mr-3 text-forest-green-300 flex-shrink-0" />
+                                <Phone className="w-5 h-5 mr-3 text-vibrant-gold flex-shrink-0" />
                                 <a href="tel:+14054795794" className="hover:text-white transition-colors">405-479-5794</a>
                             </li>
                             <li className="flex items-center">
-                                <Mail className="w-5 h-5 mr-3 text-forest-green-300 flex-shrink-0" />
+                                <Mail className="w-5 h-5 mr-3 text-vibrant-gold flex-shrink-0" />
                                 <a href="mailto:contact@evergrowlandscaping.com" className="hover:text-white transition-colors">contact@evergrowlandscaping.com</a>
                             </li>
                         </ul>
@@ -64,7 +63,7 @@ const Footer = () => {
 
                     {/* Company Column */}
                     <div>
-                        <h3 className="text-lg font-bold mb-4 text-forest-green-300">Company</h3>
+                        <h3 className="text-lg font-bold mb-4 text-vibrant-gold">Company</h3>
                         <ul className="space-y-3 text-sm text-gray-300">
                             <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
                             <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
@@ -76,7 +75,7 @@ const Footer = () => {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="border-t border-forest-green-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+                <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-300">
                     <p>&copy; {currentYear} Evergrow Landscaping. All rights reserved.</p>
                     <div className="flex space-x-6 mt-4 md:mt-0">
                         <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>

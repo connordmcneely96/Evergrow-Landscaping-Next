@@ -32,7 +32,7 @@ function PaymentSuccessContent() {
         <div className="min-h-[60vh] flex items-center justify-center">
             <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
                 <div className="flex justify-center mb-4">
-                    <CheckCircle className="h-16 w-16 text-green-500" />
+                    <CheckCircle className="h-16 w-16 text-forest-green" />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">Payment Successful!</h1>
                 <p className="text-gray-600 mb-6">

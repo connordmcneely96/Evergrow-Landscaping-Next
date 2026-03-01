@@ -31,7 +31,7 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-forest-green to-forest-green-600 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-forest-green flex items-center justify-center p-4">
             <div className="max-w-md w-full bg-white rounded-lg shadow-hard p-8">
                 {/* Header */}
                 <div className="text-center mb-8">

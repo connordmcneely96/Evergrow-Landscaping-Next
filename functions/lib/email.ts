@@ -1369,7 +1369,7 @@ export function getJobApplicationConfirmationEmail(data: {
           <p><strong>Why Work at Evergrow Landscaping?</strong></p>
           <ul>
             <li>🏆 Family-owned business, owner-managed</li>
-            <li>📍 Multi-location opportunities across AR, OK, and TX</li>
+            <li>📍 Multi-location opportunities across AR & OK</li>
             <li>💯 Competitive pay and steady work</li>
             <li>📈 Opportunity to grow with an expanding company</li>
           </ul>
@@ -1387,7 +1387,7 @@ export function getJobApplicationConfirmationEmail(data: {
         </div>
         <div class="footer">
           <p><strong>Evergrow Landscaping</strong></p>
-          <p>Serving El Dorado, AR | Oklahoma City, OK | Texas Locations</p>
+          <p>Serving El Dorado, AR | Oklahoma City, OK</p>
           <p>Licensed & Insured | Family-Owned</p>
           <p style="margin-top: 15px; font-size: 12px;">
             This email was sent because you applied for a position at evergrowlandscaping.com

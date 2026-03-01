@@ -270,8 +270,8 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
                             <label
                                 key={service.id}
                                 className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${formData.serviceType === service.id
-                                        ? 'border-forest-green bg-forest-green-50'
-                                        : 'border-gray-200 hover:border-forest-green-200'
+                                        ? 'border-forest-green bg-vibrant-gold-50'
+                                        : 'border-gray-200 hover:border-vibrant-gold'
                                     }`}
                             >
                                 <input
@@ -305,8 +305,8 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
                             <label
                                 key={size.id}
                                 className={`flex items-center p-3 border-2 rounded-lg cursor-pointer transition-all ${formData.propertySize === size.id
-                                        ? 'border-forest-green bg-forest-green-50'
-                                        : 'border-gray-200 hover:border-forest-green-200'
+                                        ? 'border-forest-green bg-vibrant-gold-50'
+                                        : 'border-gray-200 hover:border-vibrant-gold'
                                     }`}
                             >
                                 <input
@@ -357,7 +357,7 @@ export function ServiceStep({ initialData, fullFormData, onBack, onSuccess }: Se
                             <label
                                 className={`flex items-center justify-center w-full px-4 py-6 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
                                     isDragging
-                                        ? 'border-forest-green bg-forest-green-50'
+                                        ? 'border-forest-green bg-vibrant-gold-50'
                                         : 'border-gray-300 hover:border-forest-green'
                                 }`}
                                 onDragOver={handleDragOver}

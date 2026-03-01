@@ -12,14 +12,14 @@ interface StatsCardProps {
 const VARIANT_STYLES = {
     default: 'border-gray-700',
     warning: 'border-yellow-600/40 bg-yellow-500/10',
-    success: 'border-green-600/40 bg-green-500/10',
+    success: 'border-forest-green-600/40 bg-vibrant-gold-500/10',
     info: 'border-ocean-blue/40 bg-ocean-blue/10',
 }
 
 const ICON_BG = {
     default: 'bg-gray-700 text-gray-300',
     warning: 'bg-yellow-500/20 text-yellow-400',
-    success: 'bg-green-500/20 text-green-400',
+    success: 'bg-vibrant-gold-500/20 text-vibrant-gold',
     info: 'bg-ocean-blue/20 text-ocean-blue',
 }
 
