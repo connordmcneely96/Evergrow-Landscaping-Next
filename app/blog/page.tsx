@@ -21,8 +21,8 @@ export default function BlogPage() {
 
     useEffect(() => {
         fetch('/api/blog/posts?limit=20')
-            .then(r => r.json())
-            .then((data: { success?: boolean; posts?: Post[] }) => {
+            .then(r => r.json() as Promise<{ success?: boolean; posts?: Post[] }>)
+            .then((data) => {
                 if (data.success && data.posts) {
                     setPosts(data.posts)
                 }
