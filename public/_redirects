@@ -1,0 +1,4 @@
+# Serve a pre-built blog post shell for any slug not generated at build time.
+# BlogPostContent reads the real slug from the URL via usePathname(), so the
+# correct post is always fetched regardless of which shell HTML is served.
+/blog/* /blog/spring-lawn-care-tips-oklahoma/ 200

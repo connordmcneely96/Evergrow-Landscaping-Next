@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
@@ -27,10 +28,18 @@ interface BlogPostContentProps {
     slug: string
 }
 
-export function BlogPostContent({ slug }: BlogPostContentProps) {
+export function BlogPostContent({ slug: slugProp }: BlogPostContentProps) {
     const [post, setPost] = useState<BlogPost | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+
+    // Always derive the slug from the actual URL so that the Cloudflare Pages
+    // _redirects fallback (which serves a pre-built shell for unregistered slugs)
+    // still fetches the correct post data.
+    const pathname = usePathname()
+    const slug = pathname
+        ? (pathname.replace(/\/+$/, '').split('/').filter(Boolean)[1] ?? slugProp)
+        : slugProp
 
     useEffect(() => {
         async function fetchPost() {
