@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import BlogEditor from '@/components/admin/BlogEditor'
 import { fetchWithAuth } from '@/lib/auth'
@@ -22,13 +22,18 @@ interface PostData {
 }
 
 export default function AdminBlogEditPage() {
-    const params = useParams()
-    const id = params.id as string
+    const searchParams = useSearchParams()
+    const id = searchParams.get('id')
     const [post, setPost] = useState<PostData | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
+        if (!id) {
+            setError('No post ID provided')
+            setLoading(false)
+            return
+        }
         async function load() {
             try {
                 const res = await fetchWithAuth(`/api/admin/blog/${id}`)

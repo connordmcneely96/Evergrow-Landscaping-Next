@@ -133,7 +133,7 @@ export default function AdminBlogPage() {
                                     <td className="px-4 py-3 text-right">
                                         <div className="flex items-center justify-end gap-2">
                                             <Link
-                                                href={`/admin/blog/${post.id}/edit`}
+                                                href={`/admin/blog/edit?id=${post.id}`}
                                                 className="text-blue-400 hover:text-blue-300 text-xs font-medium px-2 py-1 rounded hover:bg-blue-900/20 transition-colors"
                                             >
                                                 Edit
