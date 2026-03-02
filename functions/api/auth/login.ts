@@ -43,21 +43,29 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             });
         }
 
-        // Verify password using PBKDF2
-        if (customer.password_hash) {
-            const isValid = await verifyPassword(password, customer.password_hash);
-            if (!isValid) {
-                return new Response(JSON.stringify({
-                    success: false,
-                    error: 'Invalid email or password',
-                }), {
-                    status: 401,
-                    headers: { 'Content-Type': 'application/json' },
-                });
-            }
+        // Reject login if no password has been set yet (account created via admin/quote flow).
+        // The customer must use the "Set Password" flow before logging in.
+        if (!customer.password_hash) {
+            return new Response(JSON.stringify({
+                success: false,
+                error: 'No password set for this account. Please use the password reset link sent to your email.',
+            }), {
+                status: 401,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
-        // Customers without a password_hash were created via the admin/quote flow.
-        // They can log in with any password until they set one.
+
+        // Verify password using PBKDF2
+        const isValid = await verifyPassword(password, customer.password_hash);
+        if (!isValid) {
+            return new Response(JSON.stringify({
+                success: false,
+                error: 'Invalid email or password',
+            }), {
+                status: 401,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
 
         // Create a real JWT session with proper signing and KV storage
         if (!env.JWT_SECRET) {
@@ -104,7 +112,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         console.error('Login error:', error);
         return new Response(JSON.stringify({
             success: false,
-            error: `Login failed: ${error?.message || 'Unknown error'}`,
+            error: 'Login failed. Please try again.',
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
@@ -170,6 +178,9 @@ async function verifyPassword(password: string, storedHash: string): Promise<boo
         keyMaterial,
         256
     );
-    const hashHex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex === expectedHash;
+    // Use timing-safe comparison to prevent timing side-channel attacks
+    const expectedBytes = new Uint8Array(parts[3].match(/.{2}/g)!.map(byte => parseInt(byte, 16)));
+    const actualBytes = new Uint8Array(hash);
+    if (expectedBytes.length !== actualBytes.length) return false;
+    return crypto.subtle.timingSafeEqual(expectedBytes, actualBytes);
 }

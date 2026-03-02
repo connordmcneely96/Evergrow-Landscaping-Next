@@ -45,6 +45,20 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             }), { status: 400, headers: { 'Content-Type': 'application/json' } });
         }
 
+        // Server-side length limits to prevent abuse
+        if (typeof name === 'string' && name.length > 200) {
+            return new Response(JSON.stringify({ success: false, error: 'Name is too long' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (typeof phone === 'string' && phone.length > 30) {
+            return new Response(JSON.stringify({ success: false, error: 'Phone number is too long' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (typeof address === 'string' && address.length > 500) {
+            return new Response(JSON.stringify({ success: false, error: 'Address is too long' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (typeof description === 'string' && description.length > 2000) {
+            return new Response(JSON.stringify({ success: false, error: 'Description must be 2000 characters or fewer' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
+        }
+
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {

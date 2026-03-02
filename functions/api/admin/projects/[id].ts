@@ -534,14 +534,6 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
         return authResult;
     }
 
-    const ownerEmail = normalizeEmail(env.NOTIFICATION_EMAIL || OWNER_EMAIL_FALLBACK);
-    if (!ownerEmail || normalizeEmail(authResult.email) !== ownerEmail) {
-        return new Response(JSON.stringify({ success: false, error: 'Owner access required' }), {
-            status: 403,
-            headers: { 'Content-Type': 'application/json' },
-        });
-    }
-
     const projectId = parseProjectId(params.id);
     if (!projectId) {
         return new Response(JSON.stringify({ success: false, error: 'Invalid project ID' }), {
@@ -637,6 +629,17 @@ export const onRequestPut: PagesFunction<Env> = async (context) => {
         const transition = validateTransition(currentStatus, nextStatus);
         if (!transition.success) {
             return new Response(JSON.stringify({ success: false, error: transition.error }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        // Require deposit to be paid before marking a project complete
+        if (nextStatus === 'completed' && !isDepositPaid(project.deposit_paid)) {
+            return new Response(JSON.stringify({
+                success: false,
+                error: 'Cannot complete project: deposit has not been paid',
+            }), {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' },
             });

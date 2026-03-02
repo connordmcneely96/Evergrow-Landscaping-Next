@@ -112,12 +112,11 @@ function QuoteDetailContent() {
         if (!quoteId) { setLoading(false); return }
         async function loadQuote() {
             try {
-                const res = await fetchWithAuth(`/api/admin/quotes?limit=100`)
+                const res = await fetchWithAuth(`/api/admin/quotes/${quoteId}`)
                 if (res.ok) {
                     const data = await res.json() as any
-                    if (data.success) {
-                        const found = data.quotes.find((q: Quote) => q.id === Number(quoteId))
-                        if (found) setQuote(found)
+                    if (data.success && data.quote) {
+                        setQuote(data.quote)
                     }
                 }
             } catch (err) {
