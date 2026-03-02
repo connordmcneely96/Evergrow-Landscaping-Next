@@ -1,4 +1,5 @@
 import { Env } from '../../types';
+import { requireAuth } from '../../lib/session';
 import { getStripeClient } from '../../lib/stripe';
 
 type ConfirmSessionRequest = {
@@ -9,7 +10,6 @@ interface InvoiceRow {
     id: number;
     project_id: number;
     customer_id: number;
-    amount: number;
     invoice_type: string;
     status: string;
 }
@@ -20,8 +20,23 @@ function parseSessionId(value: unknown): string | null {
     return trimmed ? trimmed : null;
 }
 
+/**
+ * POST /api/payment/confirm-session
+ *
+ * Read-only status check: asks Stripe whether the checkout session is paid
+ * and returns the current invoice status from our DB. It does NOT write to
+ * the database — the Stripe webhook (checkout.session.completed) is the sole
+ * source of truth for DB updates and receipt emails. This prevents the race
+ * condition where confirm-session wins ahead of the webhook and marks the
+ * invoice paid before the webhook fires, causing the receipt email to be skipped.
+ */
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
+
+    // Require authentication — session IDs appear in redirect URLs and must not
+    // be usable by unauthenticated callers.
+    const authResult = await requireAuth(request, env);
+    if (authResult instanceof Response) return authResult;
 
     try {
         const body = await request.json<ConfirmSessionRequest>();
@@ -38,26 +53,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         const session = await stripe.checkout.sessions.retrieve(sessionId);
 
         if (session.payment_status !== 'paid') {
-            return new Response(JSON.stringify({ success: false, error: 'Session is not paid yet' }), {
+            return new Response(JSON.stringify({ success: false, error: 'Payment not yet confirmed' }), {
                 status: 409,
                 headers: { 'Content-Type': 'application/json' },
             });
         }
 
-        const paymentIntentId = typeof session.payment_intent === 'string'
-            ? session.payment_intent
-            : session.payment_intent?.id || null;
-
         const invoiceIdFromMetadata = session.metadata?.invoice_id || null;
 
+        // Look up invoice to return current DB status (webhook may have already processed it)
         const invoice = await env.DB.prepare(`
-            SELECT
-                id,
-                project_id,
-                customer_id,
-                amount,
-                invoice_type,
-                status
+            SELECT id, project_id, customer_id, invoice_type, status
             FROM invoices
             WHERE (id = ?)
                OR (stripe_invoice_id = ?)
@@ -71,36 +77,21 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             });
         }
 
-        if (invoice.status !== 'paid') {
-            await env.DB.prepare(`
-                UPDATE invoices
-                SET status = 'paid',
-                    paid_at = CURRENT_TIMESTAMP,
-                    stripe_payment_intent_id = COALESCE(?, stripe_payment_intent_id)
-                WHERE id = ?
-            `).bind(paymentIntentId, invoice.id).run();
-
-            if (invoice.invoice_type === 'deposit') {
-                await env.DB.prepare('UPDATE projects SET deposit_paid = 1 WHERE id = ?')
-                    .bind(invoice.project_id)
-                    .run();
-            } else if (invoice.invoice_type === 'balance') {
-                await env.DB.prepare('UPDATE projects SET balance_paid = 1 WHERE id = ?')
-                    .bind(invoice.project_id)
-                    .run();
-            } else if (invoice.invoice_type === 'full') {
-                await env.DB.prepare('UPDATE projects SET deposit_paid = 1, balance_paid = 1 WHERE id = ?')
-                    .bind(invoice.project_id)
-                    .run();
-            }
+        // Verify the authenticated user owns this invoice
+        if (invoice.customer_id !== authResult.userId) {
+            return new Response(JSON.stringify({ success: false, error: 'Forbidden' }), {
+                status: 403,
+                headers: { 'Content-Type': 'application/json' },
+            });
         }
 
+        // Return current state — webhook is responsible for writing paid status
         return new Response(JSON.stringify({
             success: true,
             invoiceId: invoice.id,
             projectId: invoice.project_id,
             invoiceType: invoice.invoice_type,
-            paid: true,
+            paid: invoice.status === 'paid',
         }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
@@ -110,7 +101,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         return new Response(JSON.stringify({
             success: false,
             error: 'Failed to confirm payment session',
-            details: error instanceof Error ? error.message : 'Unknown error',
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },

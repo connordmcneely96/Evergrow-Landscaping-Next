@@ -149,6 +149,164 @@ function generateToken(): string {
         .join('');
 }
 
+// GET — fetch a single quote by ID (same shape as the list endpoint)
+export const onRequestGet: PagesFunction<Env> = async (context) => {
+    const { request, env, params } = context;
+
+    const authResult = await requireAdmin(request, env);
+    if (authResult instanceof Response) return authResult;
+
+    const quoteId = parseQuoteId(params.id);
+    if (!quoteId) {
+        return new Response(JSON.stringify({ success: false, error: 'Invalid quote ID' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    try {
+        const row = await env.DB.prepare(`
+            SELECT
+              q.id,
+              q.customer_id,
+              q.service_type,
+              q.property_size,
+              q.description,
+              q.photo_urls,
+              q.quoted_amount,
+              q.status,
+              q.created_at,
+              q.accepted_at,
+              q.quote_notes,
+              COALESCE(c.name, q.contact_name) as customer_name,
+              COALESCE(c.email, q.contact_email) as customer_email,
+              COALESCE(c.phone, q.contact_phone) as customer_phone,
+              COALESCE(c.address, q.contact_address) as customer_address,
+              COALESCE(c.city, q.contact_city) as customer_city,
+              c.state as customer_state,
+              COALESCE(c.zip_code, q.contact_zip) as customer_zip,
+              p.deposit_paid as project_deposit_paid
+            FROM quotes q
+            LEFT JOIN customers c ON q.customer_id = c.id
+            LEFT JOIN projects p ON p.quote_id = q.id
+            WHERE q.id = ?
+            LIMIT 1
+        `).bind(quoteId).first<QuoteRow & { quote_notes: string | null }>();
+
+        if (!row) {
+            return new Response(JSON.stringify({ success: false, error: 'Quote not found' }), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        const SERVICE_NAME_DISPLAY: Record<string, string> = {
+            lawn_care: 'Lawn Care & Maintenance',
+            'lawn-care': 'Lawn Care & Maintenance',
+            flower_beds: 'Flower Bed Installation',
+            'flower-beds': 'Flower Bed Installation',
+            seasonal_cleanup: 'Seasonal Cleanup',
+            'seasonal-cleanup': 'Seasonal Cleanup',
+            pressure_washing: 'Pressure Washing',
+            'pressure-washing': 'Pressure Washing',
+            landscaping: 'Landscaping & Design',
+            other: 'Other Services',
+        };
+        const STATUS_DISPLAY: Record<string, string> = {
+            pending: 'Awaiting Quote',
+            quoted: 'Quote Sent',
+            accepted: 'Accepted',
+            declined: 'Declined',
+            expired: 'Expired',
+            converted: 'Converted to Project',
+        };
+
+        const normalizedServiceType = row.service_type?.trim().toLowerCase().replace(/-/g, '_') ?? row.service_type;
+        const serviceName = SERVICE_NAME_DISPLAY[normalizedServiceType] || getServiceTypeLabel(row.service_type);
+        const statusDisplay = STATUS_DISPLAY[row.status] || row.status;
+        const now = new Date();
+        const created = new Date(row.created_at);
+        const daysWaiting = Number.isNaN(created.getTime()) ? 0 : Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
+        const needsResponse = row.status === 'pending' && daysWaiting > 1;
+        const customerAddress = formatAddress(row.customer_address, row.customer_city, row.customer_state, row.customer_zip);
+        const depositStatus = (() => {
+            if (row.status !== 'accepted' && row.status !== 'converted') return 'na';
+            if (row.project_deposit_paid === 1) return 'paid';
+            if (row.project_deposit_paid === 0) return 'pending';
+            return 'na';
+        })();
+
+        return new Response(JSON.stringify({
+            success: true,
+            quote: {
+                id: row.id,
+                customerId: row.customer_id,
+                customerName: row.customer_name,
+                customerEmail: row.customer_email,
+                customerPhone: row.customer_phone,
+                customerAddress,
+                serviceType: normalizedServiceType,
+                serviceName,
+                propertySize: row.property_size,
+                description: row.description,
+                photoUrls: parsePhotoUrls(row.photo_urls),
+                quotedAmount: row.quoted_amount !== null ? Number(row.quoted_amount) : null,
+                status: row.status,
+                statusDisplay,
+                createdAt: row.created_at,
+                acceptedAt: row.accepted_at,
+                daysWaiting,
+                needsResponse,
+                depositStatus,
+            },
+        }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    } catch (error) {
+        console.error('Admin quote GET error:', error);
+        return new Response(JSON.stringify({ success: false, error: 'Failed to load quote' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+};
+
+function parsePhotoUrls(value: string | null): string[] {
+    if (!value) return [];
+    try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed)) {
+            return parsed.map((item: unknown) => typeof item === 'string' ? buildPhotoUrl(item) : null).filter((u): u is string => Boolean(u));
+        }
+        if (typeof parsed === 'string') {
+            const url = buildPhotoUrl(parsed);
+            return url ? [url] : [];
+        }
+    } catch {
+        const url = buildPhotoUrl(value);
+        return url ? [url] : [];
+    }
+    return [];
+}
+
+function buildPhotoUrl(value: string): string | null {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    if (trimmed.startsWith('/api/assets/')) return trimmed;
+    const withoutSlash = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed;
+    const normalized = withoutSlash.replace(/^assets\//i, '');
+    return `/api/assets/${normalized}`;
+}
+
+function formatAddress(address?: string | null, city?: string | null, state?: string | null, zip?: string | null): string | null {
+    const segments: string[] = [];
+    if (address?.trim()) segments.push(address.trim());
+    const locality = [city?.trim(), state?.trim()].filter(Boolean).join(', ');
+    if (locality) segments.push(locality);
+    let combined = segments.join(', ');
+    if (zip?.trim()) combined = combined ? `${combined} ${zip.trim()}` : zip.trim();
+    return combined || null;
+}
+
 export const onRequestPut: PagesFunction<Env> = async (context) => {
     const { request, env, params } = context;
 

@@ -169,12 +169,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
-        const message = error instanceof Error ? error.message : String(error);
-        console.error('Create checkout session error:', message);
+        console.error('Create checkout session error:', error instanceof Error ? error.message : String(error));
         return new Response(JSON.stringify({
             success: false,
             error: 'Failed to create payment session',
-            details: error instanceof Error ? error.message : 'Unknown error'
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
