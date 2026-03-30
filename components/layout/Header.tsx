@@ -16,10 +16,10 @@ const navigation = [
 ];
 
 const services = [
-    { name: 'Lawn Care', href: '/services/lawn-care' },
-    { name: 'Flower Beds', href: '/services/flower-beds' },
-    { name: 'Seasonal Cleanup', href: '/services/seasonal-cleanup' },
-    { name: 'Pressure Washing', href: '/services/pressure-washing' },
+    { name: 'Lawn Care & Maintenance', href: '/services/lawn-care' },
+    { name: 'Landscaping & Design', href: '/services/flower-beds' },
+    { name: 'Seasonal Cleanups', href: '/services/seasonal-cleanup' },
+    { name: 'Pressure Washing & Soft Washing', href: '/services/pressure-washing' },
 ];
 
 export default function Header() {
@@ -37,16 +37,16 @@ export default function Header() {
         <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
             <div className="container mx-auto px-4">
                 <div className="flex items-center h-16">
-                    {/* Logo — full logo in nav */}
+                    {/* Logo — icon only (crop to the circular icon portion of the SVG) */}
                     <Link href="/" className="flex items-center flex-shrink-0 group">
-                        <Image
-                            src="/images/Logo- Transparent & No Buffer .png"
-                            alt="Evergrow Landscaping"
-                            width={200}
-                            height={80}
-                            className="h-12 w-auto"
-                            priority
-                        />
+                        {/* overflow-hidden clips the text half of the logo SVG, showing only the icon circle */}
+                        <div className="overflow-hidden flex-shrink-0" style={{ width: '56px', height: '56px' }}>
+                            <img
+                                src="/images/logo.svg"
+                                alt="Evergrow Landscaping"
+                                style={{ height: '56px', width: 'auto', maxWidth: 'none' }}
+                            />
+                        </div>
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -209,6 +209,12 @@ export default function Header() {
                             </div>
 
                             <div className="pt-4 flex flex-col space-y-3">
+                                <Link
+                                    href="/portal/login"
+                                    className="bg-forest-green text-white py-3 rounded-lg font-bold uppercase text-center tracking-wide shadow-md"
+                                >
+                                    Login
+                                </Link>
                                 <Link
                                     href="/pay"
                                     className="bg-hopeful-teal text-white py-3 rounded-lg font-bold uppercase text-center tracking-wide shadow-md"

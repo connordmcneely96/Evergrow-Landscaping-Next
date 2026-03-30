@@ -91,7 +91,7 @@ export default function PortalDashboard() {
                     Welcome back, {user?.name}
                 </h1>
                 <Link href="/quote-request">
-                    <button className="mt-4 sm:mt-0 px-4 py-2 bg-forest-green text-white rounded-md hover:bg-forest-green-700 shadow-sm text-sm font-medium">
+                    <button className="mt-4 sm:mt-0 px-4 py-2 min-h-[44px] bg-forest-green text-white rounded-md hover:bg-forest-green-700 shadow-sm text-sm font-medium">
                         Request New Service
                     </button>
                 </Link>
@@ -205,7 +205,7 @@ export default function PortalDashboard() {
 
             {/* Recent Activity / Projects */}
             <h2 className="text-lg font-medium text-gray-900">Recent Projects</h2>
-            <div className="bg-white shadow overflow-hidden sm:rounded-md">
+            <div className="bg-white shadow overflow-hidden sm:rounded-md overflow-x-auto">
                 <ul role="list" className="divide-y divide-gray-200">
                     {recentProjects.length === 0 ? (
                         <li className="px-4 py-4 sm:px-6 text-gray-500 italic text-center">No recent projects found.</li>

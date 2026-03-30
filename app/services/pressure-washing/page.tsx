@@ -1,9 +1,9 @@
-import { ServiceHero } from '@/components/services/ServiceHero'
+import Link from 'next/link'
+import { Button } from '@/components/ui/Button'
 import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
-import { ServiceGallery } from '@/components/services/ServiceGallery'
 
 const features = [
   {
@@ -106,12 +106,33 @@ const faqs = [
 export default function PressureWashingPage() {
   return (
     <main>
-      <ServiceHero
-        title="Professional Pressure Washing"
-        description="Restore your home's curb appeal with professional pressure washing. Driveways, decks, patios, and more."
-        imageSrc="/api/assets/PressureWashing_image2.png"
-        imageAlt="Before and after pressure washing in Oklahoma City"
-      />
+      {/* Hero Section */}
+      <section className="bg-forest-green pt-20">
+        {/* TODO: Replace with Karson's provided hero image for this service */}
+        <div className="w-full bg-[#1a4a2e] flex items-center justify-center" style={{ height: '220px' }}>
+          <p className="text-white/50 italic text-sm text-center px-6">[ Service Hero Image — Karson Providing ]</p>
+        </div>
+        <div className="container py-12">
+          <div className="max-w-3xl">
+            <h1 className="text-white font-heading font-bold text-4xl md:text-5xl lg:text-6xl mb-6">
+              Pressure Washing &amp; Soft Washing
+            </h1>
+            <p className="text-white/90 text-xl md:text-2xl mb-8">
+              Restore your home's curb appeal with professional pressure and soft washing. Driveways, decks, patios, siding, and more.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/quote-request">
+                <Button variant="primary" size="lg" className="w-full sm:w-auto">Get Free Quote</Button>
+              </Link>
+              <a href="tel:405-479-5794">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto bg-white/10 border-white text-white hover:bg-white hover:text-forest-green">
+                  Call (405) 479-5794
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Problem/Solution Section */}
       <section className="section">
@@ -162,21 +183,9 @@ export default function PressureWashingPage() {
       <ServiceFeatures features={features} />
       <ServiceProcess steps={process} />
       <ServiceFAQ faqs={faqs} />
-      <ServiceGallery
-        title="Pressure Washing Results"
-        images={[
-          {
-            src: '/api/assets/PressureWashing_image1.png',
-            alt: 'Professional pressure washing service'
-          },
-          {
-            src: '/api/assets/PressureWashing_image2.png',
-            alt: 'Clean driveway after pressure washing'
-          }
-        ]}
-      />
+      {/* TODO: Gallery removed per client — Karson will provide assets for dedicated /gallery page */}
       <ServiceCTA
-        title="See the Difference Pressure Washing Makes"
+        title="See the Difference Pressure & Soft Washing Makes"
         description="Get a free quote and before/after photos. You'll be amazed at the transformation."
       />
     </main>
@@ -184,6 +193,6 @@ export default function PressureWashingPage() {
 }
 
 export const metadata = {
-  title: 'Pressure Washing Services | Evergrow Landscaping',
-  description: 'Professional pressure washing in El Dorado and OKC. Driveways, decks, patios, siding, fences. Safe, effective cleaning with commercial equipment.',
+  title: 'Pressure Washing & Soft Washing Services | Evergrow Landscaping',
+  description: 'Professional pressure washing and soft washing in Arkansas and Oklahoma. Driveways, decks, patios, siding, fences. Safe, effective cleaning with commercial equipment.',
 }

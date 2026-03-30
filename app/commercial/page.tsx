@@ -118,25 +118,26 @@ const faqs = [
 export default function CommercialPage() {
     return (
         <main>
-            {/* Custom Hero for Commercial */}
-            <section className="relative min-h-[70vh] flex items-center pt-20">
-                <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-forest-green" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10 z-10" />
-                    {/* Fallback pattern if image fails */}
-                    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
-                </div>
+            {/* Hero Image Placeholder — TODO: Replace with Karson's provided commercial hero image */}
+            <div className="w-full bg-[#1a4a2e] flex items-center justify-center pt-20" style={{ minHeight: '280px' }}>
+                <p className="text-white/50 italic text-sm text-center px-6">[ Commercial Hero Image — Karson Providing ]</p>
+            </div>
 
-                <div className="container relative z-10 pt-32">
+            {/* Commercial Hero Content */}
+            <section className="relative bg-forest-green flex items-center">
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10" />
+                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
+
+                <div className="container relative z-10 py-16">
                     <div className="max-w-4xl">
                         <span className="inline-block py-1 px-3 rounded-full bg-white/10 text-vibrant-gold border border-white/20 mb-6 font-medium tracking-wide">
-                            Mullti-State Commercial Landscaping
+                            Multi-State Commercial Landscaping
                         </span>
-                        <h1 className="text-white font-heading font-bold text-4xl md:text-5xl lg:text-7xl mb-6 leading-tight">
-                            Simplified Property <br className="hidden lg:block" /> Management Solution
+                        <h1 className="text-white font-heading font-bold text-4xl md:text-5xl lg:text-7xl mb-4 leading-tight">
+                            One vendor. Every Property Handled.
                         </h1>
                         <p className="text-white/90 text-xl md:text-2xl mb-8 max-w-2xl leading-relaxed">
-                            Managing 80+ properties? We deliver consistent quality, unified billing, and 24/7 reliability across Arkansas and Oklahoma.
+                            Reliable, Consistent, and Hassle Free!
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4">
@@ -155,20 +156,29 @@ export default function CommercialPage() {
                                 </Button>
                             </a>
                         </div>
+                    </div>
+                </div>
+            </section>
 
-                        <div className="mt-12 flex flex-wrap gap-6 text-white/80 items-center">
-                            <div className="flex items-center gap-2">
-                                <svg className="w-5 h-5 text-vibrant-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                                <span>Licensed in AR & OK</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <svg className="w-5 h-5 text-vibrant-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                                <span>$2M+ Liability Insurance</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <svg className="w-5 h-5 text-vibrant-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                                <span>Single Point of Contact</span>
-                            </div>
+            {/* Benefits Strip */}
+            <section className="bg-deep-charcoal py-8">
+                <div className="container">
+                    <div className="flex flex-wrap justify-center gap-6 md:gap-12 text-white text-sm font-medium">
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-vibrant-gold flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            <span>Licensed &amp; Insured</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-vibrant-gold flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            <span>$2M+ Liability Insurance</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-vibrant-gold flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            <span>Consistent, Reliable, &amp; Accountable</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-vibrant-gold flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            <span>24/7 Emergency Contact</span>
                         </div>
                     </div>
                 </div>
@@ -180,7 +190,7 @@ export default function CommercialPage() {
                     <div className="max-w-4xl mx-auto">
                         <div className="mb-12 text-center">
                             <h2 className="text-h2 font-heading text-brand-charcoal mb-4">
-                                Is Managing Your External Maintenance Becoming a Full-Time Job?
+                                Are you a property manager or a business owner?
                             </h2>
                             <p className="text-lg text-gray-600">
                                 You shouldn't have to chase down vendors, decipher dozens of different invoices, or worry if the lawn was actually mowed at your satellite location.
@@ -222,7 +232,7 @@ export default function CommercialPage() {
             <ServiceFAQ faqs={faqs} />
             <ServiceCTA
                 title="Ready to Streamline Your Landscape Management?"
-                description="Get a comprehensive proposal for your portfolio today. We'll show you exactly how we can improve quality while reducing your administrative burden."
+                description="Get a comprehensive proposal for your portfolio today. Email us at karson@evergrowlandscaping.com or request a proposal below."
                 buttonText="Request Commercial Proposal"
             />
         </main>

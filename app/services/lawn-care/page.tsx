@@ -1,9 +1,9 @@
-import { ServiceHero } from '@/components/services/ServiceHero'
+import Link from 'next/link'
+import { Button } from '@/components/ui/Button'
 import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
-import { ServiceGallery } from '@/components/services/ServiceGallery'
 
 const features = [
   {
@@ -119,12 +119,33 @@ const faqs = [
 export default function LawnCarePage() {
   return (
     <main>
-      <ServiceHero
-        title="Lawn Care & Maintenance"
-        description="Keep your lawn looking pristine year-round with our professional mowing, edging, and trimming services."
-        imageSrc="/api/assets/LawnCareAndMaintenance_image2.png"
-        imageAlt="Beautifully maintained lawn in El Dorado"
-      />
+      {/* Hero Section */}
+      <section className="bg-forest-green pt-20">
+        {/* TODO: Replace with Karson's provided hero image for this service */}
+        <div className="w-full bg-[#1a4a2e] flex items-center justify-center" style={{ height: '220px' }}>
+          <p className="text-white/50 italic text-sm text-center px-6">[ Service Hero Image — Karson Providing ]</p>
+        </div>
+        <div className="container py-12">
+          <div className="max-w-3xl">
+            <h1 className="text-white font-heading font-bold text-4xl md:text-5xl lg:text-6xl mb-6">
+              Lawn Care &amp; Maintenance
+            </h1>
+            <p className="text-white/90 text-xl md:text-2xl mb-8">
+              Keep your lawn looking pristine year-round with our professional mowing, edging, and trimming services.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/quote-request">
+                <Button variant="primary" size="lg" className="w-full sm:w-auto">Get Free Quote</Button>
+              </Link>
+              <a href="tel:405-479-5794">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto bg-white/10 border-white text-white hover:bg-white hover:text-forest-green">
+                  Call (405) 479-5794
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Problem/Solution Section */}
       <section className="section">
@@ -183,19 +204,7 @@ export default function LawnCarePage() {
       <ServiceFeatures features={features} />
       <ServiceProcess steps={process} />
       <ServiceFAQ faqs={faqs} />
-      <ServiceGallery
-        title="Our Lawn Care Work"
-        images={[
-          {
-            src: '/api/assets/LawnCareAndMaintenance_image1.png',
-            alt: 'Professional lawn mowing and maintenance'
-          },
-          {
-            src: '/api/assets/LawnCareAndMaintenance_image2.png',
-            alt: 'Beautiful manicured lawn'
-          }
-        ]}
-      />
+      {/* TODO: Gallery removed per client — Karson will provide assets for dedicated /gallery page */}
       <ServiceCTA />
     </main>
   )
@@ -203,5 +212,5 @@ export default function LawnCarePage() {
 
 export const metadata = {
   title: 'Lawn Care & Maintenance Services | Evergrow Landscaping',
-  description: 'Professional lawn mowing, edging, and trimming in El Dorado and OKC. Weekly or bi-weekly service. Free quotes, satisfaction guaranteed.',
+  description: 'Professional lawn care and maintenance services in Arkansas and Oklahoma. Weekly or bi-weekly mowing, edging, and trimming. Free quotes, satisfaction guaranteed.',
 }
