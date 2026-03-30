@@ -1,9 +1,9 @@
-import { ServiceHero } from '@/components/services/ServiceHero'
+import Link from 'next/link'
+import { Button } from '@/components/ui/Button'
 import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
-import { ServiceGallery } from '@/components/services/ServiceGallery'
 
 const features = [
   {
@@ -106,12 +106,33 @@ const faqs = [
 export default function FlowerBedsPage() {
   return (
     <main>
-      <ServiceHero
-        title="Flower Bed Installation & Design"
-        description="Transform your landscape with beautiful, custom-designed flower beds that add color and curb appeal year-round."
-        imageSrc="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80"
-        imageAlt="Beautiful flower bed installation in Oklahoma"
-      />
+      {/* Hero Section */}
+      <section className="bg-forest-green pt-20">
+        {/* TODO: Replace with Karson's provided hero image for this service */}
+        <div className="w-full bg-[#1a4a2e] flex items-center justify-center" style={{ height: '220px' }}>
+          <p className="text-white/50 italic text-sm text-center px-6">[ Service Hero Image — Karson Providing ]</p>
+        </div>
+        <div className="container py-12">
+          <div className="max-w-3xl">
+            <h1 className="text-white font-heading font-bold text-4xl md:text-5xl lg:text-6xl mb-6">
+              Landscaping &amp; Design
+            </h1>
+            <p className="text-white/90 text-xl md:text-2xl mb-8">
+              Transform your landscape with beautiful, custom designs that add color and curb appeal year-round.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/quote-request">
+                <Button variant="primary" size="lg" className="w-full sm:w-auto">Get Free Quote</Button>
+              </Link>
+              <a href="tel:405-479-5794">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto bg-white/10 border-white text-white hover:bg-white hover:text-forest-green">
+                  Call (405) 479-5794
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Problem/Solution Section */}
       <section className="section">
@@ -170,28 +191,16 @@ export default function FlowerBedsPage() {
       <ServiceFeatures features={features} />
       <ServiceProcess steps={process} />
       <ServiceFAQ faqs={faqs} />
-      <ServiceGallery
-        title="Flower Bed Installations"
-        images={[
-          {
-            src: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80',
-            alt: 'Beautiful flower bed installation'
-          },
-          {
-            src: 'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1200&q=80',
-            alt: 'Custom landscape design with flowers'
-          }
-        ]}
-      />
+      {/* TODO: Gallery removed per client — Karson will provide assets for dedicated /gallery page */}
       <ServiceCTA
-        title="Ready to Add Color to Your Landscape?"
-        description="Get a free consultation and custom flower bed design. No obligation, just ideas and a detailed quote."
+        title="Ready to Transform Your Landscape?"
+        description="Get a free consultation and custom landscaping design. No obligation, just ideas and a detailed quote."
       />
     </main>
   )
 }
 
 export const metadata = {
-  title: 'Flower Bed Installation & Design | Evergrow Landscaping',
-  description: 'Custom flower bed design and installation in El Dorado and OKC. Native plants, quality soil prep, beautiful results that last.',
+  title: 'Landscaping & Design | Evergrow Landscaping',
+  description: 'Custom landscaping and design services in Arkansas and Oklahoma. Native plants, quality soil prep, beautiful results that last.',
 }

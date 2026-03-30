@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FolderKanban, FileText, Settings, LogOut, PieChart, ClipboardList } from 'lucide-react'
-import { cn } from '@/lib/utils' // Assuming standard shadcn/tailwind utils, or I can use clsx/tailwind-merge directly if unavailable
+import { LayoutDashboard, FolderKanban, FileText, Settings, LogOut, PieChart, ClipboardList, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { useAuth } from './AuthContext'
 
 const navigation = [
@@ -15,14 +15,28 @@ const navigation = [
     { name: 'Settings', href: '/portal/settings', icon: Settings },
 ]
 
-export function PortalSidebar() {
+interface PortalSidebarProps {
+    onClose?: () => void
+}
+
+export function PortalSidebar({ onClose }: PortalSidebarProps) {
     const pathname = usePathname()
     const { logout, user } = useAuth()
 
     return (
         <div className="flex h-full w-64 flex-col bg-white border-r border-gray-200">
-            <div className="flex h-16 items-center px-6 border-b border-gray-100">
+            <div className="flex h-16 items-center justify-between px-6 border-b border-gray-100">
                 <span className="text-xl font-heading font-bold text-forest-green">Evergrow</span>
+                {/* Close button — mobile only */}
+                {onClose && (
+                    <button
+                        onClick={onClose}
+                        className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-500 rounded-md hover:bg-gray-100"
+                        aria-label="Close navigation"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                )}
             </div>
 
             <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">

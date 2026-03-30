@@ -67,7 +67,7 @@ export default function InvoicesPage() {
                 <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
             </div>
 
-            <div className="bg-white shadow overflow-hidden sm:rounded-md">
+            <div className="bg-white shadow overflow-hidden sm:rounded-md overflow-x-auto">
                 <ul role="list" className="divide-y divide-gray-200">
                     {invoices.length === 0 ? (
                         <li className="px-4 py-8 text-gray-500 text-center">
@@ -103,7 +103,7 @@ export default function InvoicesPage() {
                                                 <button
                                                     onClick={() => handlePayNow(invoice.id)}
                                                     disabled={payingInvoiceId === invoice.id}
-                                                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-hopeful-teal hover:bg-hopeful-teal/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hopeful-teal disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    className="inline-flex items-center px-3 py-1.5 min-h-[44px] border border-transparent text-xs font-medium rounded shadow-sm text-white bg-hopeful-teal hover:bg-hopeful-teal/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hopeful-teal disabled:opacity-50 disabled:cursor-not-allowed"
                                                 >
                                                     <CreditCard className="h-3 w-3 mr-1" />
                                                     {payingInvoiceId === invoice.id ? 'Loading...' : 'Pay Now'}

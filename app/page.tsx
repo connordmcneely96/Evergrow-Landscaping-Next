@@ -1,22 +1,19 @@
 import Link from 'next/link';
-import { ArrowRight, CheckCircle, Star, Phone, Calendar, MapPin, Shield, Clock } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, MapPin, Shield, Clock } from 'lucide-react';
 import Image from 'next/image';
 import { MotionDiv } from '@/components/ui/MotionDiv';
 import Testimonials from '@/components/sections/Testimonials';
-import { ServiceAreaMap } from '@/components/ServiceAreaMap';
 
 export default function HomePage() {
   return (
     <main className="flex-col">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col justify-start pt-0 md:pt-0 overflow-hidden">
-        {/* Background — brand dark green #13733A */}
-        <div className="absolute inset-0 bg-forest-green">
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10 z-10" />
-          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
-        </div>
+      <section className="relative flex flex-col overflow-hidden bg-forest-green">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10 z-10" />
+        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
 
-        <div className="container relative z-20 px-4 pt-24 pb-12 lg:pt-28 lg:pb-20">
+        <div className="container relative z-20 px-4 pt-24 pb-8 lg:pt-28 lg:pb-8">
           <div className="flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16">
 
             {/* Text Column */}
@@ -26,12 +23,12 @@ export default function HomePage() {
               transition={{ duration: 0.8 }}
               className="flex-1 text-center lg:text-left"
             >
-              {/* Location Badge — Change 5: AR & OK only */}
+              {/* Serving Badge */}
               <div className="inline-block bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1 mb-6">
-                <span className="text-white font-bold text-sm tracking-wider uppercase">Serving Arkansas &amp; Oklahoma</span>
+                <span className="text-white font-bold text-sm tracking-wider uppercase">SERVING ARKANSAS &amp; OKLAHOMA</span>
               </div>
 
-              {/* Full Logo in Hero — Change 6 */}
+              {/* Full Logo in Hero */}
               <div className="mb-8 flex justify-center lg:justify-start">
                 <Image
                   src="/images/Logo- Transparent & No Buffer .png"
@@ -43,17 +40,14 @@ export default function HomePage() {
                 />
               </div>
 
-              {/* Headline — Change 7: 3 lines */}
+              {/* Headline */}
               <h1 className="text-white font-heading font-extrabold text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight drop-shadow-lg">
-                <span className="block">Professional</span>
-                <span className="block">Multi-location</span>
-                <span className="block">Landscaping Services</span>
+                Professional Landscaping Services
               </h1>
 
-              {/* Subheadline — Change 10: 2 sentences on separate lines */}
+              {/* Subheadline */}
               <p className="text-gray-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                <span className="block">Managing 80+ properties with consistent quality across all locations.</span>
-                <span className="block mt-1">Licensed and insured in AR &amp; OK. Family-owned, owner-managed.</span>
+                Managing 100+ properties | Maintaining Millions of Square Footage
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
@@ -71,42 +65,38 @@ export default function HomePage() {
                   Residential Quote
                 </Link>
               </div>
-
-              {/* Trust Signals — Changes 8 & 9: removed years of experience, added 80+ properties */}
-              <div className="mt-10 flex flex-wrap justify-center lg:justify-start gap-5 md:gap-8 text-white/90 text-sm md:text-base font-medium">
-                <div className="flex items-center"><Shield className="w-5 h-5 text-white mr-2" /> Licensed &amp; Insured in AR &amp; OK</div>
-                <div className="flex items-center"><MapPin className="w-5 h-5 text-white mr-2" /> 80+ Properties Managed</div>
-                <div className="flex items-center"><CheckCircle className="w-5 h-5 text-white mr-2" /> Family-Owned &amp; Operated</div>
-              </div>
             </MotionDiv>
 
-            {/* Portrait Hero Image — Change 11: vertical/portrait on desktop */}
+            {/* Hero Image Placeholder — desktop */}
             <div className="hidden lg:block flex-shrink-0">
               <MotionDiv
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.9, delay: 0.2 }}
-                className="relative rounded-2xl overflow-hidden shadow-2xl"
+                className="relative rounded-2xl overflow-hidden shadow-2xl bg-[#1a4a2e] flex items-center justify-center"
                 style={{ width: 420, height: 560 }}
               >
-                <Image
-                  src="/api/assets/LawnCareAndMaintenance_image1.png"
-                  alt="Professional landscaping services"
-                  fill
-                  className="object-cover object-center"
-                />
+                {/* TODO: Swap placeholder with Karson's provided hero image — point Next.js <Image> src here */}
+                <p className="text-white/50 italic text-sm text-center px-6">[ Hero Image — Karson Providing ]</p>
               </MotionDiv>
             </div>
           </div>
 
-          {/* Mobile Portrait Image — stacks below text on small screens */}
-          <div className="mt-8 lg:hidden w-full relative rounded-2xl overflow-hidden" style={{ height: 300 }}>
-            <Image
-              src="/api/assets/LawnCareAndMaintenance_image1.png"
-              alt="Professional landscaping services"
-              fill
-              className="object-cover object-center"
-            />
+          {/* Hero Image Placeholder — mobile */}
+          <div className="mt-8 lg:hidden w-full rounded-2xl overflow-hidden bg-[#1a4a2e] flex items-center justify-center" style={{ height: 240 }}>
+            {/* TODO: Swap placeholder with Karson's provided hero image */}
+            <p className="text-white/50 italic text-sm text-center px-6">[ Hero Image — Karson Providing ]</p>
+          </div>
+        </div>
+
+        {/* Credentials Bar — positioned at bottom of hero section */}
+        <div className="relative z-20 bg-black/30 backdrop-blur-sm border-t border-white/10">
+          <div className="container px-4 py-4">
+            <div className="flex flex-wrap justify-center lg:justify-start gap-6 md:gap-10 text-white/90 text-sm md:text-base font-medium">
+              <div className="flex items-center"><Shield className="w-5 h-5 text-vibrant-gold mr-2 flex-shrink-0" /> Licensed &amp; Insured</div>
+              <div className="flex items-center"><MapPin className="w-5 h-5 text-vibrant-gold mr-2 flex-shrink-0" /> 100+ Properties Managed</div>
+              <div className="flex items-center"><CheckCircle className="w-5 h-5 text-vibrant-gold mr-2 flex-shrink-0" /> 1M+ Square Footage Maintained</div>
+            </div>
           </div>
         </div>
       </section>
@@ -181,7 +171,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Service 1 */}
             <Link href="/services/lawn-care" className="group h-full">
-              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold h-full flex flex-col">
+              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
                     src="/api/assets/LawnCareAndMaintenance_image2.png"
@@ -206,7 +196,7 @@ export default function HomePage() {
 
             {/* Service 2 */}
             <Link href="/services/flower-beds" className="group h-full">
-              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold h-full flex flex-col">
+              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
                     src="/api/assets/FlowerBedInstall_image1.png"
@@ -231,18 +221,19 @@ export default function HomePage() {
 
             {/* Service 3 */}
             <Link href="/services/seasonal-cleanup" className="group h-full">
-              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold h-full flex flex-col">
+              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 relative">
+                  {/* TODO: Swap seasonal-cleanup-before.jpg with edited version (no person) */}
                   <Image
                     src="/api/assets/SpringAndFallCleanup_image1.png"
-                    alt="Seasonal Cleanup"
+                    alt="Seasonal Cleanups"
                     fill
                     className="object-cover"
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
-                    Seasonal Services
+                    Seasonal Cleanups
                   </h3>
                   <p className="text-gray-600 mb-6 flex-grow text-sm">
                     Spring and fall cleanups, leaf removal, debris clearing, and bed preparation.
@@ -256,7 +247,7 @@ export default function HomePage() {
 
             {/* Service 4 */}
             <Link href="/services/pressure-washing" className="group h-full">
-              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-vibrant-gold h-full flex flex-col">
+              <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
                     src="/api/assets/PressureWashing_image1.png"
@@ -267,7 +258,7 @@ export default function HomePage() {
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
                   <h3 className="text-xl font-bold text-forest-green mb-3 group-hover:text-vibrant-gold transition-colors">
-                    Pressure Washing
+                    Pressure Washing & Soft Washing
                   </h3>
                   <p className="text-gray-600 mb-6 flex-grow text-sm">
                     Restore driveways, patios, siding, decks, and walkways by removing dirt and grime.
@@ -338,38 +329,81 @@ export default function HomePage() {
       {/* Service Area Section */}
       <section className="section bg-gray-50 border-t border-gray-200">
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="text-forest-green font-bold uppercase tracking-wider text-sm mb-2 block">Service Area</span>
-              <h2 className="text-4xl font-heading font-bold text-deep-charcoal mb-6">Proudly Serving El Dorado & OKC</h2>
-              <p className="text-lg text-gray-600 mb-8">
-                We focus on consistent, reliable service across El Dorado and the greater Oklahoma City metro area.
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="text-forest-green font-bold uppercase tracking-wider text-sm mb-2 block">Service Area</span>
+            <h2 className="text-4xl font-heading font-bold text-deep-charcoal mb-4">Proudly Serving Arkansas &amp; Oklahoma</h2>
+            <p className="text-lg text-gray-600 mb-4">We focus on consistent, reliable services across both states.</p>
+            <p className="text-base text-gray-500">
+              Professional landscaping services dedicated to transforming and maintaining spaces across Arkansas &amp; Oklahoma.
+            </p>
+          </div>
+
+          {/* Commercial + Residential — side-by-side on desktop, stacked on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+            {/* Commercial */}
+            <div className="bg-white rounded-2xl shadow-sm p-8">
+              <h3 className="text-2xl font-heading font-bold text-forest-green mb-3">Commercial</h3>
+              <p className="text-gray-600 mb-2 flex items-center">
+                <MapPin className="w-4 h-4 text-forest-green mr-2 flex-shrink-0" />
+                OKC · Tulsa · Fayetteville · Little Rock · El Dorado — and surrounding areas
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {[
-                  { city: 'El Dorado', desc: 'Primary service area.' },
-                  { city: 'Oklahoma City', desc: 'Metro coverage.' },
-                  { city: 'Edmond', desc: 'North OKC neighborhoods.' },
-                  { city: 'Moore', desc: 'South OKC service.' },
-                  { city: 'Yukon', desc: 'West OKC suburbs.' },
-                  { city: 'Midwest City', desc: 'East OKC communities.' },
-                ].map((area) => (
-                  <div key={area.city} className="flex items-start">
-                    <MapPin className="w-5 h-5 text-forest-green mt-1 mr-3 flex-shrink-0" />
-                    <div>
-                      <h4 className="font-bold text-deep-charcoal">{area.city}</h4>
-                      <p className="text-sm text-gray-500">{area.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8">
-                <Link href="/quote-request" className="btn bg-forest-green text-white hover:bg-forest-green-700 transition-colors px-6 py-3 rounded-lg font-bold">
-                  Check Your Zip Code
-                </Link>
+              <p className="text-sm text-gray-500 mb-6">Multi-location property management across both states.</p>
+              {/* TODO: Wire to commercial zip validation when Karson provides zip list */}
+              <button
+                className="w-full sm:w-auto px-6 py-3 rounded-lg font-bold text-white text-sm uppercase tracking-wide transition-colors"
+                style={{ backgroundColor: '#4DB8AC' }}
+              >
+                Check Commercial Coverage
+              </button>
+
+              {/* Oklahoma Map */}
+              <div className="mt-6 rounded-xl overflow-hidden shadow">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d200000!2d-97.5164!3d35.4676!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87ac8fac09a2070d%3A0x1!2sOklahoma+City%2C+OK!5e0!3m2!1sen!2sus!4v1"
+                  width="100%"
+                  height="300"
+                  style={{ border: 0, display: 'block' }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Evergrow Landscaping – Oklahoma Service Area"
+                />
               </div>
             </div>
-            <ServiceAreaMap height={400} showBadge />
+
+            {/* Residential */}
+            <div className="bg-white rounded-2xl shadow-sm p-8">
+              <h3 className="text-2xl font-heading font-bold text-forest-green mb-3">Residential</h3>
+              <p className="text-gray-600 mb-2 flex items-center">
+                <MapPin className="w-4 h-4 text-forest-green mr-2 flex-shrink-0" />
+                El Dorado · Oklahoma City — and surrounding areas
+              </p>
+              <p className="text-sm text-gray-500 mb-6">Consistent residential service for homeowners in AR &amp; OK.</p>
+              {/* TODO: Wire to residential zip validation when Karson provides zip list */}
+              <button
+                className="w-full sm:w-auto px-6 py-3 rounded-lg font-bold text-white text-sm uppercase tracking-wide transition-colors"
+                style={{ backgroundColor: '#4DB8AC' }}
+              >
+                Check Residential Coverage
+              </button>
+
+              {/* Arkansas/El Dorado Map */}
+              <div className="mt-6 rounded-xl overflow-hidden shadow">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106000!2d-92.6663!3d33.2079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x862f51f2e85fffff%3A0x1!2sEl+Dorado%2C+AR!5e0!3m2!1sen!2sus!4v1"
+                  width="100%"
+                  height="300"
+                  style={{ border: 0, display: 'block' }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Evergrow Landscaping – Arkansas Service Area"
+                />
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

@@ -1,9 +1,9 @@
-import { ServiceHero } from '@/components/services/ServiceHero'
+import Link from 'next/link'
+import { Button } from '@/components/ui/Button'
 import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
-import { ServiceGallery } from '@/components/services/ServiceGallery'
 
 const features = [
   {
@@ -106,12 +106,33 @@ const faqs = [
 export default function SeasonalCleanupPage() {
   return (
     <main>
-      <ServiceHero
-        title="Spring & Fall Cleanup Services"
-        description="Start each season with a fresh, clean yard. Professional leaf removal, bed maintenance, and debris cleanup."
-        imageSrc="/api/assets/SpringAndFallCleanup_image2.png"
-        imageAlt="Fall leaf cleanup service in El Dorado"
-      />
+      {/* Hero Section */}
+      <section className="bg-forest-green pt-20">
+        {/* TODO: Replace with Karson's provided hero image for this service */}
+        <div className="w-full bg-[#1a4a2e] flex items-center justify-center" style={{ height: '220px' }}>
+          <p className="text-white/50 italic text-sm text-center px-6">[ Service Hero Image — Karson Providing ]</p>
+        </div>
+        <div className="container py-12">
+          <div className="max-w-3xl">
+            <h1 className="text-white font-heading font-bold text-4xl md:text-5xl lg:text-6xl mb-6">
+              Seasonal Cleanups
+            </h1>
+            <p className="text-white/90 text-xl md:text-2xl mb-8">
+              Start each season with a fresh, clean yard. Professional leaf removal, bed maintenance, and debris cleanup.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/quote-request">
+                <Button variant="primary" size="lg" className="w-full sm:w-auto">Get Free Quote</Button>
+              </Link>
+              <a href="tel:405-479-5794">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto bg-white/10 border-white text-white hover:bg-white hover:text-forest-green">
+                  Call (405) 479-5794
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Problem/Solution Section */}
       <section className="section">
@@ -170,28 +191,17 @@ export default function SeasonalCleanupPage() {
       <ServiceFeatures features={features} />
       <ServiceProcess steps={process} />
       <ServiceFAQ faqs={faqs} />
-      <ServiceGallery
-        title="Seasonal Cleanup Projects"
-        images={[
-          {
-            src: '/api/assets/SpringAndFallCleanup_image1.png',
-            alt: 'Spring and fall cleanup service'
-          },
-          {
-            src: '/api/assets/SpringAndFallCleanup_image2.png',
-            alt: 'Professional leaf removal and yard cleanup'
-          }
-        ]}
-      />
+      {/* TODO: Gallery removed per client — Karson will provide assets for dedicated /gallery page */}
+      {/* NOTE: seasonal-cleanup-before.jpg contains a person and requires manual image editing (Photoshop/Canva) before use */}
       <ServiceCTA
         title="Ready for a Fresh Start This Season?"
-        description="Book your spring or fall cleanup today. Early booking gets priority scheduling."
+        description="Book your seasonal cleanup today. Early booking gets priority scheduling."
       />
     </main>
   )
 }
 
 export const metadata = {
-  title: 'Spring & Fall Cleanup Services | Evergrow Landscaping',
-  description: 'Professional seasonal cleanup in El Dorado and OKC. Leaf removal, bed maintenance, debris cleanup. Spring and fall services available.',
+  title: 'Seasonal Cleanups | Evergrow Landscaping',
+  description: 'Professional seasonal cleanups in Arkansas and Oklahoma. Leaf removal, bed maintenance, debris cleanup. Spring and fall services available.',
 }

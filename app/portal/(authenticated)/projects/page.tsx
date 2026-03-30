@@ -39,13 +39,13 @@ export default function ProjectsPage() {
             <div className="flex items-center justify-between">
                 <h1 className="text-2xl font-bold text-gray-900">My Projects</h1>
                 <Link href="/quote-request">
-                    <button className="px-4 py-2 bg-forest-green text-white rounded-md hover:bg-forest-green-700 shadow-sm text-sm font-medium">
+                    <button className="px-4 py-2 min-h-[44px] bg-forest-green text-white rounded-md hover:bg-forest-green-700 shadow-sm text-sm font-medium">
                         New Project
                     </button>
                 </Link>
             </div>
 
-            <div className="bg-white shadow overflow-hidden sm:rounded-md">
+            <div className="bg-white shadow overflow-hidden sm:rounded-md overflow-x-auto">
                 <ul role="list" className="divide-y divide-gray-200">
                     {projects.length === 0 ? (
                         <li className="px-4 py-8 text-gray-500 text-center">
