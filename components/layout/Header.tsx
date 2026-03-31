@@ -39,14 +39,13 @@ export default function Header() {
                 <div className="flex items-center h-16">
                     {/* Logo — icon only (crop to the circular icon portion of the SVG) */}
                     <Link href="/" className="flex items-center flex-shrink-0 group">
-                        {/* overflow-hidden clips the text half of the logo SVG, showing only the icon circle */}
-                        <div className="overflow-hidden flex-shrink-0" style={{ width: '56px', height: '56px' }}>
-                            <img
-                                src="/images/logo.svg"
-                                alt="Evergrow Landscaping"
-                                style={{ height: '56px', width: 'auto', maxWidth: 'none' }}
-                            />
-                        </div>
+                        <img
+                            src="/images/logo-icon.svg"
+                            alt="Evergrow Landscaping"
+                            width={52}
+                            height={52}
+                            style={{ width: '52px', height: '52px' }}
+                        />
                     </Link>
 
                     {/* Desktop Navigation */}

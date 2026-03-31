@@ -74,25 +74,6 @@ export default function HomePage() {
               </div>
             </MotionDiv>
 
-            {/* Hero Image Placeholder — desktop */}
-            <div className="hidden lg:block flex-shrink-0">
-              <MotionDiv
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.9, delay: 0.2 }}
-                className="relative rounded-2xl overflow-hidden shadow-2xl bg-[#1a4a2e] flex items-center justify-center"
-                style={{ width: 420, height: 560 }}
-              >
-                {/* TODO: Swap placeholder with Karson's provided hero image — point Next.js <Image> src here */}
-                <p className="text-white/50 italic text-sm text-center px-6">[ Hero Image — Karson Providing ]</p>
-              </MotionDiv>
-            </div>
-          </div>
-
-          {/* Hero Image Placeholder — mobile */}
-          <div className="mt-8 lg:hidden w-full rounded-2xl overflow-hidden bg-[#1a4a2e] flex items-center justify-center" style={{ height: 240 }}>
-            {/* TODO: Swap placeholder with Karson's provided hero image */}
-            <p className="text-white/50 italic text-sm text-center px-6">[ Hero Image — Karson Providing ]</p>
           </div>
         </div>
 
@@ -179,12 +160,11 @@ export default function HomePage() {
             {/* Service 1 */}
             <Link href="/services/lawn-care" className="group h-full">
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
-                <div className="h-48 relative">
-                  <Image
+                <div className="h-48 overflow-hidden">
+                  <img
                     src="/api/assets/Lawn_Care_%26_Maintenance_Image.png"
                     alt="Lawn Care & Maintenance"
-                    fill
-                    className="object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
@@ -204,12 +184,11 @@ export default function HomePage() {
             {/* Service 2 */}
             <Link href="/services/flower-beds" className="group h-full">
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
-                <div className="h-48 relative">
-                  <Image
+                <div className="h-48 overflow-hidden">
+                  <img
                     src="/api/assets/Landscaping_%26_Design_Image.png"
                     alt="Landscaping & Design"
-                    fill
-                    className="object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
@@ -229,13 +208,11 @@ export default function HomePage() {
             {/* Service 3 */}
             <Link href="/services/seasonal-cleanup" className="group h-full">
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
-                <div className="h-48 relative">
-                  {/* TODO: Swap seasonal-cleanup-before.jpg with edited version (no person) */}
-                  <Image
+                <div className="h-48 overflow-hidden">
+                  <img
                     src="/api/assets/Seasonal_Cleanups_Image%20(1).png"
                     alt="Seasonal Cleanups"
-                    fill
-                    className="object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
@@ -255,12 +232,11 @@ export default function HomePage() {
             {/* Service 4 */}
             <Link href="/services/pressure-washing" className="group h-full">
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
-                <div className="h-48 relative">
-                  <Image
+                <div className="h-48 overflow-hidden">
+                  <img
                     src="/api/assets/Pressure_Washing_%26_Soft_Washing_Image.png"
                     alt="Pressure Washing & Soft Washing"
-                    fill
-                    className="object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
