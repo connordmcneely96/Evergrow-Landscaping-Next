@@ -107,18 +107,17 @@ export default function PressureWashingPage() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="bg-forest-green pt-20">
-        <div
-          className="w-full"
-          style={{
-            height: '280px',
-            backgroundImage: "url('/api/assets/Pressure_Washing_%26_Soft_Washing_Image.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-          }}
-        />
-        <div className="container py-12">
+      <section
+        className="relative bg-forest-green pt-20"
+        style={{
+          backgroundImage: "url('/api/assets/Pressure_Washing_%26_Soft_Washing_Image.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/50" />
+        <div className="container relative z-10 py-12">
           <div className="max-w-3xl">
             <h1 className="text-white font-heading font-bold text-4xl md:text-5xl lg:text-6xl mb-6">
               Pressure Washing &amp; Soft Washing
