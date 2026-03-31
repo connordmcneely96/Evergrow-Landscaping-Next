@@ -4,6 +4,8 @@ import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
+import type { Metadata } from 'next'
+import { buildPageMetadata } from '@/lib/seo'
 
 const features = [
   {
@@ -123,7 +125,7 @@ export default function LawnCarePage() {
       <section
         className="relative bg-forest-green pt-20"
         style={{
-          backgroundImage: "url('/api/assets/Lawn_Care_%26_Maintenance_Image.png')",
+          backgroundImage: "url('/api/assets/service-lawn-care.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -215,7 +217,8 @@ export default function LawnCarePage() {
   )
 }
 
-export const metadata = {
-  title: 'Lawn Care & Maintenance Services | Evergrow Landscaping',
-  description: 'Professional lawn care and maintenance services in Arkansas and Oklahoma. Weekly or bi-weekly mowing, edging, and trimming. Free quotes, satisfaction guaranteed.',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Lawn Care & Maintenance Services',
+  description: 'Professional lawn care and maintenance services in Arkansas and Oklahoma, including mowing, edging, trimming, and seasonal turf support.',
+  path: '/services/lawn-care/',
+})
