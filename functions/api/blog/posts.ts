@@ -1,5 +1,6 @@
 import { Env } from '../../types';
 import { getFromCache, setInCache } from '../../lib/cache';
+import { normalizeAssetUrl } from '../../lib/asset-url';
 
 interface BlogPostListRow {
     id: number;
@@ -163,7 +164,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             title: row.title,
             slug: row.slug,
             excerpt: row.excerpt ?? '',
-            featuredImageUrl: row.featured_image_url ?? null,
+            featuredImageUrl: normalizeAssetUrl(row.featured_image_url),
             category: row.category ?? null,
             tags: parseTags(row.tags),
             publishedAt: row.published_at ?? null,

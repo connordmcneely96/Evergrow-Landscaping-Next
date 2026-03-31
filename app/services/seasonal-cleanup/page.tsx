@@ -110,7 +110,7 @@ export default function SeasonalCleanupPage() {
       <section
         className="relative bg-forest-green pt-20"
         style={{
-          backgroundImage: "url('/api/assets/Seasonal_Cleanups_Image%20(1).png')",
+          backgroundImage: "url('/api/assets/service-seasonal-cleanups.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

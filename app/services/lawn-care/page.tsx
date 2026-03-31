@@ -123,7 +123,7 @@ export default function LawnCarePage() {
       <section
         className="relative bg-forest-green pt-20"
         style={{
-          backgroundImage: "url('/api/assets/Lawn_Care_%26_Maintenance_Image.png')",
+          backgroundImage: "url('/api/assets/service-lawn-care.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
