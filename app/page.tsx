@@ -94,7 +94,7 @@ export default function HomePage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
-              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-100 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+              <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-100">
                 <Image
                   src="/api/assets/Company_Image.png"
                   alt="Evergrow Landscaping company"
