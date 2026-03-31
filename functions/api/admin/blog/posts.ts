@@ -1,6 +1,7 @@
 import { invalidateByTag } from '../../../lib/cache';
 import { requireAdmin } from '../../../lib/session';
 import { Env } from '../../../types';
+import { normalizeAssetUrl } from '../../../lib/asset-url';
 
 // GET — list all blog posts for admin
 export const onRequestGet: PagesFunction<Env> = async (context) => {
@@ -117,6 +118,11 @@ function parseOptionalUrl(
     if (!trimmed) {
         return { value: null };
     }
+
+    if (trimmed.startsWith('/')) {
+        return { value: normalizeAssetUrl(trimmed) };
+    }
+
     try {
         const parsed = new URL(trimmed);
         if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
@@ -125,7 +131,7 @@ function parseOptionalUrl(
     } catch {
         return { value: null, error: `${fieldName} must be a valid URL` };
     }
-    return { value: trimmed };
+    return { value: normalizeAssetUrl(trimmed) };
 }
 
 function parseTagsInput(value: unknown): { tags: string[]; error?: string } {

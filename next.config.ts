@@ -8,7 +8,14 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'evergrowlandscaping.com',
-        pathname: '/api/assets/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.evergrowlandscaping.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'evergrowlandscaping.pages.dev',
       },
       {
         protocol: 'http',
