@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { api } from '@/lib/api'
 
 const SERVICES = [
     'Lawn Care & Maintenance',
@@ -32,6 +33,31 @@ const PROPERTY_SIZES = [
 ]
 
 export default function CommercialQuotePage() {
+    const [zip, setZip] = useState('')
+    const [zipChecking, setZipChecking] = useState(false)
+    const [zipError, setZipError] = useState('')
+    const [zipVerified, setZipVerified] = useState(false)
+    const [zipLocation, setZipLocation] = useState('')
+
+    async function handleZipSubmit(e: React.FormEvent) {
+        e.preventDefault()
+        setZipError('')
+        setZipChecking(true)
+        try {
+            const result = await api.validateZipCode(zip)
+            if (result.data?.valid) {
+                setZipLocation(result.data.location || '')
+                setZipVerified(true)
+            } else {
+                setZipError(result.data?.message || 'Sorry, we don\'t currently serve this area.')
+            }
+        } catch {
+            setZipError('Something went wrong. Please try again.')
+        } finally {
+            setZipChecking(false)
+        }
+    }
+
     const [form, setForm] = useState({
         contactName: '',
         companyName: '',
@@ -95,6 +121,83 @@ export default function CommercialQuotePage() {
         } finally {
             setSubmitting(false)
         }
+    }
+
+    if (!zipVerified) {
+        return (
+            <main>
+                {/* Hero */}
+                <section className="relative bg-forest-green py-16">
+                    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+                    <div className="container mx-auto px-4 relative z-10">
+                        <div className="max-w-3xl mx-auto text-center text-white">
+                            <span className="inline-block py-1 px-3 rounded-full bg-white/10 text-vibrant-gold border border-white/20 mb-4 text-sm font-medium tracking-wide">
+                                Commercial Services
+                            </span>
+                            <h1 className="text-h1 font-heading font-bold mb-4">
+                                Request a Commercial Proposal
+                            </h1>
+                            <p className="text-xl mb-2 text-white/90">
+                                Let's confirm we serve your area first.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section className="section py-16">
+                    <div className="container mx-auto px-4">
+                        <div className="max-w-md mx-auto">
+                            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+                                <h2 className="text-2xl font-heading font-bold text-forest-green mb-2">
+                                    Check Your Service Area
+                                </h2>
+                                <p className="text-gray-600 mb-6 text-sm">
+                                    We serve commercial properties in Arkansas and Oklahoma. Enter your zip code to confirm coverage.
+                                </p>
+                                <form onSubmit={handleZipSubmit} className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="zip">
+                                            Property Zip Code
+                                        </label>
+                                        <input
+                                            id="zip"
+                                            type="text"
+                                            value={zip}
+                                            onChange={e => setZip(e.target.value.replace(/\D/g, '').slice(0, 5))}
+                                            placeholder="Enter zip code"
+                                            maxLength={5}
+                                            required
+                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-forest-green focus:border-transparent"
+                                        />
+                                        {zipError && <p className="text-sm text-red-600 mt-1">{zipError}</p>}
+                                        {!zipError && <p className="text-xs text-gray-500 mt-1">We'll verify if we serve your area before proceeding</p>}
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        disabled={zipChecking || zip.length !== 5}
+                                        className="w-full py-3 px-6 bg-forest-green text-white font-semibold rounded-lg hover:bg-forest-green/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                                    >
+                                        {zipChecking ? 'Checking...' : 'Check Service Area'}
+                                    </button>
+                                </form>
+
+                                <div className="mt-6 p-4 bg-gray-50 rounded-lg text-sm text-gray-600">
+                                    <p className="font-semibold text-forest-green mb-1">Commercial Coverage:</p>
+                                    <ul className="space-y-1">
+                                        <li>• OKC metro and surrounding Oklahoma counties</li>
+                                        <li>• El Dorado, AR and surrounding Arkansas areas</li>
+                                    </ul>
+                                    <p className="mt-3 text-gray-500">
+                                        Outside our area?{' '}
+                                        <a href="tel:405-479-5794" className="text-forest-green hover:underline font-medium">(405) 479-5794</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        )
     }
 
     if (submitted) {

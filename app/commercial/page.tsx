@@ -118,17 +118,19 @@ const faqs = [
 export default function CommercialPage() {
     return (
         <main>
-            {/* Hero Image Placeholder — TODO: Replace with Karson's provided commercial hero image */}
-            <div className="w-full bg-[#1a4a2e] flex items-center justify-center pt-20" style={{ minHeight: '280px' }}>
-                <p className="text-white/50 italic text-sm text-center px-6">[ Commercial Hero Image — Karson Providing ]</p>
-            </div>
+            {/* Commercial Hero */}
+            <section
+                className="relative bg-forest-green"
+                style={{
+                    backgroundImage: "url('/api/assets/Home_Page_Hero_Background_Image.png')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                }}
+            >
+                <div className="absolute inset-0 bg-black/60" />
 
-            {/* Commercial Hero Content */}
-            <section className="relative bg-forest-green flex items-center">
-                <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10" />
-                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
-
-                <div className="container relative z-10 py-16">
+                <div className="container relative z-10 pt-32 pb-20">
                     <div className="max-w-4xl">
                         <span className="inline-block py-1 px-3 rounded-full bg-white/10 text-vibrant-gold border border-white/20 mb-6 font-medium tracking-wide">
                             Multi-State Commercial Landscaping

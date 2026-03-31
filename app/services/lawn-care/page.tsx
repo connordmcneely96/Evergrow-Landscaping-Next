@@ -121,10 +121,16 @@ export default function LawnCarePage() {
     <main>
       {/* Hero Section */}
       <section className="bg-forest-green pt-20">
-        {/* TODO: Replace with Karson's provided hero image for this service */}
-        <div className="w-full bg-[#1a4a2e] flex items-center justify-center" style={{ height: '220px' }}>
-          <p className="text-white/50 italic text-sm text-center px-6">[ Service Hero Image — Karson Providing ]</p>
-        </div>
+        <div
+          className="w-full"
+          style={{
+            height: '280px',
+            backgroundImage: "url('/api/assets/Lawn_Care_%26_Maintenance_Image.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
         <div className="container py-12">
           <div className="max-w-3xl">
             <h1 className="text-white font-heading font-bold text-4xl md:text-5xl lg:text-6xl mb-6">
