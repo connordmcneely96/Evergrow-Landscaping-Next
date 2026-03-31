@@ -1,5 +1,6 @@
 import { Env } from '../../types';
 import { getFromCache, setInCache } from '../../lib/cache';
+import { normalizeAssetUrl } from '../../lib/asset-url';
 
 interface BlogPostRow {
     id: number;
@@ -139,7 +140,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                     title: row.title,
                     slug: row.slug,
                     excerpt: row.excerpt ?? '',
-                    featuredImageUrl: row.featured_image_url ?? null,
+                    featuredImageUrl: normalizeAssetUrl(row.featured_image_url),
                 });
                 usedIds.add(row.id);
             }
@@ -173,7 +174,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                     title: row.title,
                     slug: row.slug,
                     excerpt: row.excerpt ?? '',
-                    featuredImageUrl: row.featured_image_url ?? null,
+                    featuredImageUrl: normalizeAssetUrl(row.featured_image_url),
                 });
             }
         }
@@ -186,7 +187,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 slug: post.slug,
                 content: post.content,
                 excerpt: post.excerpt ?? '',
-                featuredImageUrl: post.featured_image_url ?? null,
+                featuredImageUrl: normalizeAssetUrl(post.featured_image_url),
                 category,
                 tags,
                 publishedAt: post.published_at ?? null,

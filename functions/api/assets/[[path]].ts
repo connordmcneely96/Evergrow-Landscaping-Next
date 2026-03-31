@@ -1,7 +1,14 @@
 import { Env } from '../../types';
-import { getFromCache, setInCache } from '../../lib/cache';
 
 const CACHE_TTL_SECONDS = 31536000; // 1 year (immutable)
+const ASSET_ALIASES: Record<string, string[]> = {
+    'home-hero-bg.png': ['Home_Page_Hero_Background_Image.png'],
+    'company-image.png': ['Company_Image.png'],
+    'service-lawn-care.png': ['Lawn_Care_%26_Maintenance_Image.png', 'Lawn_Care_&_Maintenance_Image.png'],
+    'service-landscaping-design.png': ['Landscaping_%26_Design_Image.png', 'Landscaping_&_Design_Image.png'],
+    'service-seasonal-cleanups.png': ['Seasonal_Cleanups_Image%20(1).png', 'Seasonal_Cleanups_Image (1).png'],
+    'service-pressure-washing.png': ['Pressure_Washing_%26_Soft_Washing_Image.png', 'Pressure_Washing_&_Soft_Washing_Image.png'],
+};
 
 function getContentType(path: string): string {
     const extension = path.split('.').pop()?.toLowerCase();
@@ -30,7 +37,7 @@ function getContentType(path: string): string {
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
-    const { request, env, params } = context;
+    const { env, params } = context;
 
     try {
         const rawPath = Array.isArray(params.path) ? params.path.join('/') : params.path;
@@ -39,18 +46,37 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             return new Response('Not found', { status: 404 });
         }
 
-        // Decode URL-encoded characters (e.g. %26 → &, %20 → space) so R2 key matches filename
-        const path = decodeURIComponent(rawPath);
-        console.log('[Assets] Fetching from R2:', path);
+        const candidatePaths = new Set<string>([rawPath]);
+        const aliasTargets = ASSET_ALIASES[rawPath];
+        if (aliasTargets) {
+            for (const aliasTarget of aliasTargets) {
+                candidatePaths.add(aliasTarget);
+            }
+        }
+        try {
+            candidatePaths.add(decodeURIComponent(rawPath));
+        } catch {
+            // Keep raw path if malformed encoding is present.
+        }
+        candidatePaths.add(rawPath.replace(/\+/g, ' '));
 
-        const object = await env.R2_BUCKET.get(path);
+        let object: R2ObjectBody | null = null;
+        let resolvedPath: string | null = null;
+        for (const path of candidatePaths) {
+            console.log('[Assets] Fetching from R2:', path);
+            object = await env.R2_BUCKET.get(path);
+            if (object) {
+                resolvedPath = path;
+                break;
+            }
+        }
 
-        if (!object) {
-            console.error('[Assets] File not found in R2:', path);
+        if (!object || !resolvedPath) {
+            console.error('[Assets] File not found in R2 for candidates:', Array.from(candidatePaths));
             return new Response('Not found', { status: 404 });
         }
 
-        console.log('[Assets] File found, serving:', path);
+        console.log('[Assets] File found, serving:', resolvedPath);
 
         const headers = new Headers();
         object.writeHttpMetadata(headers);
@@ -58,7 +84,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         headers.set('Cache-Control', `public, max-age=${CACHE_TTL_SECONDS}, immutable`);
 
         if (!headers.get('Content-Type')) {
-            headers.set('Content-Type', getContentType(path));
+            headers.set('Content-Type', getContentType(resolvedPath));
         }
 
         return new Response(object.body, {

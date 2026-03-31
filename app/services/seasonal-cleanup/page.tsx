@@ -4,6 +4,8 @@ import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
+import type { Metadata } from 'next'
+import { buildPageMetadata } from '@/lib/seo'
 
 const features = [
   {
@@ -110,7 +112,7 @@ export default function SeasonalCleanupPage() {
       <section
         className="relative bg-forest-green pt-20"
         style={{
-          backgroundImage: "url('/api/assets/Seasonal_Cleanups_Image%20(1).png')",
+          backgroundImage: "url('/api/assets/service-seasonal-cleanups.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -206,7 +208,8 @@ export default function SeasonalCleanupPage() {
   )
 }
 
-export const metadata = {
-  title: 'Seasonal Cleanups | Evergrow Landscaping',
-  description: 'Professional seasonal cleanups in Arkansas and Oklahoma. Leaf removal, bed maintenance, debris cleanup. Spring and fall services available.',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Seasonal Cleanup Services',
+  description: 'Professional seasonal cleanup services in Arkansas and Oklahoma for spring and fall, including leaf removal, debris cleanup, and bed prep.',
+  path: '/services/seasonal-cleanup/',
+})
