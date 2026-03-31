@@ -3,20 +3,33 @@ import "./globals.css";
 import LayoutShell from "@/components/layout/LayoutShell";
 import { ToastProvider } from "@/components/ui/Toast";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Evergrow Landscaping | Professional Landscaping Services | Residential and Commercial",
-  description: "Professional Landscaping Services in Arkansas and Oklahoma. Lawncare, Landscaping, Seasonal Cleanups, Pressure Washing",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Evergrow Landscaping",
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: "Professional landscaping services in Arkansas and Oklahoma.",
   keywords: ["landscaping", "lawn care", "Arkansas", "Oklahoma", "landscaping design", "pressure washing", "seasonal cleanup"],
-  // TODO: When Karson provides a standalone icon image (no wordmark), swap the paths below
   icons: {
-    icon: '/images/Logo- Transparent & No Buffer .png',
-    shortcut: '/images/Logo- Transparent & No Buffer .png',
+    icon: "/images/logo-icon.svg",
+    shortcut: "/images/logo-icon.svg",
   },
   openGraph: {
-    title: "Evergrow Landscaping | Professional Landscaping Services | Residential and Commercial",
-    description: "Professional Landscaping Services in Arkansas and Oklahoma. Lawncare, Landscaping, Seasonal Cleanups, Pressure Washing",
+    title: SITE_NAME,
+    description: "Professional landscaping services in Arkansas and Oklahoma.",
+    url: "/",
+    siteName: SITE_NAME,
     type: "website",
+    images: [{ url: DEFAULT_OG_IMAGE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: "Professional landscaping services in Arkansas and Oklahoma.",
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 
@@ -28,7 +41,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/images/logo.svg" type="image/svg+xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />

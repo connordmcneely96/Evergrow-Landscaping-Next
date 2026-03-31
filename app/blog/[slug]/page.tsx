@@ -1,4 +1,5 @@
 import { BlogPostContent } from '@/components/blog/BlogPostContent'
+import { buildPageMetadata } from '@/lib/seo'
 
 // Known blog post slugs for static generation
 // These match the posts listed on the blog index page
@@ -31,8 +32,9 @@ export async function generateMetadata({ params }: PageProps) {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ')
 
-    return {
+    return buildPageMetadata({
         title: `${title} | Evergrow Landscaping Blog`,
         description: 'Read landscaping tips and advice from the Evergrow Landscaping team.',
-    }
+        path: `/blog/${slug}/`,
+    })
 }

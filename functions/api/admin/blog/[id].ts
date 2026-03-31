@@ -1,6 +1,7 @@
 import { invalidateByTag } from '../../../lib/cache';
 import { requireAdmin } from '../../../lib/session';
 import { Env } from '../../../types';
+import { normalizeAssetUrl } from '../../../lib/asset-url';
 
 // GET — fetch single blog post for editing
 export const onRequestGet: PagesFunction<Env> = async (context) => {
@@ -47,7 +48,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
                 slug: post.slug,
                 content: post.content,
                 excerpt: post.excerpt,
-                featuredImageUrl: post.featured_image_url,
+                featuredImageUrl: normalizeAssetUrl(post.featured_image_url),
                 category: post.category,
                 tags,
                 metaTitle: post.meta_title,
@@ -185,6 +186,11 @@ function parseOptionalUrl(
     if (!trimmed) {
         return { value: null };
     }
+
+    if (trimmed.startsWith('/')) {
+        return { value: normalizeAssetUrl(trimmed) };
+    }
+
     try {
         const parsed = new URL(trimmed);
         if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
@@ -193,7 +199,7 @@ function parseOptionalUrl(
     } catch {
         return { value: null, error: `${fieldName} must be a valid URL` };
     }
-    return { value: trimmed };
+    return { value: normalizeAssetUrl(trimmed) };
 }
 
 function parseTagsInput(value: unknown): { tags: string[]; error?: string } {
