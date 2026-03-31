@@ -8,18 +8,19 @@ import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Evergrow Landscaping",
+    default: "Evergrow Landscaping | Professional Landscaping Services | Residential and Commercial",
     template: `%s | ${SITE_NAME}`,
   },
-  description: "Professional landscaping services in Arkansas and Oklahoma.",
+  description: "Professional Landscaping Services in Arkansas and Oklahoma. Lawncare, Landscaping, Seasonal Cleanups, Pressure Washing",
   keywords: ["landscaping", "lawn care", "Arkansas", "Oklahoma", "landscaping design", "pressure washing", "seasonal cleanup"],
   icons: {
-    icon: "/images/logo-icon.svg",
-    shortcut: "/images/logo-icon.svg",
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/images/logo-icon.svg",
   },
   openGraph: {
-    title: SITE_NAME,
-    description: "Professional landscaping services in Arkansas and Oklahoma.",
+    title: "Evergrow Landscaping | Professional Landscaping Services | Residential and Commercial",
+    description: "Professional Landscaping Services in Arkansas and Oklahoma. Lawncare, Landscaping, Seasonal Cleanups, Pressure Washing",
     url: "/",
     siteName: SITE_NAME,
     type: "website",
@@ -27,8 +28,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE_NAME,
-    description: "Professional landscaping services in Arkansas and Oklahoma.",
+    title: "Evergrow Landscaping | Professional Landscaping Services | Residential and Commercial",
+    description: "Professional Landscaping Services in Arkansas and Oklahoma. Lawncare, Landscaping, Seasonal Cleanups, Pressure Washing",
     images: [DEFAULT_OG_IMAGE],
   },
 };
