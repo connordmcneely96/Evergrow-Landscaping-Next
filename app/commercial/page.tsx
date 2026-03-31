@@ -6,11 +6,13 @@ import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
 import { Metadata } from 'next'
+import { buildPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-    title: 'Commercial exterior maintenance | Arkansas and Oklahoma | Licensed and Insured',
-    description: 'Professional Commercial Exterior Maintenance Services for small commercial properties to large. Maintaining millions of square footage across Oklahoma and Arkansas.',
-}
+export const metadata: Metadata = buildPageMetadata({
+    title: 'Commercial Exterior Maintenance | Arkansas and Oklahoma | Licensed and Insured',
+    description: 'Professional Commercial Exterior Maintenance Services for properties small to large. Maintaining millions of square footage across Oklahoma and Arkansas.',
+    path: '/commercial/',
+})
 
 const features = [
     {

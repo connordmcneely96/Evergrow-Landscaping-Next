@@ -3,6 +3,14 @@ import { ArrowRight, CheckCircle, Star, MapPin, Shield, Clock } from 'lucide-rea
 import Image from 'next/image';
 import { MotionDiv } from '@/components/ui/MotionDiv';
 import Testimonials from '@/components/sections/Testimonials';
+import type { Metadata } from 'next';
+import { buildPageMetadata } from '@/lib/seo';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Evergrow Landscaping | Professional Landscaping Services | Residential and Commercial',
+  description: 'Professional Landscaping Services in Arkansas and Oklahoma. Lawncare, Landscaping, Seasonal Cleanups, Pressure Washing',
+  path: '/',
+});
 
 export default function HomePage() {
   return (

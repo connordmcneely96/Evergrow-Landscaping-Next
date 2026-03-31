@@ -4,6 +4,8 @@ import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
+import type { Metadata } from 'next'
+import { buildPageMetadata } from '@/lib/seo'
 
 const features = [
   {
@@ -197,7 +199,8 @@ export default function PressureWashingPage() {
   )
 }
 
-export const metadata = {
-  title: 'Pressure Washing & Soft Washing Services | Evergrow Landscaping',
-  description: 'Professional pressure washing and soft washing in Arkansas and Oklahoma. Driveways, decks, patios, siding, fences. Safe, effective cleaning with commercial equipment.',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Pressure Washing & Soft Washing Services',
+  description: 'Professional pressure washing and soft washing services in Arkansas and Oklahoma for driveways, patios, siding, decks, and walkways.',
+  path: '/services/pressure-washing/',
+})
