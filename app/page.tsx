@@ -8,10 +8,17 @@ export default function HomePage() {
   return (
     <main className="flex-col">
       {/* Hero Section */}
-      <section className="relative flex flex-col overflow-hidden bg-forest-green">
-        {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-black/10 z-10" />
-        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] z-0"></div>
+      <section
+        className="relative flex flex-col overflow-hidden bg-forest-green"
+        style={{
+          backgroundImage: "url('/api/assets/Home_Page_Hero_Background_Image.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/50 z-10" />
 
         <div className="container relative z-20 px-4 pt-24 pb-8 lg:pt-28 lg:pb-8">
           <div className="flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16">
@@ -108,8 +115,8 @@ export default function HomePage() {
             <div className="relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-100 transform rotate-1 hover:rotate-0 transition-transform duration-500">
                 <Image
-                  src="/api/assets/LawnCareAndMaintenance_image1.png"
-                  alt="Professional lawn care services"
+                  src="/api/assets/Company_Image.png"
+                  alt="Evergrow Landscaping company"
                   width={600}
                   height={400}
                   className="w-full h-[400px] object-cover"
@@ -174,7 +181,7 @@ export default function HomePage() {
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
-                    src="/api/assets/LawnCareAndMaintenance_image2.png"
+                    src="/api/assets/Lawn_Care_%26_Maintenance_Image.png"
                     alt="Lawn Care & Maintenance"
                     fill
                     className="object-cover"
@@ -199,8 +206,8 @@ export default function HomePage() {
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
-                    src="/api/assets/FlowerBedInstall_image1.png"
-                    alt="Flower Bed Installation"
+                    src="/api/assets/Landscaping_%26_Design_Image.png"
+                    alt="Landscaping & Design"
                     fill
                     className="object-cover"
                   />
@@ -225,7 +232,7 @@ export default function HomePage() {
                 <div className="h-48 relative">
                   {/* TODO: Swap seasonal-cleanup-before.jpg with edited version (no person) */}
                   <Image
-                    src="/api/assets/SpringAndFallCleanup_image1.png"
+                    src="/api/assets/Seasonal_Cleanups_Image%20(1).png"
                     alt="Seasonal Cleanups"
                     fill
                     className="object-cover"
@@ -250,8 +257,8 @@ export default function HomePage() {
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 relative">
                   <Image
-                    src="/api/assets/PressureWashing_image1.png"
-                    alt="Pressure Washing Services"
+                    src="/api/assets/Pressure_Washing_%26_Soft_Washing_Image.png"
+                    alt="Pressure Washing & Soft Washing"
                     fill
                     className="object-cover"
                   />

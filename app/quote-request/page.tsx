@@ -1,8 +1,27 @@
 import { QuoteForm } from '@/components/forms/QuoteForm'
+import Link from 'next/link'
 
 export default function QuoteRequestPage() {
     return (
         <main>
+            {/* Commercial Redirect Banner */}
+            <div className="bg-deep-charcoal border-b border-white/10">
+                <div className="container mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm">
+                    <span className="text-white/80">
+                        Are you a <span className="text-vibrant-gold font-semibold">property manager or business owner</span> with multiple locations?
+                    </span>
+                    <Link
+                        href="/quote-request/commercial/"
+                        className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-vibrant-gold text-white font-semibold hover:bg-vibrant-gold/90 transition-colors whitespace-nowrap"
+                    >
+                        Get a Commercial Proposal
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </Link>
+                </div>
+            </div>
+
             {/* Hero Section */}
             <section className="relative bg-forest-green py-16">
                 <div className="container mx-auto px-4">

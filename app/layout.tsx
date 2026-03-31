@@ -8,6 +8,11 @@ export const metadata: Metadata = {
   title: "Evergrow Landscaping | Professional Landscaping Services | Residential and Commercial",
   description: "Professional Landscaping Services in Arkansas and Oklahoma. Lawncare, Landscaping, Seasonal Cleanups, Pressure Washing",
   keywords: ["landscaping", "lawn care", "Arkansas", "Oklahoma", "landscaping design", "pressure washing", "seasonal cleanup"],
+  // TODO: When Karson provides a standalone icon image (no wordmark), swap the paths below
+  icons: {
+    icon: '/images/Logo- Transparent & No Buffer .png',
+    shortcut: '/images/Logo- Transparent & No Buffer .png',
+  },
   openGraph: {
     title: "Evergrow Landscaping | Professional Landscaping Services | Residential and Commercial",
     description: "Professional Landscaping Services in Arkansas and Oklahoma. Lawncare, Landscaping, Seasonal Cleanups, Pressure Washing",

@@ -8,8 +8,8 @@ import { ServiceCTA } from '@/components/services/ServiceCTA'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'Commercial Landscaping & Regulation Maintenance | Evergrow',
-    description: 'Scalable landscape management for multi-location businesses, retail chains, and corporate campuses in Arkansas and Oklahoma.',
+    title: 'Commercial exterior maintenance | Arkansas and Oklahoma | Licensed and Insured',
+    description: 'Professional Commercial Exterior Maintenance Services for small commercial properties to large. Maintaining millions of square footage across Oklahoma and Arkansas.',
 }
 
 const features = [
@@ -19,7 +19,7 @@ const features = [
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
         ),
-        title: 'Multi-State Coverage',
+        title: '🗺️ Multi-State Coverage',
         description: 'One vendor for all your locations in Arkansas and Oklahoma. Simplify your procurement process.',
     },
     {
@@ -28,7 +28,7 @@ const features = [
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
             </svg>
         ),
-        title: 'Unified Billing',
+        title: '🧾 Unified Billing',
         description: 'Consolidated invoicing for your entire portfolio. We integrate with major property management platforms.',
     },
     {
@@ -37,7 +37,7 @@ const features = [
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
         ),
-        title: 'Compliance & Safety',
+        title: '🛡️ Compliance & Safety',
         description: 'Fully licensed and insured. We meet rigorous corporate procurement requirements including background checks.',
     },
     {
@@ -46,7 +46,7 @@ const features = [
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
         ),
-        title: 'Rapid Response',
+        title: '⚡ Rapid Response',
         description: '24/7 emergency storm response and prioritized scheduling for commercial clients.',
     },
     {
@@ -55,7 +55,7 @@ const features = [
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
         ),
-        title: 'Owner-Managed',
+        title: '👤 Owner-Managed',
         description: 'Direct accountability. Our leadership team is hands-on and accessible for high-level account reviews.',
     },
     {
@@ -64,7 +64,7 @@ const features = [
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
         ),
-        title: 'Scalable Solutions',
+        title: '📈 Scalable Solutions',
         description: 'From single retail pads to large corporate campuses, we have the fleet and workforce to handle it.',
     },
 ]
@@ -141,7 +141,7 @@ export default function CommercialPage() {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <Link href="/quote-request">
+                            <Link href="/quote-request/commercial/">
                                 <Button className="w-full sm:w-auto bg-vibrant-gold text-white hover:bg-forest-green-700 border-0" size="lg">
                                     Request Commercial Proposal
                                 </Button>
@@ -234,6 +234,7 @@ export default function CommercialPage() {
                 title="Ready to Streamline Your Landscape Management?"
                 description="Get a comprehensive proposal for your portfolio today. Email us at karson@evergrowlandscaping.com or request a proposal below."
                 buttonText="Request Commercial Proposal"
+                buttonLink="/quote-request/commercial/"
             />
         </main>
     )
