@@ -33,13 +33,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const { request, env, params } = context;
 
     try {
-        const path = Array.isArray(params.path) ? params.path.join('/') : params.path;
+        const rawPath = Array.isArray(params.path) ? params.path.join('/') : params.path;
 
-        if (!path) {
+        if (!rawPath) {
             return new Response('Not found', { status: 404 });
         }
 
-        // Cloudflare already decodes the URL, so we don't need decodeURIComponent
+        // Decode URL-encoded characters (e.g. %26 → &, %20 → space) so R2 key matches filename
+        const path = decodeURIComponent(rawPath);
         console.log('[Assets] Fetching from R2:', path);
 
         const object = await env.R2_BUCKET.get(path);
