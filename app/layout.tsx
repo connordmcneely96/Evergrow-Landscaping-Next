@@ -13,12 +13,9 @@ export const metadata: Metadata = {
   },
   description: "Professional landscaping services in Arkansas and Oklahoma.",
   keywords: ["landscaping", "lawn care", "Arkansas", "Oklahoma", "landscaping design", "pressure washing", "seasonal cleanup"],
-  alternates: {
-    canonical: "/",
-  },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: "/images/logo-icon.svg",
+    shortcut: "/images/logo-icon.svg",
   },
   openGraph: {
     title: SITE_NAME,
