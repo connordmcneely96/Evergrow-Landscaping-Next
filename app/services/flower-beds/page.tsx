@@ -110,7 +110,7 @@ export default function FlowerBedsPage() {
       <section
         className="relative bg-forest-green pt-20"
         style={{
-          backgroundImage: "url('/api/assets/Landscaping_%26_Design_Image.png')",
+          backgroundImage: "url('/api/assets/service-landscaping-design.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

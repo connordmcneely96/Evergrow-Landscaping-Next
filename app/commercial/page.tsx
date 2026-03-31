@@ -122,7 +122,7 @@ export default function CommercialPage() {
             <section
                 className="relative bg-forest-green"
                 style={{
-                    backgroundImage: "url('/api/assets/Home_Page_Hero_Background_Image.png')",
+                    backgroundImage: "url('/api/assets/home-hero-bg.png')",
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',

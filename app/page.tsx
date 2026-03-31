@@ -11,7 +11,7 @@ export default function HomePage() {
       <section
         className="relative flex flex-col overflow-hidden bg-forest-green"
         style={{
-          backgroundImage: "url('/api/assets/Home_Page_Hero_Background_Image.png')",
+          backgroundImage: "url('/api/assets/home-hero-bg.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -96,7 +96,7 @@ export default function HomePage() {
             <div className="relative">
               <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-gray-100">
                 <Image
-                  src="/api/assets/Company_Image.png"
+                  src="/api/assets/company-image.png"
                   alt="Evergrow Landscaping company"
                   width={600}
                   height={400}
@@ -162,7 +162,7 @@ export default function HomePage() {
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 overflow-hidden">
                   <img
-                    src="/api/assets/Lawn_Care_%26_Maintenance_Image.png"
+                    src="/api/assets/service-lawn-care.png"
                     alt="Lawn Care & Maintenance"
                     className="w-full h-full object-cover"
                   />
@@ -186,7 +186,7 @@ export default function HomePage() {
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 overflow-hidden">
                   <img
-                    src="/api/assets/Landscaping_%26_Design_Image.png"
+                    src="/api/assets/service-landscaping-design.png"
                     alt="Landscaping & Design"
                     className="w-full h-full object-cover"
                   />
@@ -210,7 +210,7 @@ export default function HomePage() {
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 overflow-hidden">
                   <img
-                    src="/api/assets/Seasonal_Cleanups_Image%20(1).png"
+                    src="/api/assets/service-seasonal-cleanups.png"
                     alt="Seasonal Cleanups"
                     className="w-full h-full object-cover"
                   />
@@ -234,7 +234,7 @@ export default function HomePage() {
               <MotionDiv whileHover={{ y: -5 }} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                 <div className="h-48 overflow-hidden">
                   <img
-                    src="/api/assets/Pressure_Washing_%26_Soft_Washing_Image.png"
+                    src="/api/assets/service-pressure-washing.png"
                     alt="Pressure Washing & Soft Washing"
                     className="w-full h-full object-cover"
                   />

@@ -110,7 +110,7 @@ export default function PressureWashingPage() {
       <section
         className="relative bg-forest-green pt-20"
         style={{
-          backgroundImage: "url('/api/assets/Pressure_Washing_%26_Soft_Washing_Image.png')",
+          backgroundImage: "url('/api/assets/service-pressure-washing.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

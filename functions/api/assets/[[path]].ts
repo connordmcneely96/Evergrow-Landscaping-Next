@@ -1,6 +1,14 @@
 import { Env } from '../../types';
 
 const CACHE_TTL_SECONDS = 31536000; // 1 year (immutable)
+const ASSET_ALIASES: Record<string, string[]> = {
+    'home-hero-bg.png': ['Home_Page_Hero_Background_Image.png'],
+    'company-image.png': ['Company_Image.png'],
+    'service-lawn-care.png': ['Lawn_Care_%26_Maintenance_Image.png', 'Lawn_Care_&_Maintenance_Image.png'],
+    'service-landscaping-design.png': ['Landscaping_%26_Design_Image.png', 'Landscaping_&_Design_Image.png'],
+    'service-seasonal-cleanups.png': ['Seasonal_Cleanups_Image%20(1).png', 'Seasonal_Cleanups_Image (1).png'],
+    'service-pressure-washing.png': ['Pressure_Washing_%26_Soft_Washing_Image.png', 'Pressure_Washing_&_Soft_Washing_Image.png'],
+};
 
 function getContentType(path: string): string {
     const extension = path.split('.').pop()?.toLowerCase();
@@ -39,6 +47,12 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         }
 
         const candidatePaths = new Set<string>([rawPath]);
+        const aliasTargets = ASSET_ALIASES[rawPath];
+        if (aliasTargets) {
+            for (const aliasTarget of aliasTargets) {
+                candidatePaths.add(aliasTarget);
+            }
+        }
         try {
             candidatePaths.add(decodeURIComponent(rawPath));
         } catch {
