@@ -4,6 +4,8 @@ import { ServiceFeatures } from '@/components/services/ServiceFeatures'
 import { ServiceProcess } from '@/components/services/ServiceProcess'
 import { ServiceFAQ } from '@/components/services/ServiceFAQ'
 import { ServiceCTA } from '@/components/services/ServiceCTA'
+import type { Metadata } from 'next'
+import { buildPageMetadata } from '@/lib/seo'
 
 const features = [
   {
@@ -110,7 +112,7 @@ export default function FlowerBedsPage() {
       <section
         className="relative bg-forest-green pt-20"
         style={{
-          backgroundImage: "url('/api/assets/Landscaping_%26_Design_Image.png')",
+          backgroundImage: "url('/api/assets/service-landscaping-design.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -205,7 +207,8 @@ export default function FlowerBedsPage() {
   )
 }
 
-export const metadata = {
-  title: 'Landscaping & Design | Evergrow Landscaping',
-  description: 'Custom landscaping and design services in Arkansas and Oklahoma. Native plants, quality soil prep, beautiful results that last.',
-}
+export const metadata: Metadata = buildPageMetadata({
+  title: 'Landscaping & Design Services',
+  description: 'Custom landscaping and design services in Arkansas and Oklahoma, including flower bed installs, plant selection, mulch, and layout planning.',
+  path: '/services/flower-beds/',
+})
