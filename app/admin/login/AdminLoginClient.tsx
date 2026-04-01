@@ -128,12 +128,6 @@ export default function AdminLoginPage() {
                         </button>
                     </form>
 
-                    {/* Demo credentials hint */}
-                    <div className="mt-6 p-3 bg-gray-800/50 border border-gray-700/50 rounded-lg">
-                        <p className="text-xs text-gray-500 text-center">
-                            Demo: <span className="text-gray-400">admin@evergrowlandscaping.com</span> / <span className="text-gray-400">admin123</span>
-                        </p>
-                    </div>
                 </div>
 
                 {/* Footer */}
