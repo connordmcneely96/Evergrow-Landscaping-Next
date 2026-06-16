@@ -3,6 +3,8 @@ import "./globals.css";
 import LayoutShell from "@/components/layout/LayoutShell";
 import { ToastProvider } from "@/components/ui/Toast";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { PromoProvider } from "@/contexts/PromoContext";
+import PromoCampaign from "@/components/promo/PromoCampaign";
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -51,9 +53,12 @@ export default function RootLayout({
       <body className="antialiased flex flex-col min-h-screen">
         <ToastProvider>
           <AuthProvider>
-            <LayoutShell>
-              {children}
-            </LayoutShell>
+            <PromoProvider>
+              <LayoutShell>
+                {children}
+              </LayoutShell>
+              <PromoCampaign />
+            </PromoProvider>
           </AuthProvider>
         </ToastProvider>
       </body>

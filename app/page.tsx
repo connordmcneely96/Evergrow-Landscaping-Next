@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle, Star, MapPin, Shield, Clock } from 'lucide-rea
 import Image from 'next/image';
 import { MotionDiv } from '@/components/ui/MotionDiv';
 import Testimonials from '@/components/sections/Testimonials';
+import PromoBannerCard from '@/components/promo/PromoBannerCard';
 import type { Metadata } from 'next';
 import { buildPageMetadata } from '@/lib/seo';
 
@@ -93,6 +94,9 @@ export default function HomePage() {
               <div className="flex items-center"><MapPin className="w-5 h-5 text-vibrant-gold mr-2 flex-shrink-0" /> 100+ Properties Managed</div>
               <div className="flex items-center"><CheckCircle className="w-5 h-5 text-vibrant-gold mr-2 flex-shrink-0" /> 1M+ Square Footage Maintained</div>
             </div>
+
+            {/* Promotional banner card — opens lead-capture form */}
+            <PromoBannerCard />
           </div>
         </div>
       </section>
