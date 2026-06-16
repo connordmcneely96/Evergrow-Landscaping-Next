@@ -46,6 +46,12 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
             return new Response('Not found', { status: 404 });
         }
 
+        // Private prefixes (e.g. signed contracts) must never be served
+        // publicly. Block before touching R2.
+        if (/^(agreements|private)\//i.test(rawPath)) {
+            return new Response('Not found', { status: 404 });
+        }
+
         const candidatePaths = new Set<string>([rawPath]);
         const aliasTargets = ASSET_ALIASES[rawPath];
         if (aliasTargets) {

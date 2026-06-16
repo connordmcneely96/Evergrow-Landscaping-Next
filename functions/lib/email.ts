@@ -271,6 +271,123 @@ export function getPromoLeadAdminEmail(data: {
 }
 
 /**
+ * Service agreement confirmation email (to customer, PDF attached)
+ */
+export function getAgreementCustomerEmail(data: {
+    customerName: string;
+}): string {
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1F1F1F; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .header { background: #13733A; color: white; padding: 32px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 700; }
+        .content { padding: 30px 24px; }
+        .panel { background: #F9FAFB; padding: 18px; border-radius: 6px; border-left: 4px solid #94C952; margin: 18px 0; }
+        .footer { text-align: center; padding: 22px; color: #6B7280; font-size: 13px; background: #F9FAFB; border-top: 1px solid #E5E7EB; }
+        .footer a { color: #13733A; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🌿 Your Lawn Service Authorization</h1>
+        </div>
+        <div class="content">
+          <p>Hi <strong>${escapeHtml(data.customerName)}</strong>,</p>
+          <p>Thank you! Your signed <strong>Lawn Service Authorization &amp; Terms Agreement</strong> is attached to this email for your records.</p>
+          <div class="panel">
+            <strong>What happens next?</strong>
+            <p style="margin: 8px 0 0 0;">Evergrow will be in contact with you within 72 hours to discuss scheduling and next steps.</p>
+          </div>
+          <p>If you have any questions in the meantime, just reply to this email or call us at (405) 479-5794.</p>
+          <p>Best regards,<br><strong>The Evergrow Landscaping Team</strong></p>
+        </div>
+        <div class="footer">
+          <p><strong>Evergrow Landscaping</strong></p>
+          <p>Serving Arkansas &amp; Oklahoma · <a href="https://evergrowlandscaping.com">evergrowlandscaping.com</a></p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+/**
+ * Service agreement notification email (to business owner, PDF attached)
+ */
+export function getAgreementAdminEmail(data: {
+    customerName: string;
+    serviceAddress: string;
+    phone: string;
+    email: string;
+    signedDate: string;
+}): string {
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1F1F1F; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .header { background: #13733A; color: white; padding: 32px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 700; }
+        .header p { margin: 6px 0 0 0; font-size: 14px; opacity: 0.9; }
+        .content { padding: 30px 24px; }
+        .field { margin-bottom: 16px; padding: 16px; background: #F9FAFB; border-left: 4px solid #94C952; border-radius: 4px; }
+        .label { font-weight: bold; color: #13733A; display: block; margin-bottom: 4px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; }
+        .value { color: #1F1F1F; font-size: 16px; }
+        .value a { color: #13733A; }
+        .footer { text-align: center; padding: 22px; color: #6B7280; font-size: 13px; background: #F9FAFB; border-top: 1px solid #E5E7EB; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🌿 New Signed Service Agreement</h1>
+          <p>Lawn Service Authorization — follow up within 72 hours</p>
+        </div>
+        <div class="content">
+          <div class="field">
+            <span class="label">Customer Name</span>
+            <span class="value">${escapeHtml(data.customerName)}</span>
+          </div>
+          <div class="field">
+            <span class="label">Service Address</span>
+            <span class="value">${escapeHtml(data.serviceAddress)}</span>
+          </div>
+          <div class="field">
+            <span class="label">Phone</span>
+            <span class="value"><a href="tel:${escapeHtml(data.phone)}">${escapeHtml(data.phone)}</a></span>
+          </div>
+          <div class="field">
+            <span class="label">Email</span>
+            <span class="value"><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></span>
+          </div>
+          <div class="field">
+            <span class="label">Signed Date</span>
+            <span class="value">${escapeHtml(data.signedDate)}</span>
+          </div>
+          <p style="font-size: 14px; color: #6B7280;">The signed agreement PDF is attached to this email.</p>
+        </div>
+        <div class="footer">
+          <p><strong>Evergrow Landscaping</strong></p>
+          <p>This agreement was captured from the on-site promotional campaign.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+/**
  * Quote request notification email (to business owner)
  */
 export function getQuoteRequestNotificationEmail(data: {

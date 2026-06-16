@@ -83,9 +83,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
             console.error('Promo lead admin notification failed:', emailResult.error);
         }
 
+        const promoLeadId = insertResult.meta?.last_row_id ?? null;
+
         return new Response(JSON.stringify({
             success: true,
             message: SUCCESS_MESSAGE,
+            promoLeadId,
         }), { status: 201, headers: JSON_HEADERS });
 
     } catch (error) {
