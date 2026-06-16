@@ -16,6 +16,53 @@ export function normalizeEmail(email: string): string {
     return email.trim().toLowerCase();
 }
 
+export interface PromoLeadInput {
+    email: string;
+    phone: string;
+}
+
+export function validatePromoLeadPayload(
+    payload: unknown
+): { success: boolean; errors: string[]; data?: PromoLeadInput } {
+    if (!payload || typeof payload !== 'object') {
+        return {
+            success: false,
+            errors: ['Request body must be a JSON object'],
+        };
+    }
+
+    const { email, phone } = payload as Record<string, unknown>;
+    const errors: string[] = [];
+
+    const emailValue = typeof email === 'string' ? email.trim() : '';
+    if (emailValue.length === 0) {
+        errors.push('Email is required');
+    } else if (!emailRegex.test(emailValue)) {
+        errors.push('Invalid email format');
+    }
+
+    const phoneValue = typeof phone === 'string' ? phone.trim() : '';
+    const phoneDigits = phoneValue.replace(/\D/g, '');
+    if (phoneValue.length === 0) {
+        errors.push('Phone is required');
+    } else if (phoneDigits.length < 10 || phoneDigits.length > 15) {
+        errors.push('Please enter a valid phone number');
+    }
+
+    if (errors.length > 0) {
+        return { success: false, errors };
+    }
+
+    return {
+        success: true,
+        errors: [],
+        data: {
+            email: normalizeEmail(emailValue),
+            phone: phoneDigits,
+        },
+    };
+}
+
 export function validateNewsletterSubscribePayload(
     payload: unknown
 ): { success: boolean; errors: string[]; data?: NewsletterSubscribeInput } {

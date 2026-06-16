@@ -207,6 +207,70 @@ export function getNewsletterWelcomeEmail(data: {
 }
 
 /**
+ * Promo lead notification email (to business owner)
+ */
+export function getPromoLeadAdminEmail(data: {
+    email: string;
+    phone: string;
+    source: string;
+}): string {
+    const submittedAt = formatEmailDate(new Date()) || new Date().toLocaleString();
+
+    return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1F1F1F; margin: 0; padding: 0; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .header { background: #13733A; color: white; padding: 32px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 700; }
+        .header p { margin: 6px 0 0 0; font-size: 14px; opacity: 0.9; }
+        .content { padding: 30px 24px; }
+        .field { margin-bottom: 18px; padding: 16px; background: #F9FAFB; border-left: 4px solid #94C952; border-radius: 4px; }
+        .label { font-weight: bold; color: #13733A; display: block; margin-bottom: 4px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; }
+        .value { color: #1F1F1F; font-size: 16px; }
+        .value a { color: #13733A; }
+        .footer { text-align: center; padding: 22px; color: #6B7280; font-size: 13px; background: #F9FAFB; border-top: 1px solid #E5E7EB; }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🌿 New Promo Lead</h1>
+          <p>Lawn Maintenance Offer — follow up within 72 hours</p>
+        </div>
+        <div class="content">
+          <div class="field">
+            <span class="label">Email</span>
+            <span class="value"><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></span>
+          </div>
+          <div class="field">
+            <span class="label">Phone</span>
+            <span class="value"><a href="tel:${escapeHtml(data.phone)}">${escapeHtml(data.phone)}</a></span>
+          </div>
+          <div class="field">
+            <span class="label">Source</span>
+            <span class="value">${escapeHtml(data.source)}</span>
+          </div>
+          <div class="field">
+            <span class="label">Submitted</span>
+            <span class="value">${escapeHtml(String(submittedAt))}</span>
+          </div>
+        </div>
+        <div class="footer">
+          <p><strong>Evergrow Landscaping</strong></p>
+          <p>This lead was captured from the on-site promotional campaign.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+}
+
+/**
  * Quote request notification email (to business owner)
  */
 export function getQuoteRequestNotificationEmail(data: {
